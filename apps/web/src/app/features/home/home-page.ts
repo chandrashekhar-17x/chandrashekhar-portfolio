@@ -1,8 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
+import { personSchema } from '../../core/seo/person-schema';
+import { SeoService } from '../../core/seo/seo.service';
+import { SITE_CONFIG } from '../../core/seo/site-config';
 import { SectionSkeleton } from '../../shared/ui/section-skeleton/section-skeleton';
 import { GraphSection } from '../graph/graph-section';
 import { HeroSection } from '../hero/hero-section';
@@ -43,4 +46,21 @@ export class HomePage {
     this.repo.experience().pipe(map((xp) => xp.roles.length)),
     { initialValue: 3 },
   );
+
+  constructor() {
+    // Structured data (JSON-LD) about me, rendered on the server for crawlers.
+    const seo = inject(SeoService);
+    const site = inject(SITE_CONFIG);
+    combineLatest([
+      this.repo.profile(),
+      this.repo.skills(),
+      this.repo.experience(),
+      this.repo.projects(),
+    ]).subscribe(([profile, skills, experience, projects]) => {
+      seo.jsonLd('ld-person', personSchema(site.url, profile, skills, experience, projects));
+    });
+    inject(DestroyRef).onDestroy(() => {
+      seo.removeJsonLd('ld-person'); // only the home page carries it
+    });
+  }
 }

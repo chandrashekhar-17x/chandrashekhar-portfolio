@@ -12,6 +12,7 @@ import { marked } from 'marked';
 import { map, tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
+import { SeoService } from '../../core/seo/seo.service';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProjectIllustration } from './project-illustration';
 
@@ -29,6 +30,7 @@ export class ProjectPage {
 
   private readonly repo = inject(ContentRepository);
   private readonly response = inject(RESPONSE_INIT, { optional: true });
+  private readonly seo = inject(SeoService);
 
   protected readonly project = rxResource({
     params: () => this.slug(),
@@ -37,6 +39,14 @@ export class ProjectPage {
         tap((p) => {
           // On the server, tell crawlers this page doesn't exist.
           if (!p && this.response) this.response.status = 404;
+          if (p) {
+            this.seo.update({
+              title: `${p.title} · Chandrashekhar`,
+              description: p.summary,
+              path: `/work/${p.slug}`,
+              type: 'article',
+            });
+          }
         }),
       ),
   });

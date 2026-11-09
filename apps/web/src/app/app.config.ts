@@ -1,10 +1,16 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import {
+  TitleStrategy,
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideContent } from './core/content/provide-content';
+import { SeoTitleStrategy } from './core/seo/seo-title-strategy';
 import { provideChat } from './features/chat/provide-chat';
 
 // Root providers shared by browser and server.
@@ -23,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(),
     provideContent(),
+    { provide: TitleStrategy, useClass: SeoTitleStrategy },
     provideChat(),
   ],
 };

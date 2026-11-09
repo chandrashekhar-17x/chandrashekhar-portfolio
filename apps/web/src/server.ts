@@ -7,6 +7,9 @@ import {
 import express from 'express';
 import { join } from 'node:path';
 
+import projectsJson from '@content/data/projects.json';
+import { robotsTxt, sitemapXml } from './server/seo-files';
+
 // Express server that serves static files and renders Angular pages (SSR).
 // Security headers (CSP with nonces, HSTS) are added in Phase 9.
 const browserDistFolder = join(import.meta.dirname, '../browser');
@@ -15,6 +18,19 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 app.disable('x-powered-by');
+
+// Public origin for absolute URLs (PLACEHOLDER domain until one is bought).
+const siteUrl = process.env['PUBLIC_SITE_URL'] ?? 'https://chandrashekhar.dev';
+const builtAt = new Date().toISOString().slice(0, 10);
+
+app.get('/robots.txt', (_req, res) => {
+  res.type('text/plain').send(robotsTxt(siteUrl));
+});
+
+app.get('/sitemap.xml', (_req, res) => {
+  const slugs = projectsJson.projects.map((p) => p.slug);
+  res.type('application/xml').send(sitemapXml(siteUrl, slugs, builtAt));
+});
 
 // Hashed build files can be cached for a year.
 app.use(express.static(browserDistFolder, { maxAge: '1y', index: false, redirect: false }));
