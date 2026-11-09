@@ -13,3 +13,6 @@ node_modules/
 prototype/
 reference/
 docs/
+
+# Hand-maintained project memory.
+CLAUDE.md

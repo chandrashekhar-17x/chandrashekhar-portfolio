@@ -33,7 +33,10 @@
           "org": { "description": "organizations[].id", "$ref": "common.schema.json#/$defs/id" },
           "title": { "type": "string" },
           "start": { "$ref": "common.schema.json#/$defs/yearMonth" },
-          "end": { "description": "Omit while current.", "$ref": "common.schema.json#/$defs/yearMonth" },
+          "end": {
+            "description": "Omit while current.",
+            "$ref": "common.schema.json#/$defs/yearMonth"
+          },
           "location": { "type": "string" },
           "summary": { "type": "string", "maxLength": 600 },
           "highlights": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },

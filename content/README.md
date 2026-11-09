@@ -4,13 +4,13 @@ This folder holds the **first version** of all portfolio content. From Phase 2 o
 **database is the source of truth**: content is edited in `/admin`, and `make content-export`
 (Phase 3) writes the database back here so every change is versioned in git.
 
-| Path            | What                                                                |
-| --------------- | ------------------------------------------------------------------- |
-| `data/*.json`   | Profile, skills, experience, projects, graph extras                 |
-| `schemas/`      | JSON Schemas: the contract for the files above                      |
+| Path            | What                                                                      |
+| --------------- | ------------------------------------------------------------------------- |
+| `data/*.json`   | Profile, skills, experience, projects, graph extras                       |
+| `schemas/`      | JSON Schemas: the contract for the files above                            |
 | `projects/*.md` | Case-study bodies (Problem → Approach → Result → What I'd do differently) |
-| `media/`        | Images (avatar, covers). Prefer WebP/AVIF.                          |
-| `resume/`       | Put `resume.pdf` here                                               |
+| `media/`        | Images (avatar, covers). Prefer WebP/AVIF.                                |
+| `resume/`       | Put `resume.pdf` here                                                     |
 
 ## Knowledge graph
 

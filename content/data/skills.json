@@ -16,8 +16,20 @@
     { "id": "postgres", "name": "PostgreSQL", "category": "backend", "level": 2, "learning": true },
     { "id": "llms", "name": "LLM APIs", "category": "ai", "level": 2, "learning": true },
     { "id": "rag", "name": "RAG", "category": "ai", "level": 2, "learning": true },
-    { "id": "langchain", "name": "LangChain / LangGraph", "category": "ai", "level": 1, "learning": true },
-    { "id": "mcp", "name": "Model Context Protocol", "category": "ai", "level": 1, "learning": true },
+    {
+      "id": "langchain",
+      "name": "LangChain / LangGraph",
+      "category": "ai",
+      "level": 1,
+      "learning": true
+    },
+    {
+      "id": "mcp",
+      "name": "Model Context Protocol",
+      "category": "ai",
+      "level": 1,
+      "learning": true
+    },
     { "id": "git", "name": "Git", "category": "tools", "level": 4 }
   ]
 }

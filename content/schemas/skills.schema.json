@@ -17,8 +17,16 @@
           "id": { "$ref": "common.schema.json#/$defs/id" },
           "name": { "type": "string" },
           "category": { "enum": ["frontend", "backend", "ai", "graphics", "tools"] },
-          "level": { "description": "1 = learning … 5 = expert", "type": "integer", "minimum": 1, "maximum": 5 },
-          "learning": { "description": "Currently learning (LEARNING edge in the graph).", "type": "boolean" },
+          "level": {
+            "description": "1 = learning … 5 = expert",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "learning": {
+            "description": "Currently learning (LEARNING edge in the graph).",
+            "type": "boolean"
+          },
           "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
         }
       }
