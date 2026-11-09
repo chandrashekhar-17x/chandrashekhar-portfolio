@@ -21,9 +21,13 @@ test('all five home sections reveal, one at a time and in page order', async ({ 
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await expect(page.locator(`#${id} .is-revealed`)).toBeVisible({ timeout: 8000 });
   }
-  const times = await page.evaluate(
-    () => (window as Window & { __revealed?: Record<string, number> }).__revealed ?? {},
-  );
+  // The recorder samples once per frame: wait until it has logged all five.
+  const read = () =>
+    page.evaluate(
+      () => (window as Window & { __revealed?: Record<string, number> }).__revealed ?? {},
+    );
+  await expect.poll(async () => Object.keys(await read()).length).toBe(5);
+  const times = await read();
   const order = Object.entries(times)
     .sort((a, b) => a[1] - b[1])
     .map(([id]) => id);

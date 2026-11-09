@@ -14,7 +14,9 @@
     "serve:ssr": "node dist/web/server/server.mjs",
     "e2e": "playwright test",
     "gen:types": "node scripts/gen-content-types.mjs",
-    "check:types": "node scripts/gen-content-types.mjs --check"
+    "check:types": "node scripts/gen-content-types.mjs --check",
+    "visual": "playwright test -c playwright.visual.config.ts",
+    "lighthouse": "lhci autorun --config=lighthouserc.cjs"
   },
   "dependencies": {
     "@angular/common": "~22.2.5",
@@ -39,6 +41,7 @@
     "@angular/compiler-cli": "~22.2.5",
     "@axe-core/playwright": "4.14.0",
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "0.16.0",
     "@playwright/test": "1.65.0",
     "@testing-library/angular": "19.6.0",
     "@testing-library/dom": "10.4.2",
