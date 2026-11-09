@@ -35,12 +35,9 @@ export function drawHeroScene(ctx: CanvasRenderingContext2D, stars: Star[], f: H
   const { width: w, height: h, light } = f;
   const horizon = h * 0.58;
 
-  // Sky gradient
-  const sky = ctx.createLinearGradient(0, 0, 0, h);
-  sky.addColorStop(0, light ? '#eeeafc' : '#03041a');
-  sky.addColorStop(1, light ? '#e3ddfb' : '#0d0a35');
-  ctx.fillStyle = sky;
-  ctx.fillRect(0, 0, w, h);
+  // The sky gradient is a CSS background on the canvas (static, painted once);
+  // the canvas is transparent and only draws what moves.
+  ctx.clearRect(0, 0, w, h);
 
   drawStars(ctx, stars, f);
   drawHill(ctx, f, horizon);
@@ -57,15 +54,26 @@ export function drawHeroScene(ctx: CanvasRenderingContext2D, stars: Star[], f: H
   ctx.globalAlpha = 1;
 }
 
+/** Twinkle brightness levels: stars are batched per level → 4 fills, not one per star. */
+const TWINKLE_LEVELS = 4;
+
 function drawStars(ctx: CanvasRenderingContext2D, stars: Star[], f: HeroFrame): void {
   ctx.fillStyle = f.light ? '#6d3df0' : '#dfe3ff';
+  const paths = Array.from({ length: TWINKLE_LEVELS }, () => new Path2D());
   for (const s of stars) {
-    const alpha = 0.35 + 0.65 * Math.abs(Math.sin(f.t * 2 + s.twinkle));
-    ctx.globalAlpha = alpha * (f.light ? 0.5 : 1);
-    ctx.beginPath();
-    ctx.arc(s.x - f.mouseX * 20 * s.z, s.y - f.mouseY * 14 * s.z, s.z * 1.3, 0, Math.PI * 2);
-    ctx.fill();
+    const twinkle = Math.abs(Math.sin(f.t * 2 + s.twinkle)); // 0…1
+    const level = Math.min(TWINKLE_LEVELS - 1, Math.floor(twinkle * TWINKLE_LEVELS));
+    const x = s.x - f.mouseX * 20 * s.z;
+    const y = s.y - f.mouseY * 14 * s.z;
+    const path = paths[level];
+    path?.moveTo(x + s.z * 1.3, y);
+    path?.arc(x, y, s.z * 1.3, 0, Math.PI * 2);
   }
+  paths.forEach((path, level) => {
+    const alpha = 0.35 + 0.65 * ((level + 0.5) / TWINKLE_LEVELS);
+    ctx.globalAlpha = alpha * (f.light ? 0.5 : 1);
+    ctx.fill(path);
+  });
   ctx.globalAlpha = 1;
 }
 
@@ -94,20 +102,21 @@ function drawGrid(ctx: CanvasRenderingContext2D, f: HeroFrame, horizon: number):
   ctx.strokeStyle = light ? 'rgba(109,61,240,.28)' : 'rgba(139,150,255,.28)';
   ctx.lineWidth = 1;
 
+  // All converging lines in one path → one stroke call.
   const vanishX = w / 2 + f.mouseX * 80;
+  ctx.beginPath();
   for (let i = -24; i <= 24; i++) {
-    ctx.beginPath();
     ctx.moveTo(vanishX + i * 6, horizon);
     ctx.lineTo(vanishX + (i * w) / 9, h);
-    ctx.stroke();
   }
+  ctx.stroke();
 
   for (let j = 0; j < 18; j++) {
     const p = (j + ((t * 3) % 1)) / 18; // 0 at horizon → 1 at bottom
     const y = horizon + (h - horizon) * p * p;
     ctx.globalAlpha = p;
     ctx.beginPath();
-    for (let x = 0; x <= w; x += 16) {
+    for (let x = 0; x <= w + 24; x += 24) {
       const yy = y - Math.sin(x / 120 + t * 2 + j) * 3 * p;
       if (x === 0) ctx.moveTo(x, yy);
       else ctx.lineTo(x, yy);

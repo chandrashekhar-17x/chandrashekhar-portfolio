@@ -37,22 +37,34 @@
   color: var(--cyan);
 }
 
-// Green "available" dot with an expanding ring.
+// Green "available" dot with an expanding ring (ring = pseudo-element scaled with
+// transform + opacity, so it never repaints; the old box-shadow animation did).
 .pulse {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--lime);
-  box-shadow: 0 0 0 0 var(--lime);
-  animation: pulse 2s infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: pulse 2s ease-out infinite;
+  }
 }
 
 @keyframes pulse {
-  70% {
-    box-shadow: 0 0 0 10px transparent;
+  from {
+    opacity: 0.7;
+    transform: scale(1);
   }
-  100% {
-    box-shadow: 0 0 0 0 transparent;
+  70%,
+  to {
+    opacity: 0;
+    transform: scale(3.5);
   }
 }
 
@@ -64,7 +76,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pulse {
+  .pulse::after {
     animation: none;
+    opacity: 0;
   }
 }

@@ -47,22 +47,58 @@ export function drawGraph(
 ): void {
   ctx.clearRect(0, 0, sim.width, sim.height);
   const focus = s.hovered ? neighbourhood(sim, s.hovered) : null;
-  const t = s.now / 1000;
+  drawLinks(ctx, sim, s, palette, focus);
+  drawNodes(ctx, sim, s, palette, focus);
+  ctx.globalAlpha = 1;
+}
 
-  // Links first, so nodes sit on top.
+/**
+ * Links are batched: one stroke per (colour, alpha, width) group instead of one per
+ * link. Links still popping in are drawn individually (their alpha is changing).
+ */
+function drawLinks(
+  ctx: CanvasRenderingContext2D,
+  sim: Sim,
+  s: RenderState,
+  palette: Palette,
+  focus: Set<SimNode> | null,
+): void {
+  const batches = new Map<string, { color: string; alpha: number; width: number; path: Path2D }>();
   for (const { source, target } of sim.links) {
     const grow = Math.min(growth(source, s.now, s.animate), growth(target, s.now, s.animate));
     if (!grow) continue;
     const dim = isDimmed(source, s, focus) || isDimmed(target, s, focus);
-    ctx.globalAlpha = (dim ? 0.06 : focus ? 0.8 : 0.32) * grow;
-    ctx.strokeStyle = palette.category[source.category];
-    ctx.lineWidth = focus && !dim ? 1.4 : 0.8;
-    ctx.beginPath();
-    ctx.moveTo(source.x, source.y);
-    ctx.lineTo(target.x, target.y);
-    ctx.stroke();
+    const alpha = (dim ? 0.06 : focus ? 0.8 : 0.32) * grow;
+    const color = palette.category[source.category];
+    const width = focus && !dim ? 1.4 : 0.8;
+    const key =
+      grow === 1
+        ? `${color}|${String(alpha)}|${String(width)}`
+        : `${color}|${source.id}|${target.id}`;
+    let batch = batches.get(key);
+    if (!batch) {
+      batch = { color, alpha, width, path: new Path2D() };
+      batches.set(key, batch);
+    }
+    batch.path.moveTo(source.x, source.y);
+    batch.path.lineTo(target.x, target.y);
   }
+  for (const b of batches.values()) {
+    ctx.globalAlpha = b.alpha;
+    ctx.strokeStyle = b.color;
+    ctx.lineWidth = b.width;
+    ctx.stroke(b.path);
+  }
+}
 
+function drawNodes(
+  ctx: CanvasRenderingContext2D,
+  sim: Sim,
+  s: RenderState,
+  palette: Palette,
+  focus: Set<SimNode> | null,
+): void {
+  const t = s.now / 1000;
   for (const n of sim.nodes) {
     const grow = growth(n, s.now, s.animate);
     if (!grow) continue;
@@ -72,15 +108,9 @@ export function drawGraph(
     const pulse = lit ? 1.4 + (s.animate ? Math.sin(t * 6) * 0.15 : 0) : 1;
     const r = grow * n.size * pulse * (n === s.hovered ? 1.3 : 1);
 
-    // Soft halo
-    const halo = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 3);
-    halo.addColorStop(0, color);
-    halo.addColorStop(1, 'transparent');
+    // Soft halo: a pre-rendered sprite per colour (no gradient creation per frame).
     ctx.globalAlpha = dim ? 0.05 : lit ? 0.7 : 0.35;
-    ctx.fillStyle = halo;
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, r * 3, 0, Math.PI * 2);
-    ctx.fill();
+    drawHalo(ctx, color, n.x, n.y, r * 3);
 
     // Core dot
     ctx.globalAlpha = dim ? 0.25 : 1;
@@ -97,7 +127,50 @@ export function drawGraph(
       ctx.fillText(n.label, n.x, n.y - r - 7);
     }
   }
-  ctx.globalAlpha = 1;
+}
+
+const SPRITE_SIZE = 64;
+const haloSprites = new Map<string, HTMLCanvasElement | null>();
+
+/** Radial glow drawn from a cached 64×64 sprite (falls back to a gradient if unavailable). */
+function drawHalo(
+  ctx: CanvasRenderingContext2D,
+  color: string,
+  x: number,
+  y: number,
+  radius: number,
+): void {
+  let sprite = haloSprites.get(color);
+  if (sprite === undefined) {
+    sprite = makeHaloSprite(color);
+    haloSprites.set(color, sprite);
+  }
+  if (sprite) {
+    ctx.drawImage(sprite, x - radius, y - radius, radius * 2, radius * 2);
+    return;
+  }
+  const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
+  g.addColorStop(0, color);
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function makeHaloSprite(color: string): HTMLCanvasElement | null {
+  if (typeof document === 'undefined') return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = SPRITE_SIZE;
+  const c = canvas.getContext('2d');
+  if (!c) return null; // e.g. jsdom in unit tests
+  const half = SPRITE_SIZE / 2;
+  const g = c.createRadialGradient(half, half, 0, half, half, half);
+  g.addColorStop(0, color);
+  g.addColorStop(1, 'transparent');
+  c.fillStyle = g;
+  c.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+  return canvas;
 }
 
 /** Labels only where they help: hubs, projects, orgs, and whatever is in focus. */

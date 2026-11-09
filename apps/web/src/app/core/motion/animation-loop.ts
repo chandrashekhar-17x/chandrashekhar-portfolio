@@ -23,10 +23,18 @@ export class AnimationLoop {
     this.update();
   };
 
+  /** Minimum ms between frames (0 = every display frame). */
+  private readonly minInterval: number;
+
+  /**
+   * @param maxFps cap for ambient effects (e.g. 30); omit for full refresh rate.
+   */
   constructor(
     private readonly target: Element,
     private readonly frame: (f: LoopFrame) => void,
+    maxFps?: number,
   ) {
+    this.minInterval = maxFps ? 1000 / maxFps - 1 : 0;
     this.observer = new IntersectionObserver(([entry]) => {
       this.onScreen = entry?.isIntersecting ?? false;
       this.update();
@@ -63,9 +71,10 @@ export class AnimationLoop {
 
   private readonly tick = (now: number) => {
     if (!this.running) return;
-    const dt = Math.min((now - this.last) / 1000, 1 / 30);
-    this.last = now;
-    this.frame({ time: now - this.start, dt });
     this.rafId = requestAnimationFrame(this.tick);
+    const elapsed = now - this.last;
+    if (elapsed < this.minInterval) return; // skip this display frame (fps cap)
+    this.last = now;
+    this.frame({ time: now - this.start, dt: Math.min(elapsed / 1000, 1 / 15) });
   };
 }

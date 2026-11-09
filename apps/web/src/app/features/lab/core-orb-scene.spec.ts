@@ -7,7 +7,7 @@ describe('core orb scene', () => {
     for (const p of ps) expect(Math.hypot(p.x, p.y, p.z)).toBeCloseTo(1, 6);
   });
 
-  it('draws three rings and one dot per particle', () => {
+  it('draws three rings and the particles in at most 8 batched fills', () => {
     const calls: string[] = [];
     const ctx = new Proxy(
       {},
@@ -21,6 +21,7 @@ describe('core orb scene', () => {
     const ps = createParticles(20, seededRandom(1));
     drawOrb(ctx, ps, { width: 300, height: 300, t: 1, speaking: 0.5, front: '#0ff', back: '#f0f' });
     expect(calls.filter((c) => c === 'ellipse')).toHaveLength(3);
-    expect(calls.filter((c) => c === 'arc')).toHaveLength(20);
+    // Particles are batched: 2 colours × 4 depth levels = at most 8 fills.
+    expect(calls.filter((c) => c === 'fill').length).toBeLessThanOrEqual(8);
   });
 });

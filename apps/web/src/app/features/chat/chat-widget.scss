@@ -1,17 +1,27 @@
-// Floating orb that opens the chat (prototype .fab): spinning conic glow.
 .fab {
+  // Floating orb that opens the chat (prototype .fab). The spinning conic ring is a
+  // pseudo-element rotated with transform (GPU-composited, no repaint), instead of an
+  // animated hue-rotate filter, which repainted every frame.
   position: fixed;
   right: 18px;
   bottom: 18px;
   z-index: var(--z-overlay);
   width: 58px;
   height: 58px;
+  overflow: hidden;
   border: 0;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--violet));
+  background: none;
   box-shadow: 0 0 30px var(--violet);
   cursor: pointer;
-  animation: hue 8s linear infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--violet));
+    animation: spin 8s linear infinite;
+  }
 
   &::after {
     content: '';
@@ -22,9 +32,9 @@
   }
 }
 
-@keyframes hue {
+@keyframes spin {
   to {
-    filter: hue-rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -228,7 +238,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fab,
+  .fab::before,
   .caret {
     animation: none;
   }

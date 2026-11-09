@@ -99,7 +99,7 @@ export class GraphCanvas {
   private start(): void {
     const canvas = this.canvas().nativeElement;
     const animate = !this.prefs.reducedMotion();
-    this.fitted = fitCanvas(canvas);
+    this.fitted = fitCanvas(canvas, 1.5);
     const w = this.fitted?.width ?? 600;
     const h = this.fitted?.height ?? 420;
     const sim = createSim(
@@ -170,7 +170,7 @@ export class GraphCanvas {
       if (!animate) frame();
     };
     const resize = new ResizeObserver(() => {
-      this.fitted = fitCanvas(canvas);
+      this.fitted = fitCanvas(canvas, 1.5);
       if (this.fitted) resizeSim(sim, this.fitted.width, this.fitted.height);
       frame();
     });
