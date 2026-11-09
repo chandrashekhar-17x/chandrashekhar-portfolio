@@ -118,7 +118,9 @@ export class GraphCanvas {
 
     const frame = () => {
       if (!this.fitted || !this.palette) return;
-      if (animate || dragged) stepSim(sim, dragged);
+      // Animated: physics + endless gentle drift. Reduced motion: still, except while dragging.
+      if (animate) stepSim(sim, dragged, performance.now());
+      else if (dragged) stepSim(sim, dragged);
       drawGraph(
         this.fitted.ctx,
         sim,

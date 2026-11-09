@@ -11,6 +11,8 @@ export interface SimNode extends GraphNode {
   vy: number;
   /** Time (ms) the node starts popping in; 0 = visible immediately. */
   born: number;
+  /** Random offset so every node drifts on its own rhythm. */
+  phase: number;
 }
 
 export interface SimLink {
@@ -29,6 +31,8 @@ export interface Sim {
 }
 
 const EDGE_MARGIN = 16;
+/** Ambient drift force: small enough that the springs keep clusters intact. */
+const DRIFT = 0.05;
 
 export function createSim(
   graph: KnowledgeGraph,
@@ -48,6 +52,7 @@ export function createSim(
       y: height / 2 + Math.sin(angle) * height * 0.3 * spread,
       vx: 0,
       vy: 0,
+      phase: random() * Math.PI * 2,
       // Hubs appear first, then the rest one by one.
       born: popInStart === undefined ? 0 : popInStart + (n.kind === 'hub' ? 0 : 120 + i * 28),
     };
@@ -75,7 +80,12 @@ export function resizeSim(sim: Sim, width: number, height: number): void {
   sim.alpha = Math.max(sim.alpha, 0.3);
 }
 
-export function stepSim(sim: Sim, dragged: SimNode | null = null): void {
+/**
+ * One physics tick.
+ * @param time performance.now() in ms. When given, nodes also drift gently forever
+ *   (a slow wave per node), so the graph never freezes. Omit it for reduced motion.
+ */
+export function stepSim(sim: Sim, dragged: SimNode | null = null, time?: number): void {
   const { nodes, links, width: w, height: h, alpha: a } = sim;
 
   // Repulsion between nearby pairs (skip far ones: cheap and looks the same).
@@ -115,9 +125,13 @@ export function stepSim(sim: Sim, dragged: SimNode | null = null): void {
     t.vy -= dy * f;
   }
 
-  // Gravity to the centre, friction, move, keep inside the canvas.
+  // Gravity to the centre, ambient drift, friction, move, keep inside the canvas.
   for (const n of nodes) {
     if (n === dragged) continue;
+    if (time !== undefined) {
+      n.vx += Math.sin(time * 0.0006 + n.phase) * DRIFT;
+      n.vy += Math.cos(time * 0.0005 + n.phase * 1.3) * DRIFT;
+    }
     n.vx = (n.vx + (w / 2 - n.x) * 0.0015 * a) * 0.86;
     n.vy = (n.vy + (h / 2 - n.y) * 0.0018 * a) * 0.86;
     n.x = clamp(n.x + n.vx, EDGE_MARGIN, w - EDGE_MARGIN);

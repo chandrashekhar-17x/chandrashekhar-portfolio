@@ -86,4 +86,35 @@ describe('graph simulation', () => {
     expect(sim.byId.get('hub:frontend')?.born).toBe(1000);
     expect(sim.byId.get('skill:a')?.born).toBeGreaterThan(1000);
   });
+
+  it('keeps drifting forever when given a clock, but rests without one', () => {
+    const drifting = make();
+    const still = make();
+    for (let i = 0; i < 600; i++) {
+      stepSim(drifting, null, i * 16);
+      stepSim(still);
+    }
+    const snapshot = (sim: typeof drifting) => sim.nodes.map((n) => ({ x: n.x, y: n.y }));
+    /** Largest distance any node moved between two snapshots. */
+    const maxMove = (p: { x: number; y: number }[], q: { x: number; y: number }[]) =>
+      Math.max(...p.map((a, i) => Math.hypot(a.x - (q[i]?.x ?? a.x), a.y - (q[i]?.y ?? a.y))));
+
+    const a = snapshot(drifting);
+    for (let i = 600; i < 700; i++) stepSim(drifting, null, i * 16);
+    expect(maxMove(a, snapshot(drifting))).toBeGreaterThan(1); // still moving after settling
+
+    const b = snapshot(still);
+    stepSim(still);
+    const moved = maxMove(b, snapshot(still)) > 0.05;
+    expect(moved).toBe(false); // reduced motion: at rest
+  });
+
+  it('drift stays gentle: clusters keep their shape', () => {
+    const sim = make();
+    for (let i = 0; i < 2000; i++) stepSim(sim, null, i * 16);
+    const a = sim.byId.get('skill:a');
+    const hub = sim.byId.get('hub:frontend');
+    if (!a || !hub) throw new Error('missing');
+    expect(Math.hypot(a.x - hub.x, a.y - hub.y)).toBeLessThan(200);
+  });
 });
