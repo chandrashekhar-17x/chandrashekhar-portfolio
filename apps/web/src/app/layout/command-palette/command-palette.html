@@ -1,0 +1,45 @@
+<dialog
+  #dialog
+  class="palette"
+  tabindex="-1"
+  aria-label="Command palette"
+  (close)="onDialogClosed()"
+  (click)="onDialogClick($event)"
+  (keydown.escape)="service.close()"
+>
+  <div class="box">
+    <input
+      #input
+      role="combobox"
+      aria-label="Jump to a section, page or action"
+      aria-autocomplete="list"
+      aria-controls="cmd-list"
+      aria-expanded="true"
+      autocomplete="off"
+      placeholder="Jump to… (sections, pages, actions)"
+      [attr.aria-activedescendant]="activeId()"
+      [value]="query()"
+      (input)="onInput($event)"
+      (keydown)="onKey($event)"
+    />
+    <ul id="cmd-list" role="listbox" aria-label="Commands">
+      @for (c of results(); track c.id; let i = $index) {
+        <li
+          role="option"
+          [id]="optionId(c)"
+          [attr.aria-selected]="i === active()"
+          [class.selected]="i === active()"
+          tabindex="-1"
+          (click)="run(c)"
+          (keydown.enter)="run(c)"
+          (mousemove)="active.set(i)"
+        >
+          {{ c.label }}<small>{{ c.group }}</small>
+        </li>
+      } @empty {
+        <li class="empty" role="option" aria-selected="false" aria-disabled="true">No matches</li>
+      }
+    </ul>
+    <p class="hint" aria-hidden="true">↑↓ to move · Enter to run · Esc to close</p>
+  </div>
+</dialog>
