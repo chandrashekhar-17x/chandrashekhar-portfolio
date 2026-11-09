@@ -1,0 +1,8 @@
+// Global stylesheet entry. Order: tokens → reset → base.
+// Component styles live next to their components.
+@use 'styles/tokens/colors';
+@use 'styles/tokens/typography';
+@use 'styles/tokens/layout';
+@use 'styles/tokens/motion';
+@use 'styles/base/reset';
+@use 'styles/base/base';

@@ -1,0 +1,20 @@
+// Skip link: hidden until focused with the keyboard.
+.skip-link {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-start: var(--space-2);
+  z-index: var(--z-overlay);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-chip);
+  background: var(--panel-solid);
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease-out);
+
+  &:focus-visible {
+    transform: none;
+  }
+}
+
+main {
+  outline: none;
+}

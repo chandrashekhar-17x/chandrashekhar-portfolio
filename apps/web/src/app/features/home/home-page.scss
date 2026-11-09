@@ -1,0 +1,32 @@
+:host {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: var(--gutter);
+  container-type: inline-size;
+}
+
+.intro {
+  max-width: 60ch;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+h1 {
+  margin-block: var(--space-3);
+  font-size: var(--text-display);
+  font-weight: 800;
+  letter-spacing: var(--tracking-display);
+}
+
+.lead {
+  color: var(--ink-2);
+  font-size: var(--text-lg);
+}

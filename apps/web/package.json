@@ -1,0 +1,44 @@
+{
+  "name": "@portfolio/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test --watch=false",
+    "test:watch": "ng test",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.spec.json --noEmit",
+    "serve:ssr": "node dist/web/server/server.mjs"
+  },
+  "dependencies": {
+    "@angular/common": "~22.2.5",
+    "@angular/compiler": "~22.2.5",
+    "@angular/core": "~22.2.5",
+    "@angular/forms": "~22.2.5",
+    "@angular/platform-browser": "~22.2.5",
+    "@angular/platform-server": "~22.2.5",
+    "@angular/router": "~22.2.5",
+    "@angular/ssr": "~22.2.6",
+    "express": "^5.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.8.0"
+  },
+  "devDependencies": {
+    "@angular/build": "~22.2.6",
+    "@angular/cli": "~22.2.6",
+    "@angular/compiler-cli": "~22.2.5",
+    "@eslint/js": "^10.0.1",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.12.0",
+    "angular-eslint": "22.6.0",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "jsdom": "^30.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.0"
+  }
+}
