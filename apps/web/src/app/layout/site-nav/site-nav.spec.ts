@@ -9,7 +9,7 @@ import { SiteNav } from './site-nav';
 describe('SiteNav', () => {
   it('shows the logo initials from content', async () => {
     await render(SiteNav, { providers: [provideRouter([]), provideContent(), provideChat()] });
-    expect(screen.getByRole('link', { name: 'Home' }).textContent).toContain('CS');
+    expect(screen.getByRole('link', { name: 'CS.dev, home' }).textContent).toContain('CS');
   });
 
   it('opens and closes the mobile menu with aria-expanded', async () => {
