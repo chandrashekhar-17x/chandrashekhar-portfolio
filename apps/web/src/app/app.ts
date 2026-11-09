@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ViewportScroller } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { SiteFooter } from './layout/site-footer/site-footer';
@@ -13,4 +14,13 @@ import { SiteNav } from './layout/site-nav/site-nav';
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {}
+export class App {
+  constructor() {
+    // Router anchor scrolling (/#work) computes positions itself and ignores CSS
+    // scroll-margin, so tell it about the sticky nav: sections land just below it.
+    inject(ViewportScroller).setOffset(() => [
+      0,
+      document.querySelector('app-site-nav')?.getBoundingClientRect().height ?? 0,
+    ]);
+  }
+}

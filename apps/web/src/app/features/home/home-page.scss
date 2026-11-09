@@ -1,0 +1,10 @@
+// First screen: the hero takes whatever height the stats strip leaves.
+.first-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--screen-h);
+
+  > app-hero-section {
+    flex: 1;
+  }
+}

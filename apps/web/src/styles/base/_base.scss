@@ -1,5 +1,12 @@
 // Global element styles built on the tokens.
 
+// Anchor links (/#work …) glide instead of jumping. Reduced motion: instant.
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 html {
   background: var(--bg);
   color: var(--ink);

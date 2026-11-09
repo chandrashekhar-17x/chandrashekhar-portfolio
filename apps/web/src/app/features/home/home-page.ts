@@ -13,6 +13,7 @@ import { StatsStrip } from '../stats/stats-strip';
   selector: 'app-home-page',
   imports: [HeroSection, StatsStrip, SectionSkeleton, GraphSection],
   templateUrl: './home-page.html',
+  styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
