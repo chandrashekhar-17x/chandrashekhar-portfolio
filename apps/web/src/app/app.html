@@ -9,4 +9,8 @@
 @defer (on idle; on timer(1500ms)) {
   <app-chat-widget />
   <app-command-palette />
+  <!-- Arrow cursor: mouse users with motion allowed only (never touch / reduced motion). -->
+  @if (prefs.richMotion) {
+    <app-cursor />
+  }
 }

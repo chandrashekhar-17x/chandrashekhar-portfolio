@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { CommandService } from './core/commands/command.service';
+import { MediaPrefs } from './core/motion/media-prefs.service';
 import { ChatWidget } from './features/chat/chat-widget';
 import { CommandPalette } from './layout/command-palette/command-palette';
+import { Cursor } from './layout/cursor/cursor';
 import { SiteFooter } from './layout/site-footer/site-footer';
 import { SiteNav } from './layout/site-nav/site-nav';
 
@@ -12,7 +14,7 @@ import { SiteNav } from './layout/site-nav/site-nav';
 // which load lazily when the browser is idle or after 1.5 s (not needed for first paint).
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SiteNav, SiteFooter, ChatWidget, CommandPalette],
+  imports: [RouterOutlet, SiteNav, SiteFooter, ChatWidget, CommandPalette, Cursor],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +22,7 @@ import { SiteNav } from './layout/site-nav/site-nav';
 })
 export class App {
   private readonly commands = inject(CommandService);
+  protected readonly prefs = inject(MediaPrefs);
 
   constructor() {
     // Router anchor scrolling (/#work) computes positions itself and ignores CSS

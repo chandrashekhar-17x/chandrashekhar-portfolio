@@ -76,3 +76,21 @@ kbd {
     color: #000 !important;
   }
 }
+
+// Custom cursor active (mouse users, motion allowed): hide the native arrow,
+// but keep the text caret in fields where it is genuinely useful.
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
+}
+
+html.custom-cursor :is(input, textarea, [contenteditable='true']) {
+  cursor: text !important;
+}
+
+// A modal <dialog> (⌘K palette) sits in the browser's top layer, above the custom
+// cursor, so bring the native cursor back while one is open.
+html.custom-cursor:has(dialog[open]),
+html.custom-cursor:has(dialog[open]) * {
+  cursor: auto !important;
+}
