@@ -1,0 +1,5 @@
+{
+  "files.exclude": { "**/node_modules": true, "**/.venv": true },
+  "markdown.preview.breaks": true,
+  "liveServer.settings.root": "/prototype"
+}
