@@ -19,6 +19,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",  # the shared .env also holds web/worker vars
+        env_ignore_empty=True,  # `KEY=` in .env means "not set", not ""
     )
 
     app_name: str = "Chandrashekhar Portfolio API"

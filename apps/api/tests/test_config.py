@@ -23,3 +23,9 @@ def test_invalid_environment_fails_fast() -> None:
 def test_secrets_are_masked_in_repr() -> None:
     settings = Settings(anthropic_api_key="sk-test-123")  # type: ignore[arg-type]
     assert "sk-test-123" not in repr(settings)
+
+
+def test_empty_env_value_means_unset(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Regression: `ANTHROPIC_API_KEY=` in .env used to become an empty secret.
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "")
+    assert Settings().anthropic_api_key is None
