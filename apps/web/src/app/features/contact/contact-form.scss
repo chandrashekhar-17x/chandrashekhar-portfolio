@@ -1,0 +1,62 @@
+.card {
+  padding: 20px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-card);
+  background: var(--panel);
+}
+
+.field {
+  display: block;
+  margin-bottom: 12px;
+
+  > span {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-input);
+  background: var(--panel);
+  color: var(--ink);
+  transition:
+    border-color var(--dur-fast),
+    box-shadow var(--dur-fast);
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--violet);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--violet) 20%, transparent);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--pink);
+  }
+}
+
+textarea {
+  resize: vertical;
+}
+
+.err {
+  display: block;
+  min-height: 1.2em; // reserve the line so errors don't push the form around
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--pink);
+}
+
+.status {
+  min-height: 1.4em;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
