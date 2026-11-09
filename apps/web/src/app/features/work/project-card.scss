@@ -1,0 +1,141 @@
+:host {
+  display: block;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 18px;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--violet) 14%, var(--panel-solid)),
+    var(--panel-solid)
+  );
+  transform-style: preserve-3d;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.3s;
+
+  &:hover,
+  &:focus-within {
+    box-shadow:
+      0 20px 60px -20px var(--violet),
+      0 0 0 1px color-mix(in oklab, var(--cyan) 50%, transparent);
+  }
+}
+
+// Light spot that follows the pointer (--gx/--gy set by the tilt directive).
+.glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    400px circle at var(--gx, 50%) var(--gy, 50%),
+    rgb(255 255 255 / 12%),
+    transparent 40%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  .card:hover & {
+    opacity: 1;
+  }
+}
+
+// Layers float at different depths, so the tilt has parallax.
+.thumb {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  transform: translateZ(30px);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+h3 {
+  margin: 14px 0 4px;
+  font-size: 18px;
+  transform: translateZ(20px);
+}
+
+.stretched {
+  color: var(--ink);
+  text-decoration: none;
+
+  // The link covers the whole card (one tab stop, one announcement).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 18px;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+
+    &::after {
+      box-shadow: var(--focus-ring);
+    }
+  }
+}
+
+p {
+  font-size: 13px;
+  color: var(--ink-2);
+  transform: translateZ(10px);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  flex: none;
+  font-size: 12.5px;
+  color: var(--cyan);
+}
+
+// Per-card skeleton overlay while the card waits for its turn.
+.sk {
+  position: absolute;
+  inset: 16px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card.is-loading > :not(.sk) {
+  opacity: 0;
+}
+
+.card > :not(.sk) {
+  transition: opacity 0.5s;
+}

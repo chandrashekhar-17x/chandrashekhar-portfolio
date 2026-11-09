@@ -33,3 +33,15 @@ describe('ProjectPage', () => {
     expect(await screen.findByRole('heading', { name: 'Project not found' })).toBeTruthy();
   });
 });
+
+describe('ProjectPage tags', () => {
+  it('shows skill names, not ids', async () => {
+    await render(ProjectPage, {
+      inputs: { slug: 'ai-portfolio' },
+      providers: [provideRouter([]), provideContent()],
+    });
+    const tags = await screen.findByRole('list', { name: 'Technologies' });
+    expect(tags.textContent).toContain('PostgreSQL');
+    expect(tags.textContent).not.toContain('postgres ');
+  });
+});

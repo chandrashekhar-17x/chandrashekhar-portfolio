@@ -19,3 +19,18 @@
     <app-section-skeleton kind="graph" label="knowledge graph" [loading]="true" />
   }
 </section>
+
+<section id="work" class="section section--work" aria-label="Selected work">
+  @defer (on viewport) {
+    <app-work-section />
+  } @placeholder {
+    <app-section-skeleton kind="work" label="selected work" [count]="featuredCount()" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton
+      kind="work"
+      label="selected work"
+      [count]="featuredCount()"
+      [loading]="true"
+    />
+  }
+</section>

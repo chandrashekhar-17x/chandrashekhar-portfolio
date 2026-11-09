@@ -1,11 +1,41 @@
 @if (project.value(); as p) {
   <a routerLink="/work" class="back">← All work</a>
   <app-page-header [eyebrow]="p.role + ' · ' + p.year" [title]="p.title" [lead]="p.summary" />
-  <ul class="tags" role="list" aria-label="Technologies">
-    @for (s of p.skills; track s) {
-      <li class="tag">{{ s }}</li>
+  <div class="banner">
+    @if (p.cover; as cover) {
+      <img [src]="cover.src" [alt]="cover.alt" />
+    } @else {
+      <app-project-illustration [kind]="p.illustration ?? 'api'" fit="contain" />
     }
-  </ul>
+  </div>
+  <div class="facts">
+    <ul class="tags" role="list" aria-label="Technologies">
+      @for (s of p.skills; track s) {
+        <li class="tag">{{ skillNames().get(s) ?? s }}</li>
+      }
+    </ul>
+    @if (p.links; as links) {
+      <ul class="links" role="list" aria-label="Links">
+        @if (links.repo) {
+          <li>
+            <a class="btn btn--ghost btn--sm" [href]="links.repo" rel="noopener" target="_blank"
+              >Code ↗</a
+            >
+          </li>
+        }
+        @if (links.live) {
+          <li>
+            <a class="btn btn--ghost btn--sm" [href]="links.live" rel="noopener" target="_blank"
+              >Live ↗</a
+            >
+          </li>
+        }
+        @if (links.demo) {
+          <li><a class="btn btn--primary btn--sm" [href]="links.demo">Try the demo →</a></li>
+        }
+      </ul>
+    }
+  </div>
   <article class="prose" [innerHTML]="html()"></article>
 } @else if (project.isLoading()) {
   <p class="muted" role="status">Loading case study…</p>

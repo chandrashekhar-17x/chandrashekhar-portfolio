@@ -8,3 +8,13 @@
     flex: 1;
   }
 }
+
+// Work section: faint violet band behind the cards (prototype).
+.section--work {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--violet) 6%, transparent),
+    transparent
+  );
+}
