@@ -1,0 +1,15 @@
+@if (project.value(); as p) {
+  <a routerLink="/work" class="back">← All work</a>
+  <app-page-header [eyebrow]="p.role + ' · ' + p.year" [title]="p.title" [lead]="p.summary" />
+  <ul class="tags" role="list" aria-label="Technologies">
+    @for (s of p.skills; track s) {
+      <li class="tag">{{ s }}</li>
+    }
+  </ul>
+  <article class="prose" [innerHTML]="html()"></article>
+} @else if (project.isLoading()) {
+  <p class="muted" role="status">Loading case study…</p>
+} @else {
+  <app-page-header eyebrow="404" title="Project not found" lead="That case study doesn't exist." />
+  <a routerLink="/work" class="btn btn--ghost">← All work</a>
+}

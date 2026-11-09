@@ -1,0 +1,45 @@
+<div class="label" aria-hidden="true">
+  <span class="spin"></span>
+  <span>loading · {{ label() }}</span>
+  <span class="progress"><i></i></span>
+</div>
+
+<div class="skb head-eyebrow"></div>
+<div class="skb head-title"></div>
+
+@switch (kind()) {
+  @case ('graph') {
+    <div class="skb block graph"></div>
+  }
+  @case ('work') {
+    <div class="grid cards">
+      @for (i of items(); track i) {
+        <div class="skb block card"></div>
+      }
+    </div>
+  }
+  @case ('lab') {
+    <div class="grid cards">
+      @for (i of items(); track i) {
+        <div class="skb block hud"></div>
+      }
+    </div>
+  }
+  @case ('xp') {
+    <div class="rows">
+      @for (i of items(); track i) {
+        <div>
+          <div class="skb line w-90"></div>
+          <div class="skb line-lg w-45"></div>
+          <div class="skb line w-70"></div>
+        </div>
+      }
+    </div>
+  }
+  @case ('contact') {
+    <div class="grid two">
+      <div class="skb block form"></div>
+      <div class="skb block aside"></div>
+    </div>
+  }
+}

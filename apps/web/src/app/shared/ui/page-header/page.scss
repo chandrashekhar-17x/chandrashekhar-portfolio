@@ -1,0 +1,7 @@
+// Shared layout for inner pages (imported by each page's styleUrl).
+:host {
+  display: block;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--space-8) var(--gutter);
+}

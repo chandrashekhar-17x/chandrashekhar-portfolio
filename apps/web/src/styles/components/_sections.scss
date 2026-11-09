@@ -1,0 +1,44 @@
+// Home section layout (prototype: .s-sec / .s-head / .idx).
+.section {
+  position: relative;
+  padding: 84px var(--section-x, 28px);
+  scroll-margin-top: 64px; // sticky nav height
+
+  @container site (max-width: 600px) {
+    padding-block: 60px;
+    --section-x: 18px;
+  }
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+
+  h2 {
+    font-size: clamp(28px, 5cqi, 48px);
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  p {
+    max-width: 440px;
+    color: var(--ink-2);
+  }
+}
+
+.eyebrow {
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.muted {
+  color: var(--ink-2);
+}

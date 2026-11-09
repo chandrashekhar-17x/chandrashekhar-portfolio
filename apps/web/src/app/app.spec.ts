@@ -1,21 +1,23 @@
-import { TestBed } from '@angular/core/testing';
+import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 
 import { App } from './app';
+import { provideContent } from './core/content/provide-content';
 
-describe('App', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [App],
-      providers: [provideRouter([])],
-    }).compileComponents();
+describe('App shell', () => {
+  it('renders a skip link that targets the main landmark', async () => {
+    await render(App, { providers: [provideRouter([]), provideContent()] });
+
+    expect(screen.getByText('Skip to content').getAttribute('href')).toBe('#main');
+    expect(screen.getByRole('main').id).toBe('main');
   });
 
-  it('renders a skip link that targets the main landmark', () => {
-    const fixture = TestBed.createComponent(App);
-    const el = fixture.nativeElement as HTMLElement;
+  it('has a main navigation with links to every home section', async () => {
+    await render(App, { providers: [provideRouter([]), provideContent()] });
 
-    expect(el.querySelector('.skip-link')?.getAttribute('href')).toBe('#main');
-    expect(el.querySelector('main#main')).not.toBeNull();
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+    for (const label of ['Knowledge graph', 'Work', 'AI Lab', 'Experience', 'Contact']) {
+      expect(nav.textContent).toContain(label);
+    }
   });
 });
