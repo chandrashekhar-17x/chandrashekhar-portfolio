@@ -2,7 +2,13 @@
 
 ## Branches and commits
 
-- `main` is always deployable. Never commit to it directly (a pre-commit hook blocks it).
+```
+feat/… fix/… chore/…  ──PR──▶  develop  ──PR (release)──▶  main
+```
+
+- `main` = production. Only release PRs from `develop` merge into it.
+- `develop` = integration branch. Every feature/fix branch starts from `develop` and merges back via PR.
+- Never commit to `main` or `develop` directly (a pre-commit hook blocks both).
 - Branch per change: `feat/hero-canvas`, `fix/chat-sse-timeout`, `chore/deps`.
 - [Conventional Commits](https://www.conventionalcommits.org/): `feat(web): …`, `fix(api): …`,
   `docs: …`, `ci: …`, `build: …`, `chore: …`, `test: …`, `refactor: …`.
@@ -19,7 +25,7 @@ prettier, eslint and the content validator. Run them all manually:
 uv tool run pre-commit run --all-files
 ```
 
-## Branch protection (GitHub → Settings → Branches → Add rule for `main`)
+## Branch protection (GitHub → Settings → Branches → add the same rule for `main` and `develop`)
 
 1. **Require a pull request before merging** (approvals: 0 is fine for a solo repo).
 2. **Require status checks to pass** → search and add **`CI OK`** (the `ci-ok` job).
@@ -31,7 +37,9 @@ uv tool run pre-commit run --all-files
 6. Settings → Code security: enable **Dependabot alerts**, **Dependabot security updates**
    and **Secret scanning + push protection** (free for public repos).
 
-With the GitHub CLI (`gh`), the same rule as one command (run once after the first push):
+7. Settings → General → **Default branch** → `develop` (so new PRs target it by default).
+
+With the GitHub CLI (`gh`), the same rule as one command (run once per branch: `main`, then `develop`):
 
 ```bash
 gh api -X PUT repos/chandrashekhar-17x/chandrashekhar-portfolio/branches/main/protection \

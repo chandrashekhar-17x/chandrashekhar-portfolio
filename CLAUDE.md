@@ -39,7 +39,7 @@ Positioning line: *"Frontend engineer who builds complex UIs (CAD editors, PDF e
 | Jarvis | Voice "Jarvis mode" lives in **/lab** as a section/page, NOT the homepage (too dense for recruiters) |
 | Hosting | Web on Vercel/Cloudflare; API on Render/Fly/Railway; DB on Neon/Supabase |
 | Tooling | pnpm workspace (web) + uv workspace (Python 3.13: `portfolio_api`, `portfolio_worker`, `portfolio_mcp`, src layout); Makefile; Vitest; ESLint flat config; ruff + mypy strict |
-| Git | user `chandrashekhar-17x`, noreply email; feature branches + PRs into `main` (hook blocks direct commits); required check `CI OK` |
+| Git | user `chandrashekhar-17x`, noreply email; feature branches → PR into `develop` → release PR into `main`; hook blocks direct commits to both; required check `CI OK` |
 | License | Code MIT; `content/` all rights reserved |
 
 ## Repo layout

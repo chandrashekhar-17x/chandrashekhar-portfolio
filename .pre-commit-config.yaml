@@ -16,8 +16,8 @@ repos:
       - id: detect-private-key
       - id: check-added-large-files
         args: ['--maxkb=600']
-      - id: no-commit-to-branch # work on branches, merge via PR
-        args: ['--branch', 'main']
+      - id: no-commit-to-branch # work on feature branches, merge via PR
+        args: ['--branch', 'main', '--branch', 'develop']
 
   # Secret scanning: blocks commits that contain API keys or tokens
   - repo: https://github.com/gitleaks/gitleaks

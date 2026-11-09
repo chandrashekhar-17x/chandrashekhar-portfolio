@@ -1,4 +1,4 @@
-# CI: lint, type-check, test and build on every PR and every push to main.
+# CI: lint, type-check, test and build on every PR and every push to develop/main.
 # Jobs only run for the parts of the repo that changed; `ci-ok` is the single
 # status check to mark as "required" in branch protection.
 name: CI
@@ -6,7 +6,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, develop]
 
 permissions:
   contents: read
