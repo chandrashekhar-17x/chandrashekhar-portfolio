@@ -42,7 +42,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build content-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web content-check check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -73,10 +73,13 @@ test-py: ## Python tests with coverage
 build: ## Production build of the web app
 	pnpm --filter @portfolio/web build
 
+smoke-web: ## Start the built SSR server and check it renders (after build)
+	scripts/smoke-ssr.sh
+
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py
 
-check: lint typecheck content-check test build ## Everything CI runs
+check: lint typecheck content-check test build smoke-web ## Everything CI runs
 
 ##@ Misc
 .PHONY: clean help

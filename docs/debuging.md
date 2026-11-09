@@ -25,3 +25,4 @@
 | Date | Symptom | Root cause | Fix | Regression test |
 |---|---|---|---|---|
 | 2026-11-09 | `ANTHROPIC_API_KEY=` (empty) in `.env` made the key look configured | pydantic-settings turns an empty env value into `SecretStr("")`, not `None` | `env_ignore_empty=True` in `Settings` | `apps/api/tests/test_config.py::test_empty_env_value_means_unset` |
+| 2026-11-09 | Built SSR server answered every request with `400 Bad Request` | Angular 22 SSR validates the `Host` header (SSRF protection); `security.allowedHosts` was empty | Allow `localhost`/`127.0.0.1` in `angular.json`; production domains via `NG_ALLOWED_HOSTS` | `scripts/smoke-ssr.sh` (`make smoke-web`, runs in CI) |

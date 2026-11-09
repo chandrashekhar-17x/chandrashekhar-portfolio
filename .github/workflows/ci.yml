@@ -78,6 +78,7 @@ jobs:
       - run: pnpm --filter @portfolio/web typecheck
       - run: make test-web
       - run: make build
+      - run: make smoke-web
 
   python:
     name: Python (lint · types · test · content)
