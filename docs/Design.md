@@ -31,7 +31,7 @@ Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/doc
 
 ## Typography
 
-- **Display:** Bricolage Grotesque 800, tracking −0.04em, clamp(40px, 8cqw, 86px)
+- **Display:** Bricolage Grotesque 800, tracking −0.04em, clamp(28px, 10cqi, 86px) against its own container (was 40px min / 8cqw: broke the name mid-word, see debuging.md)
 - **Body:** Inter Tight 400/500, 15–16px, 1.55 line-height
 - **Mono / labels:** JetBrains Mono 11–13px, uppercase eyebrow +0.14em
 
