@@ -5,6 +5,7 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 
 import { routes } from './app.routes';
 import { provideContent } from './core/content/provide-content';
+import { provideChat } from './features/chat/provide-chat';
 
 // Root providers shared by browser and server.
 // Angular 22 defaults we rely on: zoneless change detection, incremental hydration
@@ -22,5 +23,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(),
     provideContent(),
+    provideChat(),
   ],
 };
