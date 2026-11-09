@@ -23,7 +23,7 @@ import { MediaPrefs } from '../../core/motion/media-prefs.service';
 import { seededRandom } from '../../core/motion/seeded-random';
 import { ThemeService } from '../../core/theme/theme.service';
 import { CATEGORIES, describeNode } from './graph-categories';
-import { GraphHighlightService } from './graph-highlight.service';
+import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
 import { Palette, drawGraph } from './graph-renderer';
 import {
   Sim,

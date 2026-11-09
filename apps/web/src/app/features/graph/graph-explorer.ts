@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, signal } f
 
 import { GraphNode, KnowledgeGraph, NodeCategory } from '../../core/content/build-graph';
 import { GraphFilters } from './graph-filters';
-import { GraphHighlightService } from './graph-highlight.service';
+import { ChatStore } from '../../core/chat/chat-store.service';
+import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
 import { GraphList } from './graph-list';
 import { GraphCanvas } from './graph-canvas';
 
@@ -27,8 +28,11 @@ export class GraphExplorer {
     () => `${String(this.graph().nodes.length)} nodes · ${String(this.graph().links.length)} links`,
   );
 
-  /** Clicking a node lights it and its direct neighbours. PR 6 also asks the agent. */
+  private readonly chat = inject(ChatStore);
+
+  /** Clicking a node lights it and its neighbours; skills/projects also ask the agent. */
   protected onActivate(node: GraphNode): void {
+    if (node.kind !== 'hub') this.chat.ask(`Tell me about ${node.label}`);
     const ids = new Set([node.id]);
     for (const l of this.graph().links) {
       if (l.source === node.id) ids.add(l.target);
