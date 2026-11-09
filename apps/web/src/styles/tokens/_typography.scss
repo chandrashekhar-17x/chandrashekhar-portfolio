@@ -1,5 +1,5 @@
 // Type tokens (docs/Design.md → Typography).
-// Fonts are self-hosted via @fontsource-variable (see angular.json styles).
+// Fonts are self-hosted (styles/base/_fonts.scss); system fonts are the fallback.
 
 :root {
   --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;

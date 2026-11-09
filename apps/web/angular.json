@@ -28,14 +28,24 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "bricolage-grotesque-latin-opsz-normal.woff2",
+                "input": "node_modules/@fontsource-variable/bricolage-grotesque/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "inter-tight-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/inter-tight/files",
+                "output": "fonts"
+              },
+              {
+                "glob": "jetbrains-mono-latin-wght-normal.woff2",
+                "input": "node_modules/@fontsource-variable/jetbrains-mono/files",
+                "output": "fonts"
               }
             ],
-            "styles": [
-              "node_modules/@fontsource-variable/bricolage-grotesque/opsz.css",
-              "node_modules/@fontsource-variable/inter-tight/index.css",
-              "node_modules/@fontsource-variable/jetbrains-mono/index.css",
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -62,7 +72,15 @@
                   "maximumError": "10kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             },
             "development": {
               "optimization": false,
