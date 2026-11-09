@@ -1,11 +1,43 @@
-node_modules/
-dist/
-.angular/
-.venv/
-__pycache__/
-*.pyc
+# --- Secrets (never commit) ---
 .env
 .env.*
 !.env.example
-.DS_Store
+*.pem
+*.key
+
+# --- Node / Angular ---
+node_modules/
+dist/
+out-tsc/
+.angular/
+.pnpm-store/
+*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Test & build output ---
 coverage/
+playwright-report/
+test-results/
+__screenshots__/
+.lighthouseci/
+
+# --- Editors & OS ---
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.history/
+.DS_Store
+Thumbs.db
