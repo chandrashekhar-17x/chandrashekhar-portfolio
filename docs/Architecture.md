@@ -12,12 +12,19 @@
 
 &nbsp;
 
-    apps/web/src/app/
-      core/        # interceptors, theme, seo, analytics
-      shared/ui/   # button, card, chip, tilt.directive, magnetic.directive, cursor
-      features/
-        home/  graph/  work/  lab/  chat/  journal/  contact/
-      admin/       # lazy, guarded
+    apps/web/src/app/            (as built in Phase 1)
+      core/        # cross-cutting, no UI: content/ (repository + generated types + buildGraph),
+                   # chat/ (store + SSE event contract), commands/, graph/ (highlight state),
+                   # motion/ (animation loop, prefs, seeded random), reveal/, seo/, theme/, text/
+      shared/ui/   # reusable UI: section-skeleton, reveal, page-header, tilt/magnetic/
+                   # count-up/scramble directives
+      layout/      # app chrome: site-nav, site-footer, theme-toggle, command-palette
+      features/    # one folder per section/page: home, hero, stats, graph, work, lab,
+                   # experience, contact, chat, resume, journal, not-found
+      admin/       # (Phase 3) lazy, guarded
+
+    Rules: core/ never imports features/; data only through ContentRepository / ChatSource
+    (swap providers in provideContent() / provideChat() when the API lands).
 
 ## Backend — FastAPI
 
