@@ -1,6 +1,7 @@
 import { render } from '@testing-library/angular';
 
-import { HeroTitle, alignGradient, graphemes } from './hero-title';
+import { graphemes } from '../../core/text/graphemes';
+import { HeroTitle, alignGradient } from './hero-title';
 
 describe('HeroTitle', () => {
   it('groups letters by word so words cannot split, with staggered delays', async () => {
