@@ -6,7 +6,7 @@ This folder holds the **first version** of all portfolio content. From Phase 2 o
 
 | Path            | What                                                                      |
 | --------------- | ------------------------------------------------------------------------- |
-| `data/*.json`   | Profile, skills, experience, projects, graph extras                       |
+| `data/*.json`   | Profile, skills, experience, projects, graph extras, lab                  |
 | `schemas/`      | JSON Schemas: the contract for the files above                            |
 | `projects/*.md` | Case-study bodies (Problem → Approach → Result → What I'd do differently) |
 | `media/`        | Images (avatar, covers). Prefer WebP/AVIF.                                |
@@ -18,7 +18,8 @@ Graph nodes are **derived**, not listed by hand:
 
 - every skill → `skill:<id>`, project → `project:<slug>`, organization → `org:<id>`, role → `role:<id>`
 - `project.skills` / `role.skills` → `USED` edges, `project.org` → `BUILT_AT`, `role.org` → `WORKED_AT`
-- skills with `"learning": true` → `LEARNING` edge from the owner
+- each skill category gets a hub node (`hub:frontend`, …) and every skill links to its hub
+- skills with `"learning": true` are flagged on the node (drawn as "learning")
 
 `data/graph.json` only adds **topics** and **extra edges** (e.g. `RELATED`).
 

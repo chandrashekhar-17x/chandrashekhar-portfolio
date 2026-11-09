@@ -1,10 +1,34 @@
 {
   "$schema": "../schemas/experience.schema.json",
   "organizations": [
-    { "id": "company-a", "name": "Company A (sample)", "kind": "company", "placeholder": true },
-    { "id": "company-b", "name": "Company B (sample)", "kind": "company", "placeholder": true }
+    {
+      "id": "company-a",
+      "name": "Company A (sample)",
+      "kind": "company",
+      "placeholder": true
+    },
+    {
+      "id": "company-b",
+      "name": "Company B (sample)",
+      "kind": "company",
+      "placeholder": true
+    },
+    {
+      "id": "self-directed",
+      "name": "Self-directed",
+      "kind": "open-source"
+    }
   ],
   "roles": [
+    {
+      "id": "ai-engineering-track",
+      "org": "self-directed",
+      "title": "AI engineering track",
+      "start": "2026-01",
+      "summary": "Learning AI engineering in public: Python, FastAPI, LLM APIs, RAG with pgvector and agents, by building this portfolio's agent.",
+      "highlights": ["Building this site's RAG agent, knowledge graph and MCP server end to end."],
+      "skills": ["python", "fastapi", "postgres", "llms", "rag", "langchain", "mcp"]
+    },
     {
       "id": "company-a-frontend",
       "org": "company-a",

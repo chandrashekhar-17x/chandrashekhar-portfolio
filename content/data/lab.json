@@ -1,0 +1,30 @@
+{
+  "$schema": "../schemas/lab.schema.json",
+  "timeline": [
+    {
+      "when": "Q1",
+      "topic": "Python fundamentals",
+      "progress": 100
+    },
+    {
+      "when": "Q2",
+      "topic": "FastAPI + REST + Postgres",
+      "progress": 80
+    },
+    {
+      "when": "Q3",
+      "topic": "LLM APIs, prompting, RAG",
+      "progress": 55
+    },
+    {
+      "when": "Q3",
+      "topic": "LangChain / LangGraph agents",
+      "progress": 35
+    },
+    {
+      "when": "Q4",
+      "topic": "Evals, MCP, voice agents",
+      "progress": 15
+    }
+  ]
+}
