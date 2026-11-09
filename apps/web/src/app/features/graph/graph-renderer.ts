@@ -34,7 +34,8 @@ export function growth(node: SimNode, now: number, animate: boolean): number {
 /** Is a node faded out by hover focus, the category filter or a highlight? */
 export function isDimmed(node: SimNode, s: RenderState, focus: Set<SimNode> | null): boolean {
   if (focus) return !focus.has(node);
-  if (s.filter && node.category !== s.filter && node.kind !== 'hub') return true;
+  // Filter: only the chosen category stays bright (its own hub included, other hubs not).
+  if (s.filter && node.category !== s.filter) return true;
   return s.lit.size > 0 && !s.lit.has(node.id);
 }
 

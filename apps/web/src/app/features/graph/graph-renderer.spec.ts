@@ -40,11 +40,13 @@ describe('graph renderer helpers', () => {
     expect(isDimmed(a, state(), new Set([a]))).toBe(false);
   });
 
-  it('dims other categories when filtering, but never hubs', () => {
-    const s = state({ filter: 'project' });
-    expect(isDimmed(node(), s, null)).toBe(true);
-    expect(isDimmed(node({ kind: 'hub' }), s, null)).toBe(false);
-    expect(isDimmed(node({ category: 'project' }), s, null)).toBe(false);
+  it('filtering keeps only the chosen category bright, including only its own hub', () => {
+    // Regression: every hub used to stay bright, so "Frontend" still lit BACKEND, TOOLS, …
+    const s = state({ filter: 'frontend' });
+    expect(isDimmed(node(), s, null)).toBe(false); // frontend skill
+    expect(isDimmed(node({ kind: 'hub' }), s, null)).toBe(false); // FRONTEND hub
+    expect(isDimmed(node({ kind: 'hub', category: 'backend' }), s, null)).toBe(true);
+    expect(isDimmed(node({ kind: 'project', category: 'project' }), s, null)).toBe(true);
   });
 
   it('dims everything except lit nodes while a highlight is active', () => {
