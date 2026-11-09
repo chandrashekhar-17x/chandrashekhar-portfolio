@@ -6,10 +6,21 @@
   "summary": "PLACEHOLDER: I'm a frontend engineer working mainly with Angular, TypeScript and RxJS. I build interfaces that are hard to get right: a canvas-based CAD editor, PDF rendering, and data-heavy PrimeNG tables. I'm now learning Python backends (FastAPI) and AI engineering (LLMs, RAG, agents), and this site is where I build it in public.",
   "location": "India",
   "email": "hello@example.com",
-  "roles": ["Frontend Engineer", "Angular Specialist", "AI Engineer in progress"],
+  "heroTitle": {
+    "text": "Frontend engineer",
+    "highlight": "→ AI engineer."
+  },
+  "roles": [
+    "Angular apps that scale",
+    "CAD editors on canvas",
+    "PDF rendering engines",
+    "data grids with 100k rows",
+    "RAG agents in Python",
+    "voice assistants, like Jarvis"
+  ],
   "availability": {
     "status": "open",
-    "note": "Open to frontend and AI-engineering roles."
+    "note": "Open to frontend & AI-engineering roles"
   },
   "photo": {
     "src": "/media/avatar-placeholder.svg",

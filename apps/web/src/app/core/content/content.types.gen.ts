@@ -44,8 +44,9 @@ export interface Profile {
   summary: string;
   location: string;
   email?: string;
+  heroTitle: HeroTitle;
   /**
-   * Short role titles cycled by the hero typing effect.
+   * Phrases that complete "I build …" in the hero typing effect.
    */
   roles?: string[];
   availability: Availability;
@@ -56,6 +57,13 @@ export interface Profile {
    * Names of top-level fields that still hold dummy data.
    */
   placeholderFields?: string[];
+}
+/**
+ * Big hero heading: first line plain, second line in the gradient.
+ */
+export interface HeroTitle {
+  text: string;
+  highlight: string;
 }
 export interface Availability {
   status: 'open' | 'freelance' | 'busy' | 'not-looking';

@@ -1,7 +1,4 @@
 @if (profile(); as p) {
-  <section class="intro" aria-labelledby="intro-title">
-    <p class="eyebrow">Portfolio · under construction</p>
-    <h1 id="intro-title">{{ p.name }}</h1>
-    <p class="lead">{{ p.headline }}</p>
-  </section>
+  <app-hero-section [profile]="p" />
+  <app-stats-strip [profile]="p" [skillCount]="skills().length" />
 }
