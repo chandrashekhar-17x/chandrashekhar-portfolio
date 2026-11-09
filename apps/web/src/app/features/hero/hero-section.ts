@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { ChatStore } from '../../core/chat/chat-store.service';
 import { Profile } from '../../core/content/content.types.gen';
 import { Magnetic } from '../../shared/ui/magnetic.directive';
 import { HeroCanvas } from './hero-canvas';
@@ -18,4 +19,5 @@ import { Typewriter } from './typewriter.component';
 })
 export class HeroSection {
   readonly profile = input.required<Profile>();
+  protected readonly chat = inject(ChatStore);
 }

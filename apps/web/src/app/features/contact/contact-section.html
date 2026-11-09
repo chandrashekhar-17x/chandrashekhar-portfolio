@@ -11,9 +11,12 @@
       <aside class="card reveal-item" style="--i: 2" aria-labelledby="fast-lane">
         <h3 id="fast-lane">Recruiter fast-lane</h3>
         <p class="muted">
-          Soon you'll be able to paste a job description into my agent and get a grounded fit
-          report: matched skills, evidence from projects, and honest gaps.
+          Paste a job description into my agent and get a grounded fit report: matched skills,
+          evidence from projects, and honest gaps. (Demo answers for now.)
         </p>
+        <button type="button" class="btn btn--ghost jd" data-cursor="ask me" (click)="matchJd()">
+          🎯 Try "match my JD"
+        </button>
         <ul class="links" role="list">
           @for (l of profile()?.links ?? []; track l.url) {
             <li>

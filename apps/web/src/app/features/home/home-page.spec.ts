@@ -2,10 +2,12 @@ import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 
 import { provideContent } from '../../core/content/provide-content';
+import { provideChat } from '../../features/chat/provide-chat';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
-  const setup = () => render(HomePage, { providers: [provideRouter([]), provideContent()] });
+  const setup = () =>
+    render(HomePage, { providers: [provideRouter([]), provideContent(), provideChat()] });
 
   it('has exactly one h1, named with the owner and the hero title', async () => {
     await setup();
