@@ -1,10 +1,10 @@
 // Type tokens (docs/Design.md → Typography).
-// Fonts are self-hosted in Phase 1; system fonts are the fallback.
+// Fonts are self-hosted via @fontsource-variable (see angular.json styles).
 
 :root {
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body: 'Inter Tight', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-body: 'Inter Tight Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
   --text-xs: 0.75rem; // 12px: labels
   --text-sm: 0.875rem; // 14px

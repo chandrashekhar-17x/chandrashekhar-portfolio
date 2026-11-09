@@ -7,7 +7,8 @@ const angular = require('angular-eslint');
 const prettier = require('eslint-config-prettier');
 
 module.exports = tseslint.config(
-  { ignores: ['dist/', 'coverage/', '.angular/'] },
+  // *.gen.ts files are generated (scripts/gen-content-types.mjs): not linted.
+  { ignores: ['dist/', 'coverage/', '.angular/', 'src/**/*.gen.ts'] },
   {
     files: ['**/*.ts'],
     extends: [
