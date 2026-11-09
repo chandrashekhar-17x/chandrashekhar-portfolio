@@ -30,9 +30,9 @@ class Settings(BaseSettings):
 
     # Defaults match infra/docker-compose.yml for local development.
     database_url: PostgresDsn = PostgresDsn(
-        "postgresql+asyncpg://portfolio:portfolio@localhost:5432/portfolio"
+        "postgresql+asyncpg://portfolio:portfolio@localhost:5433/portfolio"
     )
-    redis_url: RedisDsn = RedisDsn("redis://localhost:6379/0")
+    redis_url: RedisDsn = RedisDsn("redis://localhost:6380/0")
 
     # Secrets use SecretStr so they never show up in logs or tracebacks.
     anthropic_api_key: SecretStr | None = None
