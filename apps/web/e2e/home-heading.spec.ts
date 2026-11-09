@@ -1,39 +1,47 @@
 import { expect, test } from '@playwright/test';
 
-// Regression: the name in the home <h1> used to break mid-word on small screens.
-// The name is one word, so it must always render on exactly one line and fit.
+// Regression (Phase 1): the home <h1> once broke "Chandrashekhar" mid-word.
+// The hero title now animates letter by letter; this guards that no word ever
+// splits across lines, overflows the screen, or causes sideways scrolling.
 const WIDTHS = [320, 390, 1440] as const;
 
-interface HeadingLayout {
+interface WordBox {
+  text: string;
+  left: number;
+  right: number;
   lines: number;
-  overflowsHeading: boolean;
-  headingRight: number;
-  pageScrollsSideways: boolean;
 }
 
 for (const width of WIDTHS) {
-  test(`home heading stays on one line at ${String(width)}px`, async ({ page }) => {
+  test(`hero heading words never break at ${String(width)}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 800 });
+    await page.emulateMedia({ reducedMotion: 'reduce' }); // letters in final position
     await page.goto('/');
     await page.evaluate(() => document.fonts.ready);
 
-    const layout = await page.locator('h1').evaluate((h1): HeadingLayout => {
-      // Each line of text produces its own rect; count distinct line tops.
-      const range = document.createRange();
-      range.selectNodeContents(h1);
-      const tops = new Set([...range.getClientRects()].map((r) => Math.round(r.top)));
-      const root = document.documentElement;
-      return {
-        lines: tops.size,
-        overflowsHeading: h1.scrollWidth > h1.clientWidth,
-        headingRight: h1.getBoundingClientRect().right,
-        pageScrollsSideways: root.scrollWidth > root.clientWidth,
-      };
-    });
+    const h1 = page.getByRole('heading', { level: 1 });
+    await expect(h1).toHaveAccessibleName(/Chandrashekhar/);
 
-    expect(layout.lines, 'name wraps onto more than one line').toBe(1);
-    expect(layout.overflowsHeading, 'text overflows the heading box').toBe(false);
-    expect(layout.headingRight).toBeLessThanOrEqual(width);
-    expect(layout.pageScrollsSideways, 'page scrolls horizontally').toBe(false);
+    const words = await h1.locator('.word').evaluateAll((els): WordBox[] =>
+      els.map((el) => {
+        // Distinct line tops of the word's letters: 1 means the word is on one line.
+        const tops = new Set(
+          [...el.children].map((c) => Math.round(c.getBoundingClientRect().top)),
+        );
+        const box = el.getBoundingClientRect();
+        return { text: el.textContent.trim(), left: box.left, right: box.right, lines: tops.size };
+      }),
+    );
+    expect(words.length).toBeGreaterThan(0);
+    for (const w of words) {
+      expect(w.lines, `"${w.text}" split across lines`).toBe(1);
+      expect(w.left, `"${w.text}" starts off-screen`).toBeGreaterThanOrEqual(0);
+      expect(w.right, `"${w.text}" overflows the screen`).toBeLessThanOrEqual(width);
+    }
+
+    const sideways = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+    );
+    expect(sideways, 'page scrolls horizontally').toBe(false);
   });
 }

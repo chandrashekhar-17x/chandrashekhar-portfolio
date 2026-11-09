@@ -18,7 +18,7 @@ for _ in {1..20}; do
 done
 
 html="$(curl -sf "http://localhost:$PORT/")"
-grep -q '<h1[^>]*>Chandrashekhar</h1>' <<<"$html" || { echo "✗ SSR HTML missing <h1>"; exit 1; }
+grep -q '<h1[^>]*aria-label="Chandrashekhar' <<<"$html" || { echo "✗ SSR HTML missing the hero <h1>"; exit 1; }
 echo "✓ home page is server-rendered"
 
 status="$(curl -s -o /dev/null -w '%{http_code}' -H 'Host: evil.example' "http://localhost:$PORT/")"
