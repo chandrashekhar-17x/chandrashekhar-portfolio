@@ -1,0 +1,21 @@
+{
+  "name": "chandrashekhar-portfolio",
+  "private": true,
+  "description": "AI-native portfolio: Angular + FastAPI + pgvector + RAG",
+  "license": "MIT",
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22.22.3"
+  },
+  "scripts": {
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "pnpm -r run test",
+    "build": "pnpm -r run build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "3.9.10"
+  }
+}
