@@ -19,3 +19,9 @@
 | SSE stops on prod         | Proxy buffering                      | `X-Accel-Buffering: no`, keep-alive pings          |
 | CORS errors               | Origin not allow-listed              | Exact origins in settings; no `*` with credentials |
 | Bill spike                | Bot traffic                          | Turnstile, rate limit, daily cap kill-switch       |
+
+## Bug log
+
+| Date | Symptom | Root cause | Fix | Regression test |
+|---|---|---|---|---|
+| 2026-11-09 | `ANTHROPIC_API_KEY=` (empty) in `.env` made the key look configured | pydantic-settings turns an empty env value into `SecretStr("")`, not `None` | `env_ignore_empty=True` in `Settings` | `apps/api/tests/test_config.py::test_empty_env_value_means_unset` |

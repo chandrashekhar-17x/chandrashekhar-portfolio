@@ -2,13 +2,13 @@
 
 | Agent                      | Job                                              | Tools                                   | Phase |
 |----------------------------|--------------------------------------------------|-----------------------------------------|-------|
-| **Router**                 | Classify intent, block off-topic / injection     | — (small fast model)                    | 3     |
-| **Portfolio guide**        | Answer questions about you, with citations       | search_kb, get_project, graph_neighbors | 3     |
-| **Project explainer**      | Deep-dive a project; explain architecture        | get_project, get_code_snippet           | 4     |
-| **Recruiter match**        | JD → matched skills, evidence, honest gaps       | extract_requirements, search_kb         | 4     |
-| **Voice “Jarvis”**         | Same guide agent, short spoken answers           | STT → guide → TTS                       | 5     |
+| **Router**                 | Classify intent, block off-topic / injection     | — (small fast model)                    | 5     |
+| **Portfolio guide**        | Answer questions about you, with citations       | search_kb, get_project, graph_neighbors | 4     |
+| **Project explainer**      | Deep-dive a project; explain architecture        | get_project, get_code_snippet           | 5     |
+| **Recruiter match**        | JD → matched skills, evidence, honest gaps       | extract_requirements, search_kb         | 5     |
+| **Voice “Jarvis”**         | Same guide agent, short spoken answers           | STT → guide → TTS                       | 6     |
 | **Contact concierge**      | Collect name/email/reason, then hand to /contact | create_contact                          | 5     |
-| **Ingest agent** (offline) | Extract skills/projects/edges from resume & MD   | structured output                       | 3     |
+| **Ingest agent** (offline) | Extract skills/projects/edges from resume & MD   | structured output                       | 4     |
 
 ## System prompt (guide) — sketch
 

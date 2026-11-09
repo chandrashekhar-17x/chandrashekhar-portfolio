@@ -25,6 +25,8 @@
 
 light --bg \#f5f4fb
 
+Contrast fixes vs the prototype (WCAG AA 4.5:1): `--ink-3` dark #7f7eb3, light #66638f; light `--cyan` #0e7490. Source of truth: `apps/web/src/styles/tokens/`.
+
 Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/docs = amber · Projects = violet · Roles = blue.
 
 ## Typography
@@ -50,7 +52,7 @@ Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/doc
 | ambient | 6–18 s loops                    | orb, gradient text, rings |
 
 - Animate only `transform` and `opacity`; canvas loops pause off-screen and on hidden tab.
-- Cursor: dot + lerped ring, grows on interactive; hidden on touch & reduced-motion.
+- Cursor: lime arrow (#84cc16) that tilts with movement and shows context labels (drag / open / click / ask me), plus the WebGL **splash cursor** (fluid sim, size 0.7); both hidden on touch & reduced-motion.
 - Magnetic buttons max 8px pull. Tilt cards max 8°.
 
 ## Components

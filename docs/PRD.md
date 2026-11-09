@@ -82,4 +82,4 @@ Recruiters and hiring managers spend under a minute on a portfolio and can't eas
 
 **In:** Angular SSR site, home sections, 3–5 projects, graph from static JSON, scripted chat fallback → real RAG chat (Phase 3), contact form, theme, a11y, SEO.
 
-**Out (backlog):** voice, Jarvis dashboard, MCP server, recruiter JD match, admin UI (use JSON/MD files first), blog, i18n, 3D scene.
+**Out of MVP (later phases, see docs/plan.md):** admin UI (Phase 3), recruiter JD match (5), voice / Jarvis in /lab (6), MCP server (7), blog/journal (8), i18n, 3D scene (ideas).

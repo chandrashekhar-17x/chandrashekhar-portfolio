@@ -20,30 +20,37 @@ Positioning line: *"Frontend engineer who builds complex UIs (CAD editors, PDF e
 ## Current status
 - ✅ Planning done: all docs in `docs/` (PRD, Design, Architecture, database, API, agents, mcp, integration, features, plan, testing, debuging, review, backlog).
 - ✅ Clickable prototype: `prototype/index.html` (single self-contained file; open in a browser).
-- ⏭️ **Next: full implementation, Phase 0 → Phase 9**, following `docs/IMPLEMENTATION_PROMPT.md` (the master brief). The single-file prototype is a reference only; the real app is Angular + FastAPI + Postgres/pgvector + Redis, fully dynamic with an admin panel.
+- ✅ **Phase 0 (Foundation) done (2026-11-09):** pnpm + uv monorepo, Angular 22 SSR shell + design tokens, FastAPI skeleton (`/health`), Docker (pgvector pg17 on :5433, Redis on :6380), `content/` schemas + seed + validator, Makefile, pre-commit (gitleaks), GitHub Actions CI. `make check` is green.
+- ⏭️ **Next: Phase 1 (Frontend foundation)**: present the plan and wait for OK. Follow `docs/IMPLEMENTATION_PROMPT.md` (master brief) through Phase 9. The prototype is a reference only.
+- 🧑 Owner TODO: replace placeholder content (`make content-check` lists it), push to GitHub, set branch protection (`docs/CONTRIBUTING.md`).
 - ⚠️ Working agreement: **propose a plan and get my OK before large implementations.** I asked to design first, then implement.
 
 ## Key decisions (don't silently change these)
 | Area | Decision |
 |---|---|
-| Frontend | Angular 20+, standalone components, signals, zoneless, SSR + incremental hydration, `@defer (on viewport)` per section, SCSS + CSS tokens, container queries |
+| Frontend | Angular 22 (TS 6.0), standalone components, signals, zoneless, SSR + incremental hydration, `@defer (on viewport)` per section, SCSS + CSS tokens, container queries |
 | Effects | Canvas hero (starfield + perspective wave grid), force-directed knowledge graph, 3D tilt cards, magnetic buttons, text scramble/typing, **splash cursor (WebGL fluid, lime #84cc16, size 0.7)** + custom arrow cursor with context labels; all respect `prefers-reduced-motion` and are off on touch |
 | Loading | Sections load **one at a time** via `@defer (on viewport)` with same-size skeletons (no layout shift); project cards load card-by-card |
 | Backend | FastAPI (async), SQLAlchemy 2 + Alembic, pydantic, Redis (rate-limit + cache) |
-| Data | PostgreSQL + **pgvector** = single store for content, graph (node/edge tables) and embeddings. `content/` folder (MD + JSON) in git is the source of truth; DB is rebuilt by the ingest worker |
+| Data | PostgreSQL + **pgvector** = single store for content, graph (node/edge tables) and embeddings. **DB is the source of truth** (edited in /admin); `content/` = first seed + versioned export. Graph nodes are derived from skills/projects/experience; `graph.json` only adds topics + extra edges |
 | AI | RAG with citations (node ids) → graph highlight; streaming over SSE; LLM provider abstraction (Claude primary, Groq fallback, OpenAI embeddings, Ollama for local dev); learn the raw SDK first, LangGraph later |
 | Safety | No API keys in the browser; Turnstile + IP rate limits + daily token budget kill-switch; answer only from my data ("I don't know" fallback); prompt-injection guard |
 | Extras | MCP server (FastMCP) exposing my portfolio to other AI agents; `/llms.txt` |
 | Jarvis | Voice "Jarvis mode" lives in **/lab** as a section/page, NOT the homepage (too dense for recruiters) |
 | Hosting | Web on Vercel/Cloudflare; API on Render/Fly/Railway; DB on Neon/Supabase |
+| Tooling | pnpm workspace (web) + uv workspace (Python 3.13: `portfolio_api`, `portfolio_worker`, `portfolio_mcp`, src layout); Makefile; Vitest; ESLint flat config; ruff + mypy strict |
+| Git | user `chandrashekhar-17x`, noreply email; feature branches + PRs into `main` (hook blocks direct commits); required check `CI OK` |
+| License | Code MIT; `content/` all rights reserved |
 
-## Target repo layout (to create in Phase 0)
+## Repo layout
 ```
 apps/web      Angular SSR site
 apps/api      FastAPI (REST + SSE chat)
 apps/worker   ingestion: parse → chunk → embed → upsert
 apps/mcp      FastMCP server
-content/      markdown + json (source of truth)
+content/      json + markdown seed, schemas/ (JSON Schema)
+infra/        docker-compose (pgvector, redis, ollama)
+scripts/      repo tooling (validate_content.py)
 docs/         planning docs (this folder)
 prototype/    the HTML prototype (reference for look & feel)
 reference/    my 5 inspiration images (ref-1..5)
@@ -61,7 +68,7 @@ reference/    my 5 inspiration images (ref-1..5)
 - Design tokens are the CSS custom properties at the top of the file (dark + `[data-theme="light"]`)
 
 ## Placeholders to replace with my real data
-Company names ("Company A/B (sample)"), years, stats (4+ years, 30+ projects), experience entries, project descriptions, and `chandrashekhar.dev` domain.
+Run `make content-check` for the live list. Real so far: name, headline, location (India), GitHub https://github.com/chandrashekhar-17x, LinkedIn https://www.linkedin.com/in/chandrashekhar1423/, skills. Dummy: summary, email, photo (`content/media/avatar-placeholder.svg`), stats, companies, roles, project write-ups, resume, domain.
 
 ## Conventions
 - TypeScript strict; Angular `OnPush`; no `any`.
@@ -69,6 +76,7 @@ Company names ("Company A/B (sample)"), years, stats (4+ years, 30+ projects), e
 - Animate only `transform` / `opacity`; every effect skippable.
 - Lighthouse ≥ 95 desktop; WCAG 2.2 AA.
 - Commit small; update `docs/backlog.md` checkboxes when an item ships.
+- Keep files ≤ ~300–400 lines; small focused components; short plain comments; research versions/APIs instead of guessing.
 
 ## Docs index
-`docs/PRD.md` · `docs/Design.md` · `docs/Architecture.md` · `docs/architecture-sequence.md` · `docs/database.md` · `docs/API.md` · `docs/agents.md` · `docs/mcp.md` · `docs/integration.md` · `docs/features.md` · `docs/plan.md` · `docs/testing.md` · `docs/debuging.md` · `docs/review.md` · `docs/backlog.md` · `docs/README.dev.md`
+`docs/PRD.md` · `docs/Design.md` · `docs/Architecture.md` · `docs/architecture-sequence.md` · `docs/database.md` · `docs/API.md` · `docs/agents.md` · `docs/mcp.md` · `docs/integration.md` · `docs/features.md` · `docs/plan.md` · `docs/testing.md` · `docs/debuging.md` · `docs/review.md` · `docs/backlog.md` · `docs/README.dev.md` · `docs/CONTRIBUTING.md`
