@@ -1,0 +1,61 @@
+@if (profile(); as p) {
+  <header class="head">
+    <div>
+      <p class="eyebrow">Resume</p>
+      <h1>{{ p.name }}</h1>
+      <p class="lead">{{ p.headline }}</p>
+      <p class="muted">{{ p.location }} · {{ p.availability.note }}</p>
+    </div>
+    <div class="actions no-print">
+      <button type="button" class="btn btn--primary" (click)="print()">Print / save as PDF</button>
+      <a class="btn btn--ghost" routerLink="/" fragment="contact">Contact</a>
+    </div>
+  </header>
+
+  <ul class="links" role="list">
+    @for (l of p.links; track l.url) {
+      <li>
+        <a [href]="l.url" target="_blank" rel="noopener">{{ l.label }}</a>
+      </li>
+    }
+  </ul>
+
+  <section aria-labelledby="r-summary">
+    <h2 id="r-summary">Summary</h2>
+    <p>{{ p.summary }}</p>
+  </section>
+
+  @if (experience(); as xp) {
+    <section aria-labelledby="r-xp">
+      <h2 id="r-xp">Experience</h2>
+      <app-experience-timeline class="is-revealed" [experience]="xp" />
+    </section>
+  }
+
+  <section aria-labelledby="r-skills">
+    <h2 id="r-skills">Skills</h2>
+    <dl class="skills">
+      @for (g of skillGroups(); track g.label) {
+        <div>
+          <dt>{{ g.label }}</dt>
+          <dd>
+            @for (s of g.skills; track s.id; let last = $last) {
+              {{ s.name }}{{ s.learning ? ' (learning)' : '' }}{{ last ? '' : ', ' }}
+            }
+          </dd>
+        </div>
+      }
+    </dl>
+  </section>
+
+  <section aria-labelledby="r-projects">
+    <h2 id="r-projects">Selected projects</h2>
+    <ul class="projects" role="list">
+      @for (pr of projects(); track pr.slug) {
+        <li>
+          <a [routerLink]="['/work', pr.slug]">{{ pr.title }}</a> ({{ pr.year }}): {{ pr.summary }}
+        </li>
+      }
+    </ul>
+  </section>
+}

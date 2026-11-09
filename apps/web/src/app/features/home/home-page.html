@@ -34,3 +34,33 @@
     />
   }
 </section>
+
+<section id="lab" class="section" aria-label="AI lab">
+  @defer (on viewport) {
+    <app-lab-section />
+  } @placeholder {
+    <app-section-skeleton kind="lab" label="AI lab" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="lab" label="AI lab" [loading]="true" />
+  }
+</section>
+
+<section id="xp" class="section" aria-label="Experience">
+  @defer (on viewport) {
+    <app-experience-section />
+  } @placeholder {
+    <app-section-skeleton kind="xp" label="experience" [count]="roleCount()" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="xp" label="experience" [count]="roleCount()" [loading]="true" />
+  }
+</section>
+
+<section id="contact" class="section" aria-label="Contact">
+  @defer (on viewport) {
+    <app-contact-section />
+  } @placeholder {
+    <app-section-skeleton kind="contact" label="contact" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="contact" label="contact" [loading]="true" />
+  }
+</section>

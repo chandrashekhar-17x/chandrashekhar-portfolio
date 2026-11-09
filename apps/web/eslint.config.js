@@ -37,6 +37,8 @@ module.exports = tseslint.config(
       ],
       // Angular classes are often empty shells (e.g. route pages).
       '@typescript-eslint/no-extraneous-class': 'off',
+      // Angular's Validators.required etc. are static: passing them by reference is safe.
+      '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
     },
   },
   {

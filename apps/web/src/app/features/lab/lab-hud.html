@@ -1,0 +1,79 @@
+<div class="hud">
+  <h3>
+    Active agents <span>{{ status.agents.length }} · demo</span>
+  </h3>
+  <ul class="agents" role="list">
+    @for (a of status.agents; track a.name) {
+      <li class="agent">
+        <span aria-hidden="true">{{ a.icon }}</span>
+        {{ a.name }}
+        @if (a.busy) {
+          <span class="wave" aria-hidden="true"><i></i><i></i><i></i></span>
+        }
+        <span class="state" [class.on]="a.state === 'active'">● {{ a.state }}</span>
+      </li>
+    }
+  </ul>
+  <h3 class="gap">LLM routing</h3>
+  <ul class="grid2" role="list">
+    @for (m of status.models; track m.name) {
+      <li>
+        {{ m.name }}<small [class.on]="m.primary">{{ m.role }}</small>
+      </li>
+    }
+  </ul>
+</div>
+
+<div class="hud core">
+  <h3>Core <span>v1.0</span></h3>
+  <div class="orb-wrap">
+    <app-core-orb [pulse]="pulse()" />
+    <p class="orb-label" aria-hidden="true">
+      <b>CS · AI</b><small>RAG CORE · {{ status.chunksIndexed }} chunks (demo)</small>
+    </p>
+  </div>
+  <button
+    type="button"
+    class="mic"
+    data-cursor="speak"
+    [class.live]="listening()"
+    [attr.aria-pressed]="listening()"
+    (click)="speak()"
+  >
+    <span aria-hidden="true">🎙</span> <span aria-live="polite">{{ micText() }}</span>
+  </button>
+</div>
+
+<div class="hud">
+  <h3>
+    Learning timeline <span>{{ year }}</span>
+  </h3>
+  <ol class="timeline">
+    @for (step of lab()?.timeline ?? []; track $index) {
+      <li>
+        <span class="when">{{ step.when }}</span>
+        <div>
+          {{ step.topic }}
+          <div
+            class="bar"
+            role="progressbar"
+            [attr.aria-valuenow]="step.progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [attr.aria-label]="step.topic + ' progress'"
+          >
+            <i [style.width.%]="step.progress"></i>
+          </div>
+        </div>
+      </li>
+    }
+  </ol>
+  <h3 class="gap">System <span>demo</span></h3>
+  <ul class="grid2" role="list">
+    @for (m of status.metrics; track m.label) {
+      <li>
+        {{ m.label }}<small class="metric">{{ m.value }}</small>
+      </li>
+    }
+  </ul>
+</div>
