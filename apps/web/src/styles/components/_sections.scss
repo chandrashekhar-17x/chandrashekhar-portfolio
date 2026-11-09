@@ -29,7 +29,7 @@
     line-height: 1;
   }
 
-  p {
+  p:not(.section-index) {
     max-width: 440px;
     color: var(--ink-2);
   }

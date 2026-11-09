@@ -17,6 +17,7 @@ export type SkeletonKind = 'graph' | 'work' | 'lab' | 'xp' | 'contact';
     '[attr.aria-busy]': 'true',
     '[attr.aria-label]': '"Loading " + label()',
     '[class.is-loading]': 'loading()',
+    '[class]': '"kind-" + kind()',
   },
 })
 export class SectionSkeleton {

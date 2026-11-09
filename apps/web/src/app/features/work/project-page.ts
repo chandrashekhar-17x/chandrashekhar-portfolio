@@ -6,18 +6,19 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { marked } from 'marked';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { ProjectIllustration } from './project-illustration';
 
 /** /work/:slug: a case study rendered from markdown. Unknown slug → 404 page + status. */
 @Component({
   selector: 'app-project-page',
-  imports: [RouterLink, PageHeader],
+  imports: [RouterLink, PageHeader, ProjectIllustration],
   templateUrl: './project-page.html',
   styleUrls: ['../../shared/ui/page-header/page.scss', './project-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +40,12 @@ export class ProjectPage {
         }),
       ),
   });
+
+  /** Skill id → display name ("postgres" → "PostgreSQL"). */
+  protected readonly skillNames = toSignal(
+    this.repo.skills().pipe(map((skills) => new Map(skills.map((s) => [s.id, s.name])))),
+    { initialValue: new Map<string, string>() },
+  );
 
   /** Markdown → HTML. Angular's [innerHTML] sanitizer strips anything unsafe. */
   protected readonly html = computed(() => {

@@ -85,7 +85,11 @@
 }
 
 .card {
-  height: 290px;
+  height: 412px; // real project card height (all cards are equal)
+
+  @container site (max-width: 600px) {
+    height: 390px;
+  }
 }
 
 .hud {
@@ -107,6 +111,20 @@
 
 .cards {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+// Work cards use the same columns as the real ProjectGrid (3 → 2 → 1).
+:host(.kind-work) .cards {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @container site (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .two {
