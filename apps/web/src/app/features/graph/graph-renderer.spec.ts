@@ -13,6 +13,7 @@ const node = (over: Partial<SimNode> = {}): SimNode => ({
   vx: 0,
   vy: 0,
   born: 0,
+  phase: 0,
   ...over,
 });
 const state = (over: Partial<RenderState> = {}): RenderState => ({
