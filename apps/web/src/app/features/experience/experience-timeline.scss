@@ -1,0 +1,63 @@
+.xp {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 26px;
+  list-style: none;
+
+  // Gradient spine
+  &::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 6px;
+    width: 2px;
+    background: linear-gradient(var(--violet), var(--cyan), transparent);
+  }
+}
+
+.item {
+  position: relative;
+  padding-bottom: 28px;
+
+  // Glowing dot on the spine
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -25px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    background: var(--bg);
+    box-shadow: 0 0 12px var(--cyan);
+  }
+}
+
+.when {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 19px;
+}
+
+.summary,
+.highlights {
+  max-width: 640px;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.highlights {
+  padding-left: 18px;
+  font-size: 13.5px;
+}
