@@ -21,7 +21,7 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
-DATA_FILES = ("profile", "skills", "experience", "projects", "graph")
+DATA_FILES = ("profile", "skills", "experience", "projects", "graph", "lab")
 Json = dict[str, Any]
 
 

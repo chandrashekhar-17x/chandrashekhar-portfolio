@@ -4,23 +4,35 @@
   "title": "Shared definitions",
   "$defs": {
     "id": {
+      "title": "Id",
       "description": "Lowercase kebab-case id, unique within its collection.",
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
     },
-    "url": { "type": "string", "pattern": "^(https://|mailto:|/)" },
+    "url": {
+      "title": "Url",
+      "type": "string",
+      "pattern": "^(https://|mailto:|/)"
+    },
     "yearMonth": {
+      "title": "YearMonth",
       "description": "Date as YYYY-MM.",
       "type": "string",
       "pattern": "^(19|20)\\d{2}-(0[1-9]|1[0-2])$"
     },
     "image": {
+      "title": "Image",
       "type": "object",
       "required": ["src", "alt"],
       "additionalProperties": false,
       "properties": {
-        "src": { "$ref": "#/$defs/url" },
-        "alt": { "type": "string", "minLength": 3 }
+        "src": {
+          "$ref": "#/$defs/url"
+        },
+        "alt": {
+          "type": "string",
+          "minLength": 3
+        }
       }
     },
     "placeholder": {
@@ -28,8 +40,11 @@
       "type": "boolean"
     },
     "skillRefs": {
+      "title": "SkillRefs",
       "type": "array",
-      "items": { "$ref": "#/$defs/id" },
+      "items": {
+        "$ref": "#/$defs/id"
+      },
       "uniqueItems": true
     }
   }

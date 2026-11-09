@@ -18,3 +18,10 @@
 main {
   outline: none;
 }
+
+// Size container for the whole site: sections use @container site (…) queries,
+// exactly like the prototype's .site wrapper.
+main {
+  container: site / inline-size;
+  min-height: 70dvh;
+}

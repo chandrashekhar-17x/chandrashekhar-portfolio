@@ -1,0 +1,47 @@
+// Skeleton blocks (placeholder shapes) and the staggered reveal of real content.
+.skb {
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    var(--line) 0%,
+    color-mix(in oklab, var(--violet) 22%, transparent) 50%,
+    var(--line) 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0.55;
+
+  .is-loading & {
+    opacity: 1;
+    animation: shimmer 1.1s linear infinite;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+// Children marked .reveal-item fade/slide in one after another (--i = index).
+.reveal-item {
+  opacity: 0;
+  transform: translateY(26px);
+  filter: blur(6px);
+
+  .is-revealed & {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition:
+      opacity 0.7s,
+      transform 0.7s var(--ease-out),
+      filter 0.7s;
+    transition-delay: calc(var(--i, 0) * 140ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

@@ -6,10 +6,13 @@
   "required": ["projects"],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "projects": {
       "type": "array",
       "items": {
+        "title": "Project",
         "type": "object",
         "required": [
           "slug",
@@ -24,34 +27,68 @@
         ],
         "additionalProperties": false,
         "properties": {
-          "slug": { "$ref": "common.schema.json#/$defs/id" },
-          "title": { "type": "string" },
-          "summary": { "type": "string", "maxLength": 280 },
-          "year": { "type": "integer", "minimum": 2000, "maximum": 2100 },
-          "role": { "type": "string" },
+          "slug": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 280
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 2000,
+            "maximum": 2100
+          },
+          "role": {
+            "type": "string"
+          },
           "org": {
             "description": "organizations[].id (optional)",
             "$ref": "common.schema.json#/$defs/id"
           },
-          "status": { "enum": ["shipped", "in-progress", "concept"] },
-          "featured": { "type": "boolean" },
-          "skills": { "$ref": "common.schema.json#/$defs/skillRefs" },
+          "status": {
+            "enum": ["shipped", "in-progress", "concept"]
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "skills": {
+            "$ref": "common.schema.json#/$defs/skillRefs"
+          },
           "links": {
+            "title": "ProjectLinks",
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "repo": { "$ref": "common.schema.json#/$defs/url" },
-              "live": { "$ref": "common.schema.json#/$defs/url" },
-              "demo": { "$ref": "common.schema.json#/$defs/url" }
+              "repo": {
+                "$ref": "common.schema.json#/$defs/url"
+              },
+              "live": {
+                "$ref": "common.schema.json#/$defs/url"
+              },
+              "demo": {
+                "$ref": "common.schema.json#/$defs/url"
+              }
             }
           },
-          "cover": { "$ref": "common.schema.json#/$defs/image" },
+          "cover": {
+            "$ref": "common.schema.json#/$defs/image"
+          },
           "body": {
             "description": "Case-study markdown file, relative to content/.",
             "type": "string",
             "pattern": "^projects/[a-z0-9-]+\\.md$"
           },
-          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          },
+          "illustration": {
+            "description": "SVG thumbnail used when there is no cover image.",
+            "enum": ["cad", "pdf", "table", "api", "rag", "voice"]
+          }
         }
       }
     }

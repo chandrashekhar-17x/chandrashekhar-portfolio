@@ -49,6 +49,7 @@ lint: lint-web lint-py ## Lint everything
 lint-web:
 	pnpm format:check
 	pnpm --filter @portfolio/web lint
+	pnpm --filter @portfolio/web check:types
 
 lint-py:
 	uv run ruff check .

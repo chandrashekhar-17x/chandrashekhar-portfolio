@@ -12,7 +12,8 @@
       "featured": true,
       "skills": ["angular", "typescript", "canvas", "rxjs"],
       "body": "projects/cad-editor.md",
-      "placeholder": true
+      "placeholder": true,
+      "illustration": "cad"
     },
     {
       "slug": "pdf-engine",
@@ -25,7 +26,8 @@
       "featured": true,
       "skills": ["angular", "typescript", "pdfjs", "canvas"],
       "body": "projects/pdf-engine.md",
-      "placeholder": true
+      "placeholder": true,
+      "illustration": "pdf"
     },
     {
       "slug": "data-grid",
@@ -38,7 +40,8 @@
       "featured": true,
       "skills": ["angular", "primeng", "rxjs", "rest-apis"],
       "body": "projects/data-grid.md",
-      "placeholder": true
+      "placeholder": true,
+      "illustration": "table"
     },
     {
       "slug": "ai-portfolio",
@@ -49,8 +52,11 @@
       "status": "in-progress",
       "featured": true,
       "skills": ["angular", "typescript", "python", "fastapi", "postgres", "rag", "llms", "mcp"],
-      "links": { "repo": "https://github.com/chandrashekhar-17x/chandrashekhar-portfolio" },
-      "body": "projects/ai-portfolio.md"
+      "links": {
+        "repo": "https://github.com/chandrashekhar-17x/chandrashekhar-portfolio"
+      },
+      "body": "projects/ai-portfolio.md",
+      "illustration": "rag"
     }
   ]
 }

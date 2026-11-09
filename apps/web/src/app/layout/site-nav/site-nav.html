@@ -1,0 +1,36 @@
+<nav class="nav" aria-label="Main">
+  <a class="logo" routerLink="/" aria-label="Home">
+    {{ profile()?.initials ?? profile()?.name }}<b aria-hidden="true">.</b>dev
+  </a>
+
+  <ul class="links" role="list">
+    @for (link of links; track link.fragment) {
+      <li>
+        <a routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      </li>
+    }
+  </ul>
+
+  <span class="spacer"></span>
+  <app-theme-toggle />
+  <button
+    type="button"
+    class="icon-btn burger"
+    aria-controls="mobile-menu"
+    [attr.aria-expanded]="menuOpen()"
+    aria-label="Menu"
+    (click)="toggleMenu()"
+  >
+    <span aria-hidden="true">☰</span>
+  </button>
+</nav>
+
+@if (menuOpen()) {
+  <ul id="mobile-menu" class="mobile-menu" role="list">
+    @for (link of links; track link.fragment) {
+      <li>
+        <a routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      </li>
+    }
+  </ul>
+}

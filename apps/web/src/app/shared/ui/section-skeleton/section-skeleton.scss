@@ -1,0 +1,131 @@
+:host {
+  display: block;
+}
+
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.spin {
+  display: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line-2);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  :host(.is-loading) & {
+    display: inline-block;
+  }
+}
+
+.progress {
+  flex: 0 0 140px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--line);
+
+  i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--violet), var(--cyan));
+    transition: width 0.8s cubic-bezier(0.4, 0.1, 0.2, 1);
+
+    :host(.is-loading) & {
+      width: 100%;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.head-eyebrow {
+  width: 130px;
+  height: 12px;
+}
+
+.head-title {
+  width: min(55%, 520px);
+  height: 46px;
+  margin: 10px 0 28px;
+}
+
+.block {
+  border-radius: var(--radius-card);
+}
+
+// Heights match the real sections (kept in sync by the CLS e2e test).
+.graph {
+  height: 520px;
+  border-radius: var(--radius-panel);
+}
+
+.card {
+  height: 290px;
+}
+
+.hud {
+  height: 380px;
+}
+
+.form {
+  height: 360px;
+}
+
+.aside {
+  height: 200px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.cards {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.two {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.rows {
+  display: grid;
+  gap: 28px;
+}
+
+.line {
+  height: 12px;
+  margin-top: 8px;
+}
+
+.line-lg {
+  height: 20px;
+  margin-top: 8px;
+}
+
+.w-90 {
+  width: 90px;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+.w-70 {
+  width: 70%;
+}

@@ -12,6 +12,13 @@
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#06071a" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Apply the saved theme before first paint (no flash). Needs a CSP hash in Phase 9. -->
+    <script>
+      try {
+        if (localStorage.getItem('theme') === 'light')
+          document.documentElement.dataset.theme = 'light';
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <app-root></app-root>

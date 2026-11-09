@@ -6,17 +6,26 @@
   "required": ["skills"],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "skills": {
       "type": "array",
       "items": {
+        "title": "Skill",
         "type": "object",
         "required": ["id", "name", "category", "level"],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "common.schema.json#/$defs/id" },
-          "name": { "type": "string" },
-          "category": { "enum": ["frontend", "backend", "ai", "graphics", "tools"] },
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "enum": ["frontend", "backend", "ai", "graphics", "tools"]
+          },
           "level": {
             "description": "1 = learning … 5 = expert",
             "type": "integer",
@@ -27,7 +36,9 @@
             "description": "Currently learning (LEARNING edge in the graph).",
             "type": "boolean"
           },
-          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          }
         }
       }
     }

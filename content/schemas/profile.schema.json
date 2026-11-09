@@ -6,57 +6,105 @@
   "required": ["name", "headline", "summary", "location", "availability", "photo", "links"],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
-    "name": { "type": "string", "minLength": 2 },
-    "headline": { "type": "string", "maxLength": 160 },
-    "summary": { "type": "string", "maxLength": 1200 },
-    "location": { "type": "string" },
-    "email": { "type": "string", "format": "email" },
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "initials": {
+      "description": "Short brand mark shown as the logo, e.g. \"CS\".",
+      "type": "string",
+      "maxLength": 4
+    },
+    "headline": {
+      "type": "string",
+      "maxLength": 160
+    },
+    "summary": {
+      "type": "string",
+      "maxLength": 1200
+    },
+    "location": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
     "roles": {
       "description": "Short role titles cycled by the hero typing effect.",
       "type": "array",
-      "items": { "type": "string", "maxLength": 40 }
+      "items": {
+        "type": "string",
+        "maxLength": 40
+      }
     },
     "availability": {
+      "title": "Availability",
       "type": "object",
       "required": ["status"],
       "additionalProperties": false,
       "properties": {
-        "status": { "enum": ["open", "freelance", "busy", "not-looking"] },
-        "note": { "type": "string", "maxLength": 140 }
+        "status": {
+          "enum": ["open", "freelance", "busy", "not-looking"]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 140
+        }
       }
     },
-    "photo": { "$ref": "common.schema.json#/$defs/image" },
+    "photo": {
+      "$ref": "common.schema.json#/$defs/image"
+    },
     "links": {
       "type": "array",
       "items": {
+        "title": "ProfileLink",
         "type": "object",
         "required": ["kind", "label", "url"],
         "additionalProperties": false,
         "properties": {
-          "kind": { "enum": ["github", "linkedin", "x", "email", "website", "cal", "other"] },
-          "label": { "type": "string" },
-          "url": { "$ref": "common.schema.json#/$defs/url" }
+          "kind": {
+            "enum": ["github", "linkedin", "x", "email", "website", "cal", "other"]
+          },
+          "label": {
+            "type": "string"
+          },
+          "url": {
+            "$ref": "common.schema.json#/$defs/url"
+          }
         }
       }
     },
     "stats": {
       "type": "array",
       "items": {
+        "title": "ProfileStat",
         "type": "object",
         "required": ["label", "value"],
         "additionalProperties": false,
         "properties": {
-          "label": { "type": "string" },
-          "value": { "type": "string" },
-          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          }
         }
       }
     },
     "placeholderFields": {
       "description": "Names of top-level fields that still hold dummy data.",
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     }
   }
 }

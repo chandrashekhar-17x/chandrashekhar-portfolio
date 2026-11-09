@@ -7,36 +7,55 @@
   "required": ["topics", "edges"],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "topics": {
       "type": "array",
       "items": {
+        "title": "Topic",
         "type": "object",
         "required": ["id", "label"],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "common.schema.json#/$defs/id" },
-          "label": { "type": "string" }
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "label": {
+            "type": "string"
+          }
         }
       }
     },
     "edges": {
       "type": "array",
       "items": {
+        "title": "GraphEdgeExtra",
         "type": "object",
         "required": ["src", "dst", "rel"],
         "additionalProperties": false,
         "properties": {
-          "src": { "$ref": "#/$defs/nodeRef" },
-          "dst": { "$ref": "#/$defs/nodeRef" },
-          "rel": { "enum": ["USED", "BUILT_AT", "WORKED_AT", "RELATED", "LEARNING"] },
-          "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+          "src": {
+            "$ref": "#/$defs/nodeRef"
+          },
+          "dst": {
+            "$ref": "#/$defs/nodeRef"
+          },
+          "rel": {
+            "enum": ["USED", "BUILT_AT", "WORKED_AT", "RELATED", "LEARNING"]
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
         }
       }
     }
   },
   "$defs": {
     "nodeRef": {
+      "title": "NodeRef",
       "type": "string",
       "pattern": "^(skill|project|org|role|topic):[a-z0-9]+(-[a-z0-9]+)*$"
     }

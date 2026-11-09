@@ -6,42 +6,80 @@
   "required": ["organizations", "roles"],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "organizations": {
       "type": "array",
       "items": {
+        "title": "Organization",
         "type": "object",
         "required": ["id", "name", "kind"],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "common.schema.json#/$defs/id" },
-          "name": { "type": "string" },
-          "kind": { "enum": ["company", "client", "freelance", "education", "open-source"] },
-          "url": { "$ref": "common.schema.json#/$defs/url" },
-          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": ["company", "client", "freelance", "education", "open-source"]
+          },
+          "url": {
+            "$ref": "common.schema.json#/$defs/url"
+          },
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          }
         }
       }
     },
     "roles": {
       "type": "array",
       "items": {
+        "title": "Role",
         "type": "object",
         "required": ["id", "org", "title", "start", "summary", "highlights", "skills"],
         "additionalProperties": false,
         "properties": {
-          "id": { "$ref": "common.schema.json#/$defs/id" },
-          "org": { "description": "organizations[].id", "$ref": "common.schema.json#/$defs/id" },
-          "title": { "type": "string" },
-          "start": { "$ref": "common.schema.json#/$defs/yearMonth" },
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "org": {
+            "description": "organizations[].id",
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "start": {
+            "$ref": "common.schema.json#/$defs/yearMonth"
+          },
           "end": {
             "description": "Omit while current.",
             "$ref": "common.schema.json#/$defs/yearMonth"
           },
-          "location": { "type": "string" },
-          "summary": { "type": "string", "maxLength": 600 },
-          "highlights": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
-          "skills": { "$ref": "common.schema.json#/$defs/skillRefs" },
-          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+          "location": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 600
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 8
+          },
+          "skills": {
+            "$ref": "common.schema.json#/$defs/skillRefs"
+          },
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          }
         }
       }
     }

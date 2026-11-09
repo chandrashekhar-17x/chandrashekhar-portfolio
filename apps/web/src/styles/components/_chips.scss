@@ -1,0 +1,41 @@
+// Small labels: chip, keyboard key, category tag.
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.kbd {
+  padding: 2px 7px;
+  border: 1px solid var(--line-2);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--panel);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+.tag {
+  display: inline-block;
+  margin: 2px 3px 2px 0;
+  padding: 2px 7px;
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-2);
+
+  @each $name, $color in (frontend: cyan, backend: lime, ai: pink, graphics: amber, tools: violet) {
+    &--#{$name} {
+      color: var(--#{$color});
+      border-color: color-mix(in oklab, var(--#{$color}) 45%, transparent);
+    }
+  }
+}
