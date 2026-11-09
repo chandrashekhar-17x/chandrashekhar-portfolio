@@ -3,7 +3,16 @@
   "$id": "profile.schema.json",
   "title": "Profile",
   "type": "object",
-  "required": ["name", "headline", "summary", "location", "availability", "photo", "links"],
+  "required": [
+    "name",
+    "headline",
+    "summary",
+    "location",
+    "availability",
+    "photo",
+    "links",
+    "heroTitle"
+  ],
   "additionalProperties": false,
   "properties": {
     "$schema": {
@@ -33,12 +42,29 @@
       "type": "string",
       "format": "email"
     },
+    "heroTitle": {
+      "title": "HeroTitle",
+      "description": "Big hero heading: first line plain, second line in the gradient.",
+      "type": "object",
+      "required": ["text", "highlight"],
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "highlight": {
+          "type": "string",
+          "maxLength": 40
+        }
+      }
+    },
     "roles": {
-      "description": "Short role titles cycled by the hero typing effect.",
+      "description": "Phrases that complete \"I build …\" in the hero typing effect.",
       "type": "array",
       "items": {
         "type": "string",
-        "maxLength": 40
+        "maxLength": 48
       }
     },
     "availability": {
