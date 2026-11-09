@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "skills.schema.json",
+  "title": "Skills",
+  "type": "object",
+  "required": ["skills"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category", "level"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/id" },
+          "name": { "type": "string" },
+          "category": { "enum": ["frontend", "backend", "ai", "graphics", "tools"] },
+          "level": { "description": "1 = learning … 5 = expert", "type": "integer", "minimum": 1, "maximum": 5 },
+          "learning": { "description": "Currently learning (LEARNING edge in the graph).", "type": "boolean" },
+          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+        }
+      }
+    }
+  }
+}

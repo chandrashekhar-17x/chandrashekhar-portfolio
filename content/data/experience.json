@@ -1,0 +1,36 @@
+{
+  "$schema": "../schemas/experience.schema.json",
+  "organizations": [
+    { "id": "company-a", "name": "Company A (sample)", "kind": "company", "placeholder": true },
+    { "id": "company-b", "name": "Company B (sample)", "kind": "company", "placeholder": true }
+  ],
+  "roles": [
+    {
+      "id": "company-a-frontend",
+      "org": "company-a",
+      "title": "Frontend Engineer",
+      "start": "2023-01",
+      "location": "India",
+      "summary": "PLACEHOLDER: Building complex Angular applications: a canvas CAD editor, PDF rendering and data-heavy tables.",
+      "highlights": [
+        "PLACEHOLDER: Built a canvas-based CAD editor with selection, snapping and undo/redo.",
+        "PLACEHOLDER: Rendered large PDFs in the browser with PDF.js and virtualised pages.",
+        "PLACEHOLDER: Built PrimeNG data grids with server-side paging and filtering."
+      ],
+      "skills": ["angular", "typescript", "rxjs", "canvas", "pdfjs", "primeng"],
+      "placeholder": true
+    },
+    {
+      "id": "company-b-junior",
+      "org": "company-b",
+      "title": "Junior Frontend Developer",
+      "start": "2021-06",
+      "end": "2022-12",
+      "location": "India",
+      "summary": "PLACEHOLDER: Angular feature work and REST API integration.",
+      "highlights": ["PLACEHOLDER: Integrated REST APIs and built reusable UI components."],
+      "skills": ["angular", "javascript", "rest-apis", "html-css"],
+      "placeholder": true
+    }
+  ]
+}
