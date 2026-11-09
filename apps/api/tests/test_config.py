@@ -1,0 +1,25 @@
+import pytest
+from pydantic import ValidationError
+
+from portfolio_api.core.config import Settings
+from portfolio_api.main import create_app
+
+
+def test_docs_hidden_in_production() -> None:
+    app = create_app(Settings(environment="production"))
+    assert app.docs_url is None
+
+
+def test_docs_available_locally() -> None:
+    app = create_app(Settings(environment="local"))
+    assert app.docs_url == "/docs"
+
+
+def test_invalid_environment_fails_fast() -> None:
+    with pytest.raises(ValidationError):
+        Settings(environment="prod")  # type: ignore[arg-type]
+
+
+def test_secrets_are_masked_in_repr() -> None:
+    settings = Settings(anthropic_api_key="sk-test-123")  # type: ignore[arg-type]
+    assert "sk-test-123" not in repr(settings)

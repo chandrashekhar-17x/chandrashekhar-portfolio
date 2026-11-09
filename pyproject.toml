@@ -1,0 +1,84 @@
+# Root of the uv workspace: one lockfile and one .venv for all Python apps.
+# Each app is its own package; worker and mcp reuse the api package's code.
+[project]
+name = "portfolio-workspace"
+version = "0.0.0"
+requires-python = ">=3.13"
+# Installing the root installs every app (editable), so one `uv sync` sets up all.
+dependencies = ["portfolio-api", "portfolio-worker", "portfolio-mcp"]
+
+[tool.uv]
+package = false # the root itself is not a package
+
+[tool.uv.sources]
+portfolio-api = { workspace = true }
+portfolio-worker = { workspace = true }
+portfolio-mcp = { workspace = true }
+
+[tool.uv.workspace]
+members = ["apps/api", "apps/worker", "apps/mcp"]
+
+[dependency-groups]
+# Shared dev tools (installed by `uv sync`).
+dev = [
+  "ruff>=0.17.4",
+  "mypy>=2.4.1",
+  "pytest>=9.2.0",
+  "pytest-asyncio>=1.4.1",
+  "pytest-cov>=7.1.0",
+  "httpx>=0.28.1",
+]
+
+# ---------- ruff: linter + formatter ----------
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+  "E", "W", "F",   # pycodestyle + pyflakes
+  "I",             # import sorting
+  "B",             # bugbear (likely bugs)
+  "UP",            # modern syntax
+  "N",             # naming
+  "S",             # bandit (security)
+  "ASYNC",         # async pitfalls
+  "SIM", "RET",    # simpler code
+  "PT",            # pytest style
+  "RUF",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["portfolio_api", "portfolio_worker", "portfolio_mcp"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S101"] # assert is fine in tests
+
+# ---------- mypy: strict type checking ----------
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = ["apps/api/src", "apps/worker/src", "apps/mcp/src"]
+explicit_package_bases = true
+
+# Type-check pydantic model constructors too (catches wrong field types).
+[tool.pydantic-mypy]
+init_typed = true
+init_forbid_extra = true
+warn_required_dynamic_aliases = true
+
+# ---------- pytest ----------
+[tool.pytest.ini_options]
+testpaths = ["apps/api/tests", "apps/worker/tests", "apps/mcp/tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-ra --strict-markers --import-mode=importlib"
+
+[tool.coverage.run]
+source = ["portfolio_api", "portfolio_worker", "portfolio_mcp"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
