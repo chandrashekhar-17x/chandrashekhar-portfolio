@@ -12,6 +12,7 @@ COMPOSE := docker compose -f infra/docker-compose.yml $(if $(wildcard .env),--en
 .PHONY: setup
 setup: ## Install all dependencies and git hooks
 	pnpm install --frozen-lockfile
+	pnpm --filter @portfolio/web exec playwright install chromium
 	uv sync --frozen
 	uv tool run pre-commit install --install-hooks
 	@test -f .env || (cp .env.example .env && echo "Created .env from .env.example")
@@ -42,7 +43,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web content-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web content-check check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -76,10 +77,13 @@ build: ## Production build of the web app
 smoke-web: ## Start the built SSR server and check it renders (after build)
 	scripts/smoke-ssr.sh
 
+e2e-web: ## Playwright e2e tests against the built SSR app (after build)
+	pnpm --filter @portfolio/web e2e
+
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py
 
-check: lint typecheck content-check test build smoke-web ## Everything CI runs
+check: lint typecheck content-check test build smoke-web e2e-web ## Everything CI runs
 
 ##@ Misc
 .PHONY: clean help

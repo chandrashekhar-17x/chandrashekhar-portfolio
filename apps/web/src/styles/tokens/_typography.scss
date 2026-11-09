@@ -11,7 +11,9 @@
   --text-base: 0.9375rem; // 15px: body
   --text-lg: 1.125rem; // 18px
   --text-xl: 1.5rem; // 24px: section titles
-  --text-display: clamp(2.5rem, 8cqi, 5.375rem); // 40px → 86px hero
+  // Hero display size: 10% of the container width, 28px → 86px.
+  // A long single word (~9em wide) still fits at 320px. Needs a size container.
+  --text-display: clamp(1.75rem, 10cqi, 5.375rem);
 
   --leading-tight: 1.05;
   --leading-body: 1.55;

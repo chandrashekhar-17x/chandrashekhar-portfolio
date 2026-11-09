@@ -3,11 +3,13 @@
   min-height: 100dvh;
   place-items: center;
   padding: var(--gutter);
-  container-type: inline-size;
 }
 
+// The intro is the size container, so the heading scales with its own column.
 .intro {
-  max-width: 60ch;
+  width: 100%;
+  max-width: 64rem;
+  container-type: inline-size;
   text-align: center;
 }
 
@@ -24,9 +26,14 @@ h1 {
   font-size: var(--text-display);
   font-weight: 800;
   letter-spacing: var(--tracking-display);
+  // Never split a word: wrap only between words.
+  overflow-wrap: normal;
+  hyphens: manual;
 }
 
 .lead {
+  max-width: 60ch;
+  margin-inline: auto;
   color: var(--ink-2);
   font-size: var(--text-lg);
 }
