@@ -22,7 +22,8 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Experience, resume page + PDF — `fe` · S
 - [ ] Scripted chat widget (fallback) — `fe` · S
 - [ ] Section-by-section lazy loading (@defer on viewport) + skeletons — `fe` · S
-- [ ] Splash cursor (WebGL fluid) + custom arrow cursor — `ux` · M
+- [x] Custom arrow cursor with context labels — `ux` · S
+- [ ] ~~Splash cursor (WebGL fluid)~~ removed (too slow); choose a lighter pointer effect — `ux` · S
 - [ ] Command palette, magnetic buttons, tilt cards — `ux` · S
 - [ ] SEO, OG, sitemap, robots, JSON-LD — `fe` · S
 - [ ] A11y + reduced motion; Playwright e2e + axe + Lighthouse CI — `ux` · M

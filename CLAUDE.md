@@ -29,7 +29,7 @@ Positioning line: *"Frontend engineer who builds complex UIs (CAD editors, PDF e
 | Area | Decision |
 |---|---|
 | Frontend | Angular 22 (TS 6.0), standalone components, signals, zoneless, SSR + incremental hydration, `@defer (on viewport)` per section, SCSS + CSS tokens, container queries |
-| Effects | Canvas hero (starfield + perspective wave grid), force-directed knowledge graph, 3D tilt cards, magnetic buttons, text scramble/typing, **splash cursor (WebGL fluid, lime #84cc16, size 0.7)** + custom arrow cursor with context labels; all respect `prefers-reduced-motion` and are off on touch |
+| Effects | Canvas hero (starfield + perspective wave grid), force-directed knowledge graph, 3D tilt cards, magnetic buttons, text scramble/typing, custom arrow cursor with context labels (**WebGL splash cursor removed 2026-11-09 at owner's request: too slow; a lighter replacement is TBD**); all respect `prefers-reduced-motion` and are off on touch |
 | Loading | Sections load **one at a time** via `@defer (on viewport)` with same-size skeletons (no layout shift); project cards load card-by-card |
 | Backend | FastAPI (async), SQLAlchemy 2 + Alembic, pydantic, Redis (rate-limit + cache) |
 | Data | PostgreSQL + **pgvector** = single store for content, graph (node/edge tables) and embeddings. **DB is the source of truth** (edited in /admin); `content/` = first seed + versioned export. Graph nodes are derived from skills/projects/experience; `graph.json` only adds topics + extra edges |

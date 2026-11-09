@@ -52,7 +52,8 @@ Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/doc
 | ambient | 6–18 s loops                    | orb, gradient text, rings |
 
 - Animate only `transform` and `opacity`; canvas loops pause off-screen and on hidden tab.
-- Cursor: lime arrow (#84cc16) that tilts with movement and shows context labels (drag / open / click / ask me), plus the WebGL **splash cursor** (fluid sim, size 0.7); both hidden on touch & reduced-motion.
+- Cursor: lime arrow (#84cc16) that tilts with movement and shows context labels (drag / open / click / ask me); hidden on touch & reduced-motion. Elements opt in with `data-cursor="label"`.
+- The WebGL splash cursor (fluid sim) was built and then **removed (2026-11-09)**: too heavy for typical laptops. A lighter pointer effect is to be chosen; it must stay off on touch/reduced motion and sleep when the pointer is still.
 - Magnetic buttons max 8px pull. Tilt cards max 8°.
 
 ## Components
