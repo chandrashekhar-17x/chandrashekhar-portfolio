@@ -61,3 +61,18 @@ kbd {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+// Printing any page: hide site chrome, use plain colours.
+@media print {
+  app-site-nav,
+  app-site-footer,
+  .skip-link {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
