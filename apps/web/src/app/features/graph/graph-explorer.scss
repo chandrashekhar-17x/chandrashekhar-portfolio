@@ -1,0 +1,62 @@
+:host {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--violet) 10%, var(--bg-2)),
+    var(--bg-2)
+  );
+
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+:host(.tall) {
+  min-height: calc(100dvh - 220px);
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  padding: 26px;
+  border-right: 1px solid var(--line);
+
+  @container site (max-width: 900px) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h3 {
+    font-size: 28px;
+    font-style: italic;
+    letter-spacing: -0.03em;
+  }
+
+  p.muted {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+
+.bottom {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.list-toggle {
+  margin-top: 14px;
+}
+
+.stage {
+  position: relative;
+  min-height: 420px;
+
+  > app-graph-canvas {
+    height: 100%;
+  }
+}

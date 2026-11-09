@@ -1,4 +1,21 @@
-@if (profile(); as p) {
-  <app-hero-section [profile]="p" />
-  <app-stats-strip [profile]="p" [skillCount]="skills().length" />
-}
+<!-- First screen: hero + stats exactly fill the viewport under the nav. -->
+<div class="first-screen">
+  @if (profile(); as p) {
+    <app-hero-section [profile]="p" />
+    <app-stats-strip [profile]="p" [skillCount]="skills().length" />
+  }
+</div>
+
+<!--
+  Lazy sections: the server sends same-size skeletons; each section's code downloads
+  when it scrolls into view (@defer on viewport), then RevealQueue shows them one at a time.
+-->
+<section id="graph" class="section" aria-label="Knowledge graph">
+  @defer (on viewport) {
+    <app-graph-section />
+  } @placeholder {
+    <app-section-skeleton kind="graph" label="knowledge graph" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="graph" label="knowledge graph" [loading]="true" />
+  }
+</section>

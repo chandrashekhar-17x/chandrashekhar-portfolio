@@ -1,8 +1,13 @@
 // Home section layout (prototype: .s-sec / .s-head / .idx).
 .section {
   position: relative;
+  // Every home section is at least one screen tall, so the next one never peeks in.
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--screen-h);
   padding: 84px var(--section-x, 28px);
-  scroll-margin-top: 64px; // sticky nav height
+  scroll-margin-top: var(--nav-h); // land just below the sticky nav
 
   @container site (max-width: 600px) {
     padding-block: 60px;
@@ -28,6 +33,14 @@
     max-width: 440px;
     color: var(--ink-2);
   }
+}
+
+// "01 / knowledge graph" numbering above home section titles (prototype .idx).
+.section-index {
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--violet);
 }
 
 .eyebrow {

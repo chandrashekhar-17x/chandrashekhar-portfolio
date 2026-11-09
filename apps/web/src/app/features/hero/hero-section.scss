@@ -1,5 +1,11 @@
+:host {
+  display: flex;
+  flex-direction: column; // lets the hero stretch when the parent gives it room
+}
+
 .hero {
   position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
   min-height: 600px;

@@ -1,0 +1,27 @@
+<aside class="side">
+  <p class="eyebrow">{{ stats() }}</p>
+  <h3>Knowledge Graph</h3>
+  <p class="muted">
+    Not a list of projects, but the real relationships in my data: where each skill was used, on
+    which project, at which company. Ask the agent a question and the nodes it cites glow.
+  </p>
+  <div class="bottom">
+    <app-graph-filters [graph]="graph()" [active]="filter()" (activeChange)="filter.set($event)" />
+    <button
+      type="button"
+      class="btn btn--ghost btn--sm list-toggle"
+      [attr.aria-pressed]="showList()"
+      (click)="showList.set(!showList())"
+    >
+      {{ showList() ? 'Show graph' : 'View as list' }}
+    </button>
+  </div>
+</aside>
+
+<div class="stage">
+  @if (showList()) {
+    <app-graph-list [graph]="graph()" [lit]="highlights.ids()" />
+  } @else {
+    <app-graph-canvas [graph]="graph()" [filter]="filter()" (activate)="onActivate($event)" />
+  }
+</div>

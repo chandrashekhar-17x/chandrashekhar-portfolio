@@ -17,6 +17,10 @@
   --radius-panel: 20px;
 
   --container-max: 1200px;
+  /** Height of the sticky nav (the nav uses it too): sections fill the screen below it. */
+  --nav-h: 65px;
+  /** One full screen under the nav (svh: stable while mobile address bars hide). */
+  --screen-h: calc(100svh - var(--nav-h));
   --gutter: clamp(16px, 4vw, 32px);
 
   // z-index layers: keep every stacking decision in one place
@@ -26,4 +30,11 @@
   --z-overlay: 80;
   --z-palette: 90;
   --z-cursor: 100;
+}
+
+// Compact nav on small screens (matches the nav's own 720px breakpoint).
+@media (max-width: 720px) {
+  :root {
+    --nav-h: 61px;
+  }
 }

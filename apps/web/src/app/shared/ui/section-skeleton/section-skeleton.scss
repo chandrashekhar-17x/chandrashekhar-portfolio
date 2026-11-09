@@ -69,9 +69,19 @@
 }
 
 // Heights match the real sections (kept in sync by the CLS e2e test).
+// Measured from the real explorer (side panel + 420px canvas); the CLS e2e test
+// (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't shift visible content.
 .graph {
-  height: 520px;
+  height: 640px;
   border-radius: var(--radius-panel);
+
+  @container site (max-width: 900px) {
+    height: 1020px; // side panel stacks above the canvas
+  }
+
+  @container site (max-width: 600px) {
+    height: 880px;
+  }
 }
 
 .card {
