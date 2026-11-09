@@ -1,5 +1,6 @@
 :host {
   display: block;
+  height: 100%;
 }
 
 .card {
@@ -7,7 +8,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 16px;
+  padding: 20px;
   border: 1px solid var(--line-2);
   border-radius: 18px;
   background: linear-gradient(
@@ -50,7 +51,7 @@
 // Layers float at different depths, so the tilt has parallax.
 .thumb {
   position: relative;
-  height: 150px;
+  height: 190px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -65,8 +66,8 @@
 }
 
 h3 {
-  margin: 14px 0 4px;
-  font-size: 18px;
+  margin: 18px 0 6px;
+  font-size: 21px;
   transform: translateZ(20px);
 }
 
@@ -94,7 +95,7 @@ h3 {
 }
 
 p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-2);
   transform: translateZ(10px);
 }
@@ -105,7 +106,7 @@ p {
   justify-content: space-between;
   gap: 8px;
   margin-top: auto;
-  padding-top: 12px;
+  padding-top: 16px;
 }
 
 .tags {
@@ -118,14 +119,14 @@ p {
 
 .link {
   flex: none;
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--cyan);
 }
 
 // Per-card skeleton overlay while the card waits for its turn.
 .sk {
   position: absolute;
-  inset: 16px;
+  inset: 20px;
   z-index: 2;
   display: flex;
   flex-direction: column;

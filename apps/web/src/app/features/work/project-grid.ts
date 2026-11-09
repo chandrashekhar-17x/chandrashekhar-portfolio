@@ -20,11 +20,16 @@ import { ProjectCard } from './project-card';
     .grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      grid-auto-rows: 1fr; // every row as tall as the tallest card → all cards equal
+      gap: 22px;
       margin: 0;
       padding: 0;
       list-style: none;
       perspective: 1000px; // gives the card tilt real depth
+
+      > li {
+        display: grid; // the card stretches to fill its cell
+      }
 
       @container site (max-width: 900px) {
         grid-template-columns: repeat(2, 1fr);

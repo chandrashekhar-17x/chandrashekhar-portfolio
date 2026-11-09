@@ -36,3 +36,25 @@ test('/work renders every card on the server (no skeletons, works without JS)', 
   await expect(page.locator('app-project-card')).toHaveCount(4);
   await expect(page.locator('.card.is-loading')).toHaveCount(0);
 });
+
+for (const path of ['/', '/work']) {
+  test(`all project cards on ${path} have the same width and height`, async ({ page }) => {
+    await page.goto(path);
+    if (path === '/') {
+      await page.locator('#work').scrollIntoViewIfNeeded();
+      // Wait for the cards to exist first, otherwise "0 loading" is trivially true.
+      await expect(page.locator('#work app-project-card').first()).toBeVisible();
+      await expect(page.locator('#work .card.is-loading')).toHaveCount(0, { timeout: 8000 });
+    }
+    const sizes = await page
+      .locator('app-project-card .card')
+      .evaluateAll((els) =>
+        els.map(
+          (e) =>
+            `${String(Math.round(e.getBoundingClientRect().width))}x${String(Math.round(e.getBoundingClientRect().height))}`,
+        ),
+      );
+    expect(sizes.length).toBeGreaterThan(1);
+    expect(new Set(sizes).size).toBe(1);
+  });
+}
