@@ -2,15 +2,19 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ContentRepository } from '../../core/content/content-repository';
+import { HeroSection } from '../hero/hero-section';
+import { StatsStrip } from '../stats/stats-strip';
 
-// Home page. PR 2 replaces this intro with the hero; later PRs add the
-// lazy sections (graph, work, lab, experience, contact) behind @defer.
+// Home page. Hero + stats are server-rendered (first paint, SEO).
+// Later PRs add the lazy sections (graph, work, lab, experience, contact) behind @defer.
 @Component({
   selector: 'app-home-page',
+  imports: [HeroSection, StatsStrip],
   templateUrl: './home-page.html',
-  styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
-  protected readonly profile = toSignal(inject(ContentRepository).profile());
+  private readonly repo = inject(ContentRepository);
+  protected readonly profile = toSignal(this.repo.profile());
+  protected readonly skills = toSignal(this.repo.skills(), { initialValue: [] });
 }

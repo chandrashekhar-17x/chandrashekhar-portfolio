@@ -1,0 +1,20 @@
+<header class="hero">
+  <app-hero-canvas />
+  <app-hero-orb />
+  <div class="inner">
+    <p class="hello">
+      <span class="pulse" aria-hidden="true"></span>
+      {{ profile().name }} · {{ profile().availability.note }} · {{ profile().location }}
+    </p>
+    <app-hero-title
+      [name]="profile().name"
+      [text]="profile().heroTitle.text"
+      [highlight]="profile().heroTitle.highlight"
+    />
+    <app-typewriter [phrases]="profile().roles ?? []" />
+    <div class="cta">
+      <a class="btn btn--primary" routerLink="/" fragment="work" appMagnetic>View my work →</a>
+      <a class="btn btn--ghost" routerLink="/resume" appMagnetic>↓ Resume</a>
+    </div>
+  </div>
+</header>
