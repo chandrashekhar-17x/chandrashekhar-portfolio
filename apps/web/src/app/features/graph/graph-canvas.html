@@ -1,0 +1,18 @@
+<canvas #canvas role="img" [attr.aria-label]="summary()"></canvas>
+
+<div #tip class="tip" [class.on]="hovered()" aria-hidden="true">
+  @if (hovered(); as n) {
+    <b>{{ n.label }}</b>
+    <span class="muted">{{ describe(n) }}</span>
+    @if (connections().length) {
+      <span class="links">
+        ↔
+        @for (c of connections().slice(0, 6); track c.id; let last = $last) {
+          {{ c.label }}{{ last ? '' : ', ' }}
+        }
+      </span>
+    }
+  }
+</div>
+
+<p class="legend" aria-hidden="true">drag · hover · click to highlight</p>

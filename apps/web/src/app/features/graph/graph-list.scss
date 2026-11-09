@@ -1,0 +1,33 @@
+:host {
+  // Fill the explorer's canvas area exactly and scroll inside it.
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-content: start;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  overflow: auto;
+}
+
+h3 {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+}
+
+li.lit b {
+  color: var(--pink);
+}
