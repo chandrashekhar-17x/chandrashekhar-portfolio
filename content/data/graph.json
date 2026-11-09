@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/graph.schema.json",
+  "topics": [
+    { "id": "complex-uis", "label": "Complex UIs" },
+    { "id": "ai-engineering", "label": "AI engineering" }
+  ],
+  "edges": [
+    { "src": "project:cad-editor", "dst": "topic:complex-uis", "rel": "RELATED" },
+    { "src": "project:pdf-engine", "dst": "topic:complex-uis", "rel": "RELATED" },
+    { "src": "project:data-grid", "dst": "topic:complex-uis", "rel": "RELATED" },
+    { "src": "skill:rag", "dst": "topic:ai-engineering", "rel": "RELATED" },
+    { "src": "skill:llms", "dst": "topic:ai-engineering", "rel": "RELATED" },
+    { "src": "skill:mcp", "dst": "topic:ai-engineering", "rel": "RELATED" },
+    { "src": "skill:rxjs", "dst": "skill:angular", "rel": "RELATED", "weight": 0.8 }
+  ]
+}

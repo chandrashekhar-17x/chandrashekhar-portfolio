@@ -1,6 +1,6 @@
 # Architecture
 
-## Frontend — Angular 20+
+## Frontend — Angular 22
 
 - **Standalone components + signals**, zoneless change detection, `OnPush` everywhere.
 - **SSR + incremental hydration** (`@defer (hydrate on viewport)`) — fast first paint, SEO.
@@ -21,7 +21,7 @@
 
 ## Backend — FastAPI
 
-    apps/api/app/
+    apps/api/src/portfolio_api/   # src layout; worker + mcp import this package (uv workspace)
       main.py           # app factory, middleware
       api/v1/           # routers: content, graph, chat, contact, admin
       core/             # config (pydantic-settings), security, rate_limit

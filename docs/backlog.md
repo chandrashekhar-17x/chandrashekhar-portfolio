@@ -1,56 +1,95 @@
 # Backlog
 
-Effort: S / M / L · Area: fe · be · ai · ops · ux. Tick items as you ship them.
+Effort: S / M / L · Area: fe · be · ai · ops · ux. Tick items as they ship.
+Phases match `docs/plan.md` (0–9).
 
-## MVP · Phase 0–1 (weeks 1–4, ship live)
+## Phase 0 · Foundation
 
-- [ ] Monorepo + CI + lint — `ops` · S
-- [ ] Design tokens, theme, fonts — `ux` · S
+- [x] Monorepo (pnpm + uv workspaces) + Makefile — `ops` · S
+- [x] Docker Compose: Postgres + pgvector, Redis, Ollama profile — `ops` · S
+- [x] CI (GitHub Actions) + Dependabot + pre-commit (incl. gitleaks) — `ops` · S
+- [x] Design tokens (colours, type, spacing, motion; dark + light) — `ux` · S
+- [x] `content/` schemas + seed data + validator — `be` · S
+- [x] FastAPI skeleton + settings + /health — `be` · S
+- [ ] Replace placeholder content with real data (run `make content-check` for the list) — `ux` · S
+
+## Phase 1 · Frontend foundation
+
+- [ ] Theme toggle + self-hosted fonts — `ux` · S
 - [ ] Hero canvas + typed text — `fe` · M
-- [ ] Knowledge graph from JSON — `fe` · M
+- [ ] Knowledge graph from mock data — `fe` · M
 - [ ] Projects + case-study route — `fe` · M
-- [ ] Experience, resume PDF — `fe` · S
+- [ ] Experience, resume page + PDF — `fe` · S
 - [ ] Scripted chat widget (fallback) — `fe` · S
-- [ ] SEO, OG, sitemap, JSON-LD — `fe` · S
-- [ ] A11y + reduced motion — `ux` · S
-- [ ] Deploy to Vercel/Cloudflare — `ops` · S
 - [ ] Section-by-section lazy loading (@defer on viewport) + skeletons — `fe` · S
 - [ ] Splash cursor (WebGL fluid) + custom arrow cursor — `ux` · M
+- [ ] Command palette, magnetic buttons, tilt cards — `ux` · S
+- [ ] SEO, OG, sitemap, robots, JSON-LD — `fe` · S
+- [ ] A11y + reduced motion; Playwright e2e + axe + Lighthouse CI — `ux` · M
+- [ ] Deploy preview to Vercel/Cloudflare — `ops` · S
 
-## Phase 2–3 · Backend + RAG (weeks 5–9)
+## Phase 2 · Backend core + database
 
-- [ ] FastAPI skeleton, settings, Docker — `be` · M
-- [ ] Postgres + Alembic + seed — `be` · M
-- [ ] Content & graph endpoints — `be` · S
-- [ ] Contact + Turnstile + Resend — `be` · S
-- [ ] Ingest: parse → chunk → embed — `ai` · L
-- [ ] /chat SSE streaming — `ai` · M
-- [ ] Citations → graph highlight — `ai` · M
-- [ ] Rate limit + token budget — `be` · S
-- [ ] Langfuse tracing — `ops` · S
+- [ ] Layered FastAPI (routers/services/repositories/schemas), JSON logs + request ids — `be` · M
+- [ ] Postgres tables + Alembic + seed from content/ — `be` · M
+- [ ] Public content & graph endpoints (cache + ETag) — `be` · S
+- [ ] Contact + Turnstile + rate limit + Resend — `be` · S
+- [ ] Web switches from mocks to the API — `fe` · S
 
-## Phase 4–6 · Differentiators (weeks 10–16)
+## Phase 3 · Admin panel
 
-- [ ] Hybrid + graph-hop retrieval — `ai` · M
-- [ ] Eval set (50 Q&A) in CI — `ai` · M
-- [ ] Recruiter JD match — `ai` · M
-- [ ] Command palette, cursor, tilt — `ux` · S
-- [ ] /lab Jarvis page — `fe` · M
-- [ ] Voice: Web Speech in/out — `ai` · M
-- [ ] MCP server (FastMCP) — `ai` · M
-- [ ] llms.txt — `ai` · S
-- [ ] Admin: chats & ingest — `be` · M
+- [ ] Auth: argon2, JWT httpOnly cookies + refresh rotation, CSRF, lockout, TOTP — `be` · M
+- [ ] /admin CRUD (profile, experience, projects, skills, graph, journal, resume, inbox) — `fe` · L
+- [ ] Uploads to object storage + cache invalidation + re-index trigger — `be` · M
+- [ ] `make content-export` (DB → content/) — `be` · S
+
+## Phase 4 · RAG agent
+
+- [ ] Ingest: parse → chunk → embed → upsert (idempotent) — `ai` · L
+- [ ] Hybrid retrieval + rerank; provider abstraction (Claude, fallback, Ollama) — `ai` · M
+- [ ] /chat SSE streaming + citations → graph highlight — `ai` · M
+- [ ] Guardrails, rate limit, Turnstile, daily token budget, answer cache — `be` · M
+- [ ] Langfuse tracing; eval set (≥ 50 Q&A) in CI — `ai` · M
+
+## Phase 5 · Graph-grounded + recruiter
+
+- [ ] Graph-hop retrieval expansion — `ai` · M
+- [ ] LangGraph intent router — `ai` · M
+- [ ] Recruiter JD match (/match) — `ai` · M
+- [ ] /graph full-screen page + accessible list fallback — `fe` · M
+
+## Phase 6 · AI Lab + voice
+
+- [ ] /lab page with live agent status, models, latency, eval scores — `fe` · M
+- [ ] Voice: Web Speech in/out, interruptible, animated orb — `ai` · M
+- [ ] Realtime voice provider behind a feature flag + budget — `ai` · L
+
+## Phase 7 · MCP + discoverability
+
+- [ ] MCP server (FastMCP, Streamable HTTP at /mcp, read-only, rate-limited) — `ai` · M
+- [ ] /llms.txt + /llms-full.txt generated from the DB — `ai` · S
+
+## Phase 8 · Showcase extras
+
+- [ ] Live CAD mini-demo — `fe` · M
+- [ ] PDF viewer demo — `fe` · M
+- [ ] 100k-row grid demo — `fe` · S
+- [ ] Journal / learning log — `fe` · M
+- [ ] GitHub activity widget (server-side cached) — `be` · S
+- [ ] Guestbook (moderated) — `be` · S
+- [ ] Privacy analytics (Umami/Plausible) — `ops` · S
+- [ ] OG image generation — `fe` · S
+
+## Phase 9 · Security, performance, launch
+
+- [ ] ASVS L1 checklist, CSP nonces, HSTS, ZAP baseline in CI — `ops` · M
+- [ ] Perf budgets (LCP < 2 s, CLS < 0.05, INP < 200 ms, JS < 180 KB gz), k6 on /chat — `ops` · M
+- [ ] Sentry, uptime monitoring, backups + restore drill — `ops` · M
+- [ ] Production deploy, custom domain, staging, RUNBOOK — `ops` · M
 
 ## Later / ideas
 
 - [ ] Three.js 3D scene behind @defer — `fe` · L
-- [ ] Live CAD mini-demo — `fe` · M
-- [ ] PDF viewer demo — `fe` · M
-- [ ] 100k-row grid demo — `fe` · S
-- [ ] Realtime voice model — `ai` · L
-- [ ] Journal / learning log — `fe` · M
-- [ ] GitHub activity widget — `be` · S
 - [ ] Public agent-eval dashboard — `ai` · M
-- [ ] Guestbook (moderated) — `be` · S
 - [ ] Hindi i18n — `fe` · M
 - [ ] Yearly redesign changelog — `ux` · S

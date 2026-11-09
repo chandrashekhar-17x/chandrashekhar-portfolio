@@ -1,0 +1,56 @@
+{
+  "$schema": "../schemas/projects.schema.json",
+  "projects": [
+    {
+      "slug": "cad-editor",
+      "title": "Canvas CAD Editor",
+      "summary": "PLACEHOLDER: A browser-based CAD editor on HTML canvas: drawing tools, snapping, layers and undo/redo.",
+      "year": 2024,
+      "role": "Frontend engineer",
+      "org": "company-a",
+      "status": "shipped",
+      "featured": true,
+      "skills": ["angular", "typescript", "canvas", "rxjs"],
+      "body": "projects/cad-editor.md",
+      "placeholder": true
+    },
+    {
+      "slug": "pdf-engine",
+      "title": "PDF Rendering Engine",
+      "summary": "PLACEHOLDER: Fast in-browser PDF viewing and annotation with PDF.js and virtualised pages.",
+      "year": 2024,
+      "role": "Frontend engineer",
+      "org": "company-a",
+      "status": "shipped",
+      "featured": true,
+      "skills": ["angular", "typescript", "pdfjs", "canvas"],
+      "body": "projects/pdf-engine.md",
+      "placeholder": true
+    },
+    {
+      "slug": "data-grid",
+      "title": "Enterprise Data Grid",
+      "summary": "PLACEHOLDER: PrimeNG tables for large datasets: server-side paging, filters, column state and export.",
+      "year": 2023,
+      "role": "Frontend engineer",
+      "org": "company-a",
+      "status": "shipped",
+      "featured": true,
+      "skills": ["angular", "primeng", "rxjs", "rest-apis"],
+      "body": "projects/data-grid.md",
+      "placeholder": true
+    },
+    {
+      "slug": "ai-portfolio",
+      "title": "AI-native Portfolio",
+      "summary": "This site: Angular SSR + FastAPI + pgvector, with a RAG agent whose citations light up a knowledge graph.",
+      "year": 2026,
+      "role": "Design, frontend, backend, AI",
+      "status": "in-progress",
+      "featured": true,
+      "skills": ["angular", "typescript", "python", "fastapi", "postgres", "rag", "llms", "mcp"],
+      "links": { "repo": "https://github.com/chandrashekhar-17x/chandrashekhar-portfolio" },
+      "body": "projects/ai-portfolio.md"
+    }
+  ]
+}

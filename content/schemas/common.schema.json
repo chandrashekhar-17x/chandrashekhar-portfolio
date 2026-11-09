@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Shared definitions",
+  "$defs": {
+    "id": {
+      "description": "Lowercase kebab-case id, unique within its collection.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "url": { "type": "string", "pattern": "^(https://|mailto:|/)" },
+    "yearMonth": {
+      "description": "Date as YYYY-MM.",
+      "type": "string",
+      "pattern": "^(19|20)\\d{2}-(0[1-9]|1[0-2])$"
+    },
+    "image": {
+      "type": "object",
+      "required": ["src", "alt"],
+      "additionalProperties": false,
+      "properties": {
+        "src": { "$ref": "#/$defs/url" },
+        "alt": { "type": "string", "minLength": 3 }
+      }
+    },
+    "placeholder": {
+      "description": "true = dummy data that must be replaced before launch.",
+      "type": "boolean"
+    },
+    "skillRefs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/id" },
+      "uniqueItems": true
+    }
+  }
+}

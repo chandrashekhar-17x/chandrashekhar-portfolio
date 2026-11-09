@@ -1,0 +1,29 @@
+{
+  "$schema": "../schemas/profile.schema.json",
+  "name": "Chandrashekhar",
+  "headline": "Frontend engineer who builds complex UIs (CAD editors, PDF engines, data grids), now building the AI systems behind them.",
+  "summary": "PLACEHOLDER: I'm a frontend engineer working mainly with Angular, TypeScript and RxJS. I build interfaces that are hard to get right: a canvas-based CAD editor, PDF rendering, and data-heavy PrimeNG tables. I'm now learning Python backends (FastAPI) and AI engineering (LLMs, RAG, agents), and this site is where I build it in public.",
+  "location": "India",
+  "email": "hello@example.com",
+  "roles": ["Frontend Engineer", "Angular Specialist", "AI Engineer in progress"],
+  "availability": { "status": "open", "note": "Open to frontend and AI-engineering roles." },
+  "photo": {
+    "src": "/media/avatar-placeholder.svg",
+    "alt": "Placeholder avatar for Chandrashekhar"
+  },
+  "links": [
+    { "kind": "github", "label": "GitHub", "url": "https://github.com/chandrashekhar-17x" },
+    {
+      "kind": "linkedin",
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/chandrashekhar1423/"
+    },
+    { "kind": "email", "label": "Email", "url": "mailto:hello@example.com" }
+  ],
+  "stats": [
+    { "label": "Years building UIs", "value": "4+", "placeholder": true },
+    { "label": "Projects shipped", "value": "30+", "placeholder": true },
+    { "label": "Complex UIs: CAD, PDF, grids", "value": "3" }
+  ],
+  "placeholderFields": ["summary", "email", "photo"]
+}

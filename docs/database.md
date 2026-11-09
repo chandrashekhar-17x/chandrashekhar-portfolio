@@ -23,6 +23,7 @@
     analytics_event(id, name, props jsonb, created_at)  -- or use Umami
     admin_user(id, email, password_hash, created_at)
 
-- **Source of truth** = `content/` folder (MD + JSON) in git; DB is rebuilt by the ingest worker. Easy to review, version and roll back.
+- **Source of truth** = the **database** (edited in /admin, decided 2026-11-09). `content/` is the first seed and a versioned export (`make content-export`, Phase 3), so history and rollback still live in git. The RAG index is rebuilt from the DB by the ingest worker.
+- Tables for journal posts, media/resume files, refresh tokens, TOTP, guestbook and eval runs are added in the Phase 2/3 plans.
 - Store IP as salted hash only; purge chat logs after 90 days.
 - Migrations with Alembic; seed script loads content.

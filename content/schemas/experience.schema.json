@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "experience.schema.json",
+  "title": "Experience",
+  "type": "object",
+  "required": ["organizations", "roles"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "organizations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/id" },
+          "name": { "type": "string" },
+          "kind": { "enum": ["company", "client", "freelance", "education", "open-source"] },
+          "url": { "$ref": "common.schema.json#/$defs/url" },
+          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+        }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "org", "title", "start", "summary", "highlights", "skills"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/id" },
+          "org": { "description": "organizations[].id", "$ref": "common.schema.json#/$defs/id" },
+          "title": { "type": "string" },
+          "start": { "$ref": "common.schema.json#/$defs/yearMonth" },
+          "end": {
+            "description": "Omit while current.",
+            "$ref": "common.schema.json#/$defs/yearMonth"
+          },
+          "location": { "type": "string" },
+          "summary": { "type": "string", "maxLength": 600 },
+          "highlights": { "type": "array", "items": { "type": "string" }, "maxItems": 8 },
+          "skills": { "$ref": "common.schema.json#/$defs/skillRefs" },
+          "placeholder": { "$ref": "common.schema.json#/$defs/placeholder" }
+        }
+      }
+    }
+  }
+}

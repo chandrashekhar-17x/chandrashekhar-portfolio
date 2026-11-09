@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/skills.schema.json",
+  "skills": [
+    { "id": "angular", "name": "Angular", "category": "frontend", "level": 5 },
+    { "id": "typescript", "name": "TypeScript", "category": "frontend", "level": 5 },
+    { "id": "javascript", "name": "JavaScript", "category": "frontend", "level": 5 },
+    { "id": "rxjs", "name": "RxJS", "category": "frontend", "level": 4 },
+    { "id": "primeng", "name": "PrimeNG", "category": "frontend", "level": 4 },
+    { "id": "html-css", "name": "HTML & CSS / SCSS", "category": "frontend", "level": 5 },
+    { "id": "canvas", "name": "HTML Canvas", "category": "graphics", "level": 4 },
+    { "id": "pdfjs", "name": "PDF.js", "category": "graphics", "level": 4 },
+    { "id": "animation", "name": "Web animation (2D/3D)", "category": "graphics", "level": 4 },
+    { "id": "rest-apis", "name": "REST API integration", "category": "backend", "level": 4 },
+    { "id": "python", "name": "Python", "category": "backend", "level": 2, "learning": true },
+    { "id": "fastapi", "name": "FastAPI", "category": "backend", "level": 2, "learning": true },
+    { "id": "postgres", "name": "PostgreSQL", "category": "backend", "level": 2, "learning": true },
+    { "id": "llms", "name": "LLM APIs", "category": "ai", "level": 2, "learning": true },
+    { "id": "rag", "name": "RAG", "category": "ai", "level": 2, "learning": true },
+    {
+      "id": "langchain",
+      "name": "LangChain / LangGraph",
+      "category": "ai",
+      "level": 1,
+      "learning": true
+    },
+    {
+      "id": "mcp",
+      "name": "Model Context Protocol",
+      "category": "ai",
+      "level": 1,
+      "learning": true
+    },
+    { "id": "git", "name": "Git", "category": "tools", "level": 4 }
+  ]
+}

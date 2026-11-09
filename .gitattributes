@@ -1,0 +1,16 @@
+# Normalise line endings so Windows/macOS/Linux diffs stay clean.
+* text=auto eol=lf
+
+# Binary files: never touch line endings, never diff.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.pdf binary
+*.woff2 binary
+
+# Generated lockfiles: collapse in GitHub diffs.
+pnpm-lock.yaml linguist-generated=true -diff
+uv.lock linguist-generated=true -diff

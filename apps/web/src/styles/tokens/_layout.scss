@@ -1,0 +1,29 @@
+// Spacing, radius and layering tokens (4-pt scale from docs/Design.md).
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --radius-chip: 8px;
+  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+
+  --container-max: 1200px;
+  --gutter: clamp(16px, 4vw, 32px);
+
+  // z-index layers: keep every stacking decision in one place
+  --z-canvas: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-overlay: 80;
+  --z-palette: 90;
+  --z-cursor: 100;
+}

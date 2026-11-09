@@ -1,0 +1,56 @@
+// Global element styles built on the tokens.
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 100%;
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  font-size: var(--text-base);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--cyan);
+  text-underline-offset: 3px;
+}
+
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+// One visible focus style everywhere (keyboard users only).
+:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--violet) 40%, transparent);
+}
+
+// Screen-reader-only helper.
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
