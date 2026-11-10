@@ -43,6 +43,3 @@ test-results-visual/
 .history/
 .DS_Store
 Thumbs.db
-
-# Cloudflare wrangler local state
-.wrangler/
