@@ -8,6 +8,8 @@ if (existsSync(envFile)) process.loadEnvFile(envFile);
 
 const origin = siteOrigin(process.env.PUBLIC_SITE_URL);
 const api = apiOrigin(process.env.PUBLIC_API_URL);
+// Turnstile site keys are public by design (the secret key stays on the API).
+const turnstileKey = process.env.TURNSTILE_SITE_KEY?.trim() || null;
 
 const output = new URL('../src/app/core/seo/site-origin.gen.ts', import.meta.url);
 const source = [
@@ -15,6 +17,8 @@ const source = [
   `export const SITE_ORIGIN = ${JSON.stringify(origin)};`,
   '/** Content API origin (PUBLIC_API_URL); null = use the bundled content/ files. */',
   `export const API_ORIGIN: string | null = ${JSON.stringify(api)};`,
+  '/** Public Cloudflare Turnstile site key; null = no bot-check widget. */',
+  `export const TURNSTILE_SITE_KEY: string | null = ${JSON.stringify(turnstileKey)};`,
   '',
 ].join('\n');
 mkdirSync(new URL('.', output), { recursive: true });
