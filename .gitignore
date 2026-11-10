@@ -30,7 +30,6 @@ htmlcov/
 coverage/
 playwright-report/
 test-results/
-__screenshots__/
 .lighthouseci/
 
 # --- Editors & OS ---
