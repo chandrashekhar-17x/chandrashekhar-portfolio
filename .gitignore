@@ -33,6 +33,7 @@ playwright-report/
 test-results/
 test-results-visual/
 .lighthouseci/
+.wrangler/
 
 # --- Editors & OS ---
 .idea/
