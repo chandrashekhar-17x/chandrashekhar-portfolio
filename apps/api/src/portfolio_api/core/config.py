@@ -9,7 +9,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, PostgresDsn, RedisDsn, SecretStr
+from pydantic import Field, PostgresDsn, RedisDsn, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Repo root: apps/api/src/portfolio_api/core/config.py → 5 levels up.
@@ -44,9 +44,31 @@ class Settings(BaseSettings):
     # Seconds a public content response stays in Redis (`make seed` clears it).
     content_cache_ttl: int = 300
 
+    # Contact form. Without the Turnstile secret the bot check is off (local dev);
+    # without Resend settings messages are only stored ("log only" mode).
+    turnstile_secret_key: SecretStr | None = None
+    resend_api_key: SecretStr | None = None
+    contact_to_email: str | None = None
+    contact_from_email: str | None = None
+    contact_limit_per_hour: int = 3
+    # Visitor IPs are stored only as salted hashes; set a long random value in production.
+    ip_hash_salt: SecretStr = SecretStr("local-dev-salt")
+
     # Secrets use SecretStr so they never show up in logs or tracebacks.
     anthropic_api_key: SecretStr | None = None
     openai_api_key: SecretStr | None = None
+
+    @property
+    def email_enabled(self) -> bool:
+        return bool(self.resend_api_key and self.contact_to_email and self.contact_from_email)
+
+    @model_validator(mode="after")
+    def _production_needs_real_salt(self) -> "Settings":
+        if self.environment == "production" and self.ip_hash_salt.get_secret_value() == (
+            "local-dev-salt"
+        ):
+            raise ValueError("IP_HASH_SALT must be set in production")
+        return self
 
     @property
     def is_production(self) -> bool:

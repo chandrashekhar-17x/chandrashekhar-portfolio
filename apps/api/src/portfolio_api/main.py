@@ -7,11 +7,12 @@ Run locally with:
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
+import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from portfolio_api import __version__
-from portfolio_api.api.routes import content, health
+from portfolio_api.api.routes import contact, content, health
 from portfolio_api.core.config import Settings, get_settings
 from portfolio_api.core.errors import install_error_handlers
 from portfolio_api.core.logging import configure_logging
@@ -29,6 +30,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         # Startup: create pools (they connect lazily). Shutdown: close them cleanly.
         yield
+        await app.state.http.aclose()
         await app.state.redis.aclose()
         await app.state.engine.dispose()
 
@@ -46,6 +48,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.session_factory = make_session_factory(app.state.engine)
     app.state.redis = make_redis(settings)
     app.state.cache = JsonCache(app.state.redis, settings.content_cache_ttl)
+    # Outgoing HTTP (Turnstile, Resend): short timeout, one pooled client.
+    app.state.http = httpx.AsyncClient(timeout=5)
 
     install_error_handlers(app)
     # CORS: let the Angular site (and only it) call this API from the browser.
@@ -62,4 +66,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(content.router)
+    app.include_router(contact.router)
     return app

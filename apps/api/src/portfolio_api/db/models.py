@@ -11,16 +11,20 @@ Graph nodes are not stored here: they are derived from these tables (Phase 2 PR 
 Only the hand-written extras from `graph.json` (topics, extra edges) get tables.
 """
 
+import uuid
+from datetime import datetime
 from typing import Any
 
 from sqlalchemy import (
     CheckConstraint,
+    DateTime,
     ForeignKey,
     Integer,
     MetaData,
     SmallInteger,
     String,
     Text,
+    func,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -225,3 +229,24 @@ class GraphEdge(Base):
     dst: Mapped[str] = mapped_column(String(128))
     rel: Mapped[str] = mapped_column(String(16))
     doc: Mapped[Doc]
+
+
+class ContactMessage(Base):
+    """A message from the contact form (kept even when email delivery fails)."""
+
+    __tablename__ = "contact_message"
+    __table_args__ = (
+        CheckConstraint("reason IN ('hiring', 'freelance', 'hello')", name="reason"),
+        CheckConstraint("status IN ('stored', 'emailed', 'email_failed')", name="status"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), index=True
+    )
+    name: Mapped[str] = mapped_column(String(80))
+    email: Mapped[str] = mapped_column(String(254))
+    reason: Mapped[str] = mapped_column(String(16))
+    body: Mapped[str] = mapped_column(Text)
+    ip_hash: Mapped[str] = mapped_column(String(64))  # salted SHA-256, never the raw IP
+    status: Mapped[str] = mapped_column(String(16), default="stored")
