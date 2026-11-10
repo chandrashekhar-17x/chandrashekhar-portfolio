@@ -11,7 +11,9 @@ Phases match `docs/plan.md` (0–9).
 - [x] Design tokens (colours, type, spacing, motion; dark + light) — `ux` · S
 - [x] `content/` schemas + seed data + validator — `be` · S
 - [x] FastAPI skeleton + settings + /health — `be` · S
-- [ ] Replace placeholder content with real data (run `make content-check` for the list) — `ux` · S
+- [x] Replace placeholder content with real data (2026-11-10; photo, resume and domain still dummy: `make content-check`) — `ux` · S
+- [x] Confidentiality check (hashed internal-name list) in `make check` + CI — `ops` · S
+- [x] Agent eval seed `content/evals/agent-evals.json` (profile-data §9), run against the scripted chat — `ai` · S
 
 ## Phase 1 · Frontend foundation
 
@@ -72,7 +74,9 @@ Phases match `docs/plan.md` (0–9).
 
 ## Phase 8 · Showcase extras
 
-- [ ] Live CAD mini-demo — `fe` · M
+- [ ] **CAD Playground (public demo), high priority**: standalone lazy route `/lab/cad-playground`; Three.js; public sample DXF files (check licences); rbush R-tree with an overlay toggle; hover/select; move/copy/delete; undo/redo; fit-to-screen; DXF export; red/green diff between two sample versions; reduced-motion and mobile friendly; own e2e tests — `fe` · L
+- [ ] Bounding-box overlay demo on a public sample web page — `fe` · S
+- [ ] Live CAD mini-demo (superseded by the CAD Playground) — `fe` · M
 - [ ] PDF viewer demo — `fe` · M
 - [ ] 100k-row grid demo — `fe` · S
 - [ ] Journal / learning log — `fe` · M
