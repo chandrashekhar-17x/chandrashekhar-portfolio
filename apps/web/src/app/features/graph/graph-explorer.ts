@@ -53,9 +53,13 @@ export class GraphExplorer {
     const f = this.filter();
     return f ? clusterView(g, f) : hubOverview(g);
   });
-  /** Key that remounts the canvas when the view changes (fresh layout + pop-in). */
+  /**
+   * Key that remounts the canvas only when it must draw a different graph:
+   * phone drill-down steps. On desktop a filter just dims nodes in place, so the
+   * key never changes and the layout is never rebuilt.
+   */
   protected readonly viewKey = computed(() => [
-    `${String(this.narrow())}:${this.filter() ?? 'all'}`,
+    this.narrow() ? `area:${this.filter() ?? 'all'}` : 'full',
   ]);
   protected readonly clusterTitle = computed(() => {
     const f = this.filter();

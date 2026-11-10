@@ -94,3 +94,21 @@ test('phones get a drill-down: hubs first, then one area, then back', async ({
   await back.click();
   await expect(stage).toContainText('Tap an area to open it');
 });
+
+test('desktop filters dim nodes in place without rebuilding the graph', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, 'phones use the drill-down, which swaps views on purpose');
+  await page.goto('/graph');
+  const canvas = page.locator('app-graph-canvas canvas');
+  await expect(canvas).toBeVisible();
+  // Tag the canvas element: if the graph were remounted, the tag would be gone.
+  await canvas.evaluate((c) => {
+    c.setAttribute('data-test-same', '1');
+  });
+  for (const name of ['CAD', 'Frontend', 'Projects']) {
+    await page.locator('app-graph-filters button', { hasText: name }).first().click();
+  }
+  await expect(page.locator('app-graph-canvas canvas[data-test-same="1"]')).toHaveCount(1);
+});

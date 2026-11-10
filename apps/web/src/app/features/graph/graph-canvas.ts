@@ -11,7 +11,6 @@ import {
   input,
   output,
   signal,
-  untracked,
   viewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -87,13 +86,7 @@ export class GraphCanvas {
       this.theme.theme();
       if (browser) this.palette = readPalette();
     });
-    // A new filter shakes the layout a little, like the prototype.
-    effect(() => {
-      this.filter();
-      untracked(() => {
-        if (this.sim) this.sim.alpha = Math.max(this.sim.alpha, 0.5);
-      });
-    });
+    // A filter only dims/brightens nodes; the layout stays where it is (owner request).
   }
 
   private start(): void {
