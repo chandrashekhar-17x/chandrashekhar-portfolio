@@ -1,5 +1,12 @@
 import { Sim, SimNode } from './graph-sim';
-import { RenderState, edgeLabels, growth, isDimmed, shortLabel } from './graph-renderer';
+import {
+  RenderState,
+  edgeLabels,
+  growth,
+  isDimmed,
+  shortLabel,
+  splitLabel,
+} from './graph-renderer';
 
 const node = (over: Partial<SimNode> = {}): SimNode => ({
   id: 'skill:a',
@@ -77,5 +84,11 @@ describe('graph renderer helpers', () => {
       'Custom CAD Viewer & E…',
     );
     expect(shortLabel('Angular')).toBe('Angular');
+  });
+
+  it('splits long hub names into two balanced lines', () => {
+    expect(splitLabel('DOCUMENT PROCESSING')).toEqual(['DOCUMENT', 'PROCESSING']);
+    expect(splitLabel('CAD & VISUALIZATION')).toEqual(['CAD &', 'VISUALIZATION']);
+    expect(splitLabel('FRONTEND')).toEqual(['FRONTEND']);
   });
 });

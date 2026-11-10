@@ -54,4 +54,19 @@ canvas {
   font-size: 10.5px;
   color: var(--ink-3);
   pointer-events: none;
+
+  // Touch screens have no hover: show the right hint for the input device.
+  .touch {
+    display: none;
+  }
+
+  @media (hover: none) {
+    .mouse {
+      display: none;
+    }
+
+    .touch {
+      display: inline;
+    }
+  }
 }

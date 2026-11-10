@@ -132,13 +132,18 @@ function drawNodes(
       ctx.setLineDash([]);
     }
 
-    if (showsLabel(n, s, focus, lit)) {
+    if (showsLabel(n, s, focus, lit) || sim.nodes.length <= SMALL_VIEW) {
       ctx.globalAlpha = dim ? 0.2 : 1;
       ctx.fillStyle = n.kind === 'hub' ? color : palette.label;
       ctx.font = n.kind === 'hub' ? LABEL_FONT_HUB : LABEL_FONT;
       ctx.textAlign = 'center';
       const full = n === s.hovered || lit;
-      ctx.fillText(full ? n.label : shortLabel(n.label), n.x, n.y - r - 7);
+      const text = full ? n.label : shortLabel(n.label);
+      // Narrow canvases: long hub names go on two lines so neighbours don't collide.
+      const lines = n.kind === 'hub' && sim.width < 600 ? splitLabel(text) : [text];
+      lines.forEach((line, i) => {
+        ctx.fillText(line, n.x, n.y - r - 7 - (lines.length - 1 - i) * 13);
+      });
     }
   }
 }
@@ -150,6 +155,27 @@ function drawNodes(
 export function shortLabel(label: string, max = 22): string {
   const head = label.split(/[:,(]/)[0]?.trim() ?? label;
   return head.length > max ? `${head.slice(0, max - 1).trimEnd()}…` : head;
+}
+
+/** Views this small (phone drill-down) label every node: touch has no hover. */
+const SMALL_VIEW = 24;
+
+/** "DOCUMENT PROCESSING" → ["DOCUMENT", "PROCESSING"]; short names stay on one line. */
+export function splitLabel(label: string, max = 12): string[] {
+  if (label.length <= max) return [label];
+  const words = label.split(' ');
+  let best = [label];
+  let bestWidth = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    const width = Math.max(a.length, b.length);
+    if (width < bestWidth) {
+      best = [a, b];
+      bestWidth = width;
+    }
+  }
+  return best;
 }
 
 /** Relations worth naming on hover (the rest are obvious from the layout). */

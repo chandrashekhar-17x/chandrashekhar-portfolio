@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  afterNextRender,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 
 import { GraphNode, KnowledgeGraph } from '../../core/content/build-graph';
 import { GraphFilters } from './graph-filters';
@@ -6,6 +16,8 @@ import { ChatStore } from '../../core/chat/chat-store.service';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
 import { GraphList } from './graph-list';
 import { GraphCanvas } from './graph-canvas';
+import { HUB_LABELS } from '../../core/content/build-graph';
+import { clusterView, hubOverview } from './graph-view';
 
 /** Side panel (intro, filters, list toggle) + canvas or list (prototype .kg). */
 @Component({
@@ -30,8 +42,48 @@ export class GraphExplorer {
 
   private readonly chat = inject(ChatStore);
 
+  /**
+   * Narrow screens (< 600 px) get a drill-down instead of the full network:
+   * the hubs first, then one cluster at a time. Server render = desktop.
+   */
+  protected readonly narrow = signal(false);
+  protected readonly view = computed(() => {
+    const g = this.graph();
+    if (!this.narrow()) return g;
+    const f = this.filter();
+    return f ? clusterView(g, f) : hubOverview(g);
+  });
+  /** Key that remounts the canvas when the view changes (fresh layout + pop-in). */
+  protected readonly viewKey = computed(() => [
+    `${String(this.narrow())}:${this.filter() ?? 'all'}`,
+  ]);
+  protected readonly clusterTitle = computed(() => {
+    const f = this.filter();
+    return f && f in HUB_LABELS ? HUB_LABELS[f as keyof typeof HUB_LABELS] : (f ?? '');
+  });
+
+  constructor() {
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const observer = new ResizeObserver(([entry]) => {
+        const narrow = (entry?.contentRect.width ?? 1000) < 600;
+        if (narrow !== this.narrow()) this.narrow.set(narrow);
+      });
+      observer.observe(host);
+      destroyRef.onDestroy(() => {
+        observer.disconnect();
+      });
+    });
+  }
+
   /** Clicking a node lights it and its neighbours; skills/projects also ask the agent. */
   protected onActivate(node: GraphNode): void {
+    // Small screens: tapping a hub opens its cluster.
+    if (this.narrow() && node.kind === 'hub' && !this.filter()) {
+      this.filter.set(node.category);
+      return;
+    }
     if (node.kind !== 'hub') this.chat.ask(`Tell me about ${node.label}`);
     const ids = new Set([node.id]);
     for (const l of this.graph().links) {

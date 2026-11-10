@@ -78,3 +78,19 @@ test('list view fits its panel and scrolls to the last group', async ({ page }) 
   await last.scrollIntoViewIfNeeded();
   await expect(last.locator('li').first()).toBeVisible();
 });
+
+test('phones get a drill-down: hubs first, then one area, then back', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, 'desktop keeps the full network');
+  await page.goto('/graph');
+  const stage = page.locator('app-graph-explorer .stage');
+  await expect(stage).toContainText('Tap an area to open it');
+  await page.locator('app-graph-filters button', { hasText: 'CAD' }).first().click();
+  const back = stage.getByRole('button', { name: '← All areas' });
+  await expect(back).toBeVisible();
+  await expect(stage).toContainText('CAD & VISUALIZATION');
+  await back.click();
+  await expect(stage).toContainText('Tap an area to open it');
+});
