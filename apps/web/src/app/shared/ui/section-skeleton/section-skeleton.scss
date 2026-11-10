@@ -69,23 +69,29 @@
 }
 
 // Heights match the real sections (kept in sync by the CLS e2e test).
-// Measured from the real explorer (side panel + 420px canvas); the CLS e2e test
-// (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't shift visible content.
+// All heights below are measured from the real sections (desktop, tablet, phone).
+// The CLS e2e test (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't
+// shift visible content; re-measure when a section's layout changes.
 .graph {
   height: 640px;
   border-radius: var(--radius-panel);
 
   @container site (max-width: 900px) {
-    height: 1020px; // side panel stacks above the canvas
+    height: 1092px; // side panel stacks above the canvas
   }
 
   @container site (max-width: 600px) {
-    height: 880px;
+    height: 970px;
   }
 }
 
 .card {
-  height: 412px; // real project card height (all cards are equal)
+  // Real project card heights (all cards in a grid are equal; wider = shorter).
+  height: 349px;
+
+  @container site (max-width: 900px) {
+    height: 394px;
+  }
 
   @container site (max-width: 600px) {
     height: 390px;
@@ -94,14 +100,26 @@
 
 .hud {
   height: 380px;
+
+  @container site (max-width: 600px) {
+    height: 400px;
+  }
 }
 
 .form {
   height: 360px;
+
+  @container site (max-width: 600px) {
+    height: 600px; // the form stacks into one tall column on phones
+  }
 }
 
 .aside {
   height: 200px;
+
+  @container site (max-width: 600px) {
+    height: 220px;
+  }
 }
 
 .grid {
@@ -134,6 +152,13 @@
 .rows {
   display: grid;
   gap: 28px;
+
+  // Phones: each role wraps to several lines (title, summary, highlights).
+  @container site (max-width: 600px) {
+    > div {
+      min-height: 210px;
+    }
+  }
 }
 
 .line {
@@ -156,4 +181,23 @@
 
 .w-70 {
   width: 70%;
+}
+
+// AI Lab uses the real HUD layout: 3 columns → tablet: core panel spans a row,
+// the two others share the next → phone: one column.
+:host(.kind-lab) .cards {
+  grid-template-columns: 1.1fr 1.4fr 1fr;
+  gap: 14px;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+
+    > :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @container site (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 }

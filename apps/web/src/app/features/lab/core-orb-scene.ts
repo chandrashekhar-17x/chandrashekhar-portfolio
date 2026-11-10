@@ -53,15 +53,26 @@ export function drawOrb(ctx: CanvasRenderingContext2D, particles: Particle[], f:
   }
 
   // Particles, rotated around the vertical axis; nearer = bigger and brighter.
+  // Batched: 2 colours × 4 depth levels = 8 fills instead of one per particle.
+  const levels = 4;
+  const batches = Array.from({ length: levels * 2 }, () => new Path2D());
   for (const p of particles) {
     const x = p.x * cos - p.z * sin;
     const z = p.x * sin + p.z * cos;
-    const depth = (z + 2) / 3;
-    ctx.globalAlpha = 0.25 + depth * 0.7;
-    ctx.fillStyle = z > 0 ? f.front : f.back;
-    ctx.beginPath();
-    ctx.arc(w / 2 + x * radius, h / 2 + p.y * radius, 1.4 * depth + 0.3, 0, Math.PI * 2);
-    ctx.fill();
+    const depth = (z + 2) / 3; // 1/3 … 1
+    const level = Math.min(levels - 1, Math.floor((depth - 1 / 3) * 1.5 * levels));
+    const path = batches[(z > 0 ? 0 : levels) + level];
+    const px = w / 2 + x * radius;
+    const py = h / 2 + p.y * radius;
+    const r = 1.4 * depth + 0.3;
+    path?.moveTo(px + r, py);
+    path?.arc(px, py, r, 0, Math.PI * 2);
   }
+  batches.forEach((path, i) => {
+    const level = i % levels;
+    ctx.globalAlpha = 0.25 + ((level + 0.5) / levels) * 0.7;
+    ctx.fillStyle = i < levels ? f.front : f.back;
+    ctx.fill(path);
+  });
   ctx.globalAlpha = 1;
 }

@@ -31,7 +31,7 @@ describe('hero scene', () => {
     expect(createStars(400, 300, seededRandom(7))).toEqual(createStars(400, 300, seededRandom(7)));
   });
 
-  it('draws sky, stars, hill and grid without errors in both themes', () => {
+  it('draws stars in a few batched fills (not one per star), both themes', () => {
     const stars = createStars(400, 300, seededRandom(7));
     for (const light of [false, true]) {
       const { ctx, calls } = fakeContext();
@@ -43,9 +43,10 @@ describe('hero scene', () => {
         mouseY: -0.1,
         light,
       });
-      expect(calls.filter((c) => c === 'arc')).toHaveLength(stars.length);
+      // 4 twinkle batches + hill + glow → a handful of fills, independent of star count.
+      expect(calls.filter((c) => c === 'fill').length).toBeLessThanOrEqual(6);
       expect(calls).toContain('stroke');
-      expect(calls).toContain('fillRect');
+      expect(calls).toContain('clearRect'); // transparent canvas: the sky is CSS
     }
   });
 });

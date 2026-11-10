@@ -28,8 +28,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         var(--violet) 45%,
         transparent 70%
       );
-      filter: blur(1px);
-      opacity: 0.75;
+      opacity: 0.75; // (no filter: a filter on an animated element forces repaints)
       animation: float 7s ease-in-out infinite;
     }
     .ring {

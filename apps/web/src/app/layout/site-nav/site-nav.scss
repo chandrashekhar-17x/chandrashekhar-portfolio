@@ -12,8 +12,9 @@
   height: var(--nav-h); // the layout relies on this exact height (sections fill the rest)
   padding: 0 28px;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in oklab, var(--bg) 70%, transparent);
-  backdrop-filter: blur(14px);
+  // Near-opaque instead of backdrop-filter: blurring the animated hero behind the nav
+  // had to be recomputed every frame (big rendering cost, measured).
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
 }
 
 .logo {

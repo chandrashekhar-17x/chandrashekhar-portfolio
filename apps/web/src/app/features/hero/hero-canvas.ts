@@ -28,6 +28,13 @@ import { HeroFrame, Star, createStars, drawHeroScene } from './hero-scene';
       width: 100%;
       height: 100%;
     }
+    /* Static sky behind the transparent canvas (painted once, not every frame). */
+    canvas {
+      background: linear-gradient(180deg, #03041a, #0d0a35);
+    }
+    :host-context([data-theme='light']) canvas {
+      background: linear-gradient(180deg, #eeeafc, #e3ddfb);
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -53,7 +60,8 @@ export class HeroCanvas {
   private start(): void {
     const canvas = this.canvas().nativeElement;
     const host = canvas.parentElement?.parentElement ?? canvas; // the hero section
-    let fitted = fitCanvas(canvas);
+    // Decorative backdrop: 1× pixel density is plenty and quarters the work on retina.
+    let fitted = fitCanvas(canvas, 1);
     let stars: Star[] = fitted ? createStars(fitted.width, fitted.height, seededRandom(7)) : [];
     let t = 0;
     const mouse = { x: 0, y: 0 };
@@ -80,9 +88,13 @@ export class HeroCanvas {
     // Reduced motion: keep the single still frame, no loop at all.
     const loop = this.prefs.reducedMotion()
       ? null
-      : new AnimationLoop(canvas, ({ dt }) => {
-          draw(dt);
-        });
+      : new AnimationLoop(
+          canvas,
+          ({ dt }) => {
+            draw(dt);
+          },
+          30, // ambient motion: 30 fps looks the same and halves the cost
+        );
 
     const onMove = (e: PointerEvent) => {
       const box = canvas.getBoundingClientRect();
@@ -90,7 +102,7 @@ export class HeroCanvas {
       mouse.y = (e.clientY - box.top) / box.height - 0.5;
     };
     const resize = new ResizeObserver(() => {
-      fitted = fitCanvas(canvas);
+      fitted = fitCanvas(canvas, 1);
       if (fitted) stars = createStars(fitted.width, fitted.height, seededRandom(7));
       draw(0);
     });

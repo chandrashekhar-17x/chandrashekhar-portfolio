@@ -61,7 +61,7 @@ export class CoreOrb {
     const canvas = this.canvas().nativeElement;
     const particles = createParticles(260, seededRandom(3));
     const still = this.prefs.reducedMotion();
-    let fitted: FittedCanvas | null = fitCanvas(canvas);
+    let fitted: FittedCanvas | null = fitCanvas(canvas, 1.5);
     let speaking = 0;
     let lastPulse = this.pulse();
 
@@ -88,12 +88,16 @@ export class CoreOrb {
     };
     const loop = still
       ? null
-      : new AnimationLoop(canvas, ({ time }) => {
-          draw(time);
-        });
+      : new AnimationLoop(
+          canvas,
+          ({ time }) => {
+            draw(time);
+          },
+          30, // ambient rotation: 30 fps is plenty
+        );
     draw(0);
     const resize = new ResizeObserver(() => {
-      fitted = fitCanvas(canvas);
+      fitted = fitCanvas(canvas, 1.5);
       draw(0);
     });
     resize.observe(canvas);

@@ -43,7 +43,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web content-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -80,6 +80,20 @@ smoke-web: ## Start the built SSR server and check it renders (after build)
 
 e2e-web: ## Playwright e2e tests against the built SSR app (after build)
 	pnpm --filter @portfolio/web e2e
+
+PW_IMAGE := mcr.microsoft.com/playwright:v1.65.0-noble
+# Runs as your user (not root) so screenshots/results stay editable without sudo.
+PW_DOCKER := docker run --rm --ipc=host --user $(shell id -u):$(shell id -g) -e HOME=/tmp -e CI=$(CI) \
+	-v $(CURDIR):/work -w /work/apps/web $(PW_IMAGE)
+
+lighthouse: ## Lighthouse CI budgets on the built app (perf/a11y/SEO ≥ 95, CLS, LCP)
+	pnpm --filter @portfolio/web lighthouse
+
+visual: ## Screenshot tests in the Playwright Docker image (after build)
+	$(PW_DOCKER) npx playwright test -c playwright.visual.config.ts
+
+visual-update: ## Re-record screenshot baselines (review the diff before committing!)
+	$(PW_DOCKER) npx playwright test -c playwright.visual.config.ts --update-snapshots
 
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py

@@ -1,5 +1,6 @@
 <nav class="nav" aria-label="Main">
-  <a class="logo" routerLink="/" aria-label="Home">
+  <!-- Accessible names start with the visible text (WCAG 2.5.3 label in name). -->
+  <a class="logo" routerLink="/" [attr.aria-label]="logoText() + ', home'">
     {{ profile()?.initials ?? profile()?.name }}<b aria-hidden="true">.</b>dev
   </a>
 
@@ -15,7 +16,7 @@
   <button
     type="button"
     class="kbd desktop"
-    aria-label="Open command palette"
+    [attr.aria-label]="shortcut() + ', open command palette'"
     (click)="commands.open()"
   >
     {{ shortcut() }}

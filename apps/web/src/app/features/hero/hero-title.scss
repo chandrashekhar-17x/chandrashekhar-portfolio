@@ -40,7 +40,9 @@ h1 {
 
 .grad {
   position: relative; // offsetParent for the letters' --x measurement
-  animation: shine 6s linear infinite;
+  // steps(60) over 6 s = 10 updates/s: looks smooth for a slow sheen, 6× cheaper
+  // than animating the custom property every frame (each step restyles every letter).
+  animation: shine 6s steps(60) infinite;
 
   .ch {
     background: linear-gradient(100deg, var(--violet), var(--cyan) 50%, var(--pink));

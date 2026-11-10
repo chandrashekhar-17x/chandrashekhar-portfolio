@@ -90,6 +90,51 @@ jobs:
           path: apps/web/playwright-report
           retention-days: 7
 
+  visual:
+    name: Web screenshots (Playwright container)
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    # Same image as `make visual` locally, so screenshots render identically.
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @portfolio/web build
+      - run: pnpm --filter @portfolio/web visual
+      - name: Upload screenshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diffs
+          path: apps/web/test-results
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse budgets
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @portfolio/web exec playwright install --with-deps chromium
+      - run: make build
+      - run: make lighthouse
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse
+          path: apps/web/.lighthouseci
+          retention-days: 7
+
   python:
     name: Python (lint · types · test · content)
     needs: changes
@@ -109,7 +154,7 @@ jobs:
   ci-ok:
     name: CI OK
     if: always()
-    needs: [secrets, web, python]
+    needs: [secrets, web, visual, lighthouse, python]
     runs-on: ubuntu-latest
     steps:
       - name: Fail if any job failed or was cancelled (skipped is fine)

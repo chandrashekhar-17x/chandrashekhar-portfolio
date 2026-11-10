@@ -21,15 +21,16 @@ Positioning line: *"Frontend engineer who builds complex UIs (CAD editors, PDF e
 - ✅ Planning done: all docs in `docs/` (PRD, Design, Architecture, database, API, agents, mcp, integration, features, plan, testing, debuging, review, backlog).
 - ✅ Clickable prototype: `prototype/index.html` (single self-contained file; open in a browser).
 - ✅ **Phase 0 (Foundation) done (2026-11-09):** pnpm + uv monorepo, Angular 22 SSR shell + design tokens, FastAPI skeleton (`/health`), Docker (pgvector pg17 on :5433, Redis on :6380), `content/` schemas + seed + validator, Makefile, pre-commit (gitleaks), GitHub Actions CI. `make check` is green.
-- ⏭️ **Next: Phase 1 (Frontend foundation)**: present the plan and wait for OK. Follow `docs/IMPLEMENTATION_PROMPT.md` (master brief) through Phase 9. The prototype is a reference only.
-- 🧑 Owner TODO: replace placeholder content (`make content-check` lists it), push to GitHub, set branch protection (`docs/CONTRIBUTING.md`).
+- ✅ **Phase 1 (Frontend foundation) built (2026-11-10), PRs 1–6 + 8:** Angular 22 site with every prototype section (hero canvas, knowledge graph with filters/list view/endless drift, tilt work cards, AI Lab orb HUD, experience timeline, contact form), skeleton-first `@defer` loading revealed one at a time, scripted chat whose citations light the graph (same event contract as the future SSE API), ⌘K palette, SEO (meta/OG/JSON-LD/sitemap/robots), axe 0 serious issues, Lighthouse 100/100/100/100, 40 Docker screenshot baselines. Custom cursors removed (owner: too slow/laggy). Data comes from `content/` via `ContentRepository` (swap to HTTP in Phase 2).
+- ⏭️ **Next: Phase 2 (Backend core + database)**: present the plan and wait for OK. Follow `docs/IMPLEMENTATION_PROMPT.md` (master brief) through Phase 9. The prototype is a reference only.
+- 🧑 Owner TODO: replace placeholder content (`make content-check` lists it), add `content/resume/resume.pdf`, set branch protection (`docs/CONTRIBUTING.md`), install + log in to `gh` (lets Claude open PRs and read CI), choose the domain and a hosting account for the preview deploy.
 - ⚠️ Working agreement: **propose a plan and get my OK before large implementations.** I asked to design first, then implement.
 
 ## Key decisions (don't silently change these)
 | Area | Decision |
 |---|---|
 | Frontend | Angular 22 (TS 6.0), standalone components, signals, zoneless, SSR + incremental hydration, `@defer (on viewport)` per section, SCSS + CSS tokens, container queries |
-| Effects | Canvas hero (starfield + perspective wave grid), force-directed knowledge graph, 3D tilt cards, magnetic buttons, text scramble/typing, **splash cursor (WebGL fluid, lime #84cc16, size 0.7)** + custom arrow cursor with context labels; all respect `prefers-reduced-motion` and are off on touch |
+| Effects | Canvas hero (starfield + perspective wave grid), force-directed knowledge graph, 3D tilt cards, magnetic buttons, text scramble/typing, **default system cursor for now** (2026-11-09: the WebGL splash cursor was too slow and the custom arrow cursor felt laggy, so both were removed at the owner's request; an attractive, lightweight pointer effect will be designed later); all respect `prefers-reduced-motion` and are off on touch |
 | Loading | Sections load **one at a time** via `@defer (on viewport)` with same-size skeletons (no layout shift); project cards load card-by-card |
 | Backend | FastAPI (async), SQLAlchemy 2 + Alembic, pydantic, Redis (rate-limit + cache) |
 | Data | PostgreSQL + **pgvector** = single store for content, graph (node/edge tables) and embeddings. **DB is the source of truth** (edited in /admin); `content/` = first seed + versioned export. Graph nodes are derived from skills/projects/experience; `graph.json` only adds topics + extra edges |

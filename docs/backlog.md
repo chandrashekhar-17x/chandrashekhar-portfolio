@@ -15,18 +15,19 @@ Phases match `docs/plan.md` (0–9).
 
 ## Phase 1 · Frontend foundation
 
-- [ ] Theme toggle + self-hosted fonts — `ux` · S
-- [ ] Hero canvas + typed text — `fe` · M
-- [ ] Knowledge graph from mock data — `fe` · M
-- [ ] Projects + case-study route — `fe` · M
-- [ ] Experience, resume page + PDF — `fe` · S
-- [ ] Scripted chat widget (fallback) — `fe` · S
-- [ ] Section-by-section lazy loading (@defer on viewport) + skeletons — `fe` · S
-- [ ] Splash cursor (WebGL fluid) + custom arrow cursor — `ux` · M
-- [ ] Command palette, magnetic buttons, tilt cards — `ux` · S
-- [ ] SEO, OG, sitemap, robots, JSON-LD — `fe` · S
-- [ ] A11y + reduced motion; Playwright e2e + axe + Lighthouse CI — `ux` · M
-- [ ] Deploy preview to Vercel/Cloudflare — `ops` · S
+- [x] Theme toggle + self-hosted fonts — `ux` · S
+- [x] Hero canvas + typed text — `fe` · M
+- [x] Knowledge graph from mock data — `fe` · M
+- [x] Projects + case-study route — `fe` · M
+- [x] Experience, resume page (+ print-to-PDF; real `resume.pdf` still to add) — `fe` · S
+- [x] Scripted chat widget (fallback) — `fe` · S
+- [x] Section-by-section lazy loading (@defer on viewport) + skeletons — `fe` · S
+- [ ] Attractive, lightweight pointer effect (splash + eased arrow cursor tried and removed: too slow / laggy) — `ux` · M
+- [x] Command palette, magnetic buttons, tilt cards — `ux` · S
+- [x] SEO, OG, sitemap, robots, JSON-LD — `fe` · S
+- [x] A11y + reduced motion; Playwright e2e + axe + Lighthouse CI — `ux` · M
+- [ ] Deploy preview to Vercel/Cloudflare (needs owner's account) — `ops` · S
+- [x] Screenshot tests (Docker), prototype parity report — `fe` · S
 
 ## Phase 2 · Backend core + database
 
