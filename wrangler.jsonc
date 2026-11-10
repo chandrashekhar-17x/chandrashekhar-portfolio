@@ -1,0 +1,15 @@
+// Cloudflare Workers config: serves the static build (no server code).
+// Build first: `pnpm --filter @portfolio/web build:static`, then `npx wrangler deploy`.
+// "name" must match the Worker name in the Cloudflare dashboard.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chandrashekhar-portfolio",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./apps/web/dist/web/browser",
+    // Unknown paths get 404.html with a real 404 status.
+    "not_found_handling": "404-page",
+    // /work is served from work.html (no redirect to /work/).
+    "html_handling": "auto-trailing-slash",
+  },
+}

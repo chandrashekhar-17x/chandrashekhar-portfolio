@@ -1,5 +1,5 @@
 import { NodeCategory } from '../../core/content/build-graph';
-import { Sim, SimNode, neighbourhood } from './graph-sim';
+import { Sim, SimLink, SimNode, neighbourhood } from './graph-sim';
 
 // Draws the graph (port of the prototype's drawKG). Pure: everything it needs
 // comes in through arguments, so it is easy to test and reason about.
@@ -49,6 +49,7 @@ export function drawGraph(
   const focus = s.hovered ? neighbourhood(sim, s.hovered) : null;
   drawLinks(ctx, sim, s, palette, focus);
   drawNodes(ctx, sim, s, palette, focus);
+  if (s.hovered) drawEdgeLabels(ctx, sim, s.hovered, palette);
   ctx.globalAlpha = 1;
 }
 
@@ -119,14 +120,90 @@ function drawNodes(
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
 
-    if (showsLabel(n, s, focus, lit)) {
+    // "Growing" skills (proficiency: learning) get a dashed ring.
+    if (n.learning) {
+      ctx.globalAlpha = dim ? 0.2 : 0.9;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 4, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    if (showsLabel(n, s, focus, lit) || sim.nodes.length <= SMALL_VIEW) {
       ctx.globalAlpha = dim ? 0.2 : 1;
       ctx.fillStyle = n.kind === 'hub' ? color : palette.label;
       ctx.font = n.kind === 'hub' ? LABEL_FONT_HUB : LABEL_FONT;
       ctx.textAlign = 'center';
-      ctx.fillText(n.label, n.x, n.y - r - 7);
+      const full = n === s.hovered || lit;
+      const text = full ? n.label : shortLabel(n.label);
+      // Narrow canvases: long hub names go on two lines so neighbours don't collide.
+      const lines = n.kind === 'hub' && sim.width < 600 ? splitLabel(text) : [text];
+      lines.forEach((line, i) => {
+        ctx.fillText(line, n.x, n.y - r - 7 - (lines.length - 1 - i) * 13);
+      });
     }
   }
+}
+
+/**
+ * Canvas label for long titles: "Custom CAD Viewer & Editor, built from zero" →
+ * "Custom CAD Viewer & Edi…". The tooltip and list view keep the full title.
+ */
+export function shortLabel(label: string, max = 22): string {
+  const head = label.split(/[:,(]/)[0]?.trim() ?? label;
+  return head.length > max ? `${head.slice(0, max - 1).trimEnd()}…` : head;
+}
+
+/** Views this small (phone drill-down) label every node: touch has no hover. */
+const SMALL_VIEW = 24;
+
+/** "DOCUMENT PROCESSING" → ["DOCUMENT", "PROCESSING"]; short names stay on one line. */
+export function splitLabel(label: string, max = 12): string[] {
+  if (label.length <= max) return [label];
+  const words = label.split(' ');
+  let best = [label];
+  let bestWidth = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    const width = Math.max(a.length, b.length);
+    if (width < bestWidth) {
+      best = [a, b];
+      bestWidth = width;
+    }
+  }
+  return best;
+}
+
+/** Relations worth naming on hover (the rest are obvious from the layout). */
+const EDGE_LABEL: Partial<Record<SimLink['rel'], string>> = {
+  BUILT_ON: 'built on',
+  DEMONSTRATES: 'demonstrates',
+};
+
+/** Text and position of the hovered node's "built on" / "demonstrates" link labels. */
+export function edgeLabels(sim: Sim, hovered: SimNode): { text: string; x: number; y: number }[] {
+  return sim.links.flatMap((l) => {
+    const text = EDGE_LABEL[l.rel];
+    if (!text || (l.source !== hovered && l.target !== hovered)) return [];
+    return [{ text, x: (l.source.x + l.target.x) / 2, y: (l.source.y + l.target.y) / 2 - 4 }];
+  });
+}
+
+function drawEdgeLabels(
+  ctx: CanvasRenderingContext2D,
+  sim: Sim,
+  hovered: SimNode,
+  palette: Palette,
+): void {
+  ctx.globalAlpha = 1;
+  ctx.font = LABEL_FONT;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = palette.label;
+  for (const l of edgeLabels(sim, hovered)) ctx.fillText(l.text, l.x, l.y);
 }
 
 const SPRITE_SIZE = 64;

@@ -86,12 +86,21 @@ export class HeroCanvas {
     };
     draw(0);
     // Reduced motion: keep the single still frame, no loop at all.
-    const loop = this.prefs.reducedMotion()
+    let slowFrames = 0;
+    const loop: AnimationLoop | null = this.prefs.reducedMotion()
       ? null
       : new AnimationLoop(
           canvas,
           ({ dt }) => {
+            const started = performance.now();
             draw(dt);
+            slowFrames = performance.now() - started > 32 ? slowFrames + 1 : 0;
+            // Keep the last frame on busy/slow devices instead of monopolizing
+            // the main thread. Resize and theme changes can still redraw it.
+            if (slowFrames >= 3) {
+              loop?.destroy();
+              canvas.setAttribute('data-animation-state', 'paused-for-performance');
+            }
           },
           30, // ambient motion: 30 fps looks the same and halves the cost
         );

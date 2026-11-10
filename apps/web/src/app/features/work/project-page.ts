@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   RESPONSE_INIT,
   computed,
   inject,
@@ -8,18 +9,22 @@ import {
 } from '@angular/core';
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { marked } from 'marked';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
+import { articleSchema } from '../../core/seo/article-schema';
 import { SeoService } from '../../core/seo/seo.service';
+import { SITE_CONFIG } from '../../core/seo/site-config';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { CaseStudyBody } from './case-study/case-study-body';
 import { ProjectIllustration } from './project-illustration';
+import { projectEyebrow } from './project-meta';
+import { sortProjects } from './work-filters';
 
 /** /work/:slug: a case study rendered from markdown. Unknown slug → 404 page + status. */
 @Component({
   selector: 'app-project-page',
-  imports: [RouterLink, PageHeader, ProjectIllustration],
+  imports: [RouterLink, PageHeader, ProjectIllustration, CaseStudyBody],
   templateUrl: './project-page.html',
   styleUrls: ['../../shared/ui/page-header/page.scss', './project-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +36,14 @@ export class ProjectPage {
   private readonly repo = inject(ContentRepository);
   private readonly response = inject(RESPONSE_INIT, { optional: true });
   private readonly seo = inject(SeoService);
+  private readonly site = inject(SITE_CONFIG);
+
+  constructor() {
+    // Only case-study pages carry the Article data.
+    inject(DestroyRef).onDestroy(() => {
+      this.seo.removeJsonLd('ld-article');
+    });
+  }
 
   protected readonly project = rxResource({
     params: () => this.slug(),
@@ -40,31 +53,40 @@ export class ProjectPage {
           // On the server, tell crawlers this page doesn't exist.
           if (!p && this.response) this.response.status = 404;
           if (p) {
+            const image = `/og/work/${p.slug}.jpg`; // made by scripts/gen-og.mjs
             this.seo.update({
               title: `${p.title} · Chandrashekhar`,
               description: p.summary,
               path: `/work/${p.slug}`,
               type: 'article',
+              image,
             });
+            this.seo.jsonLd('ld-article', articleSchema(this.site.url, p, image));
           }
         }),
       ),
   });
 
-  /** Skill id → display name ("postgres" → "PostgreSQL"). */
-  protected readonly skillNames = toSignal(
-    this.repo.skills().pipe(map((skills) => new Map(skills.map((s) => [s.id, s.name])))),
-    { initialValue: new Map<string, string>() },
-  );
+  protected readonly eyebrow = projectEyebrow;
 
-  /** Markdown → HTML. Angular's [innerHTML] sanitizer strips anything unsafe. */
-  protected readonly html = computed(() => {
-    const md = this.project.value()?.bodyMarkdown;
-    return md ? marked.parse(stripTitle(md), { async: false }) : '';
+  /** Markdown body without frontmatter or the title line (the header shows those). */
+  protected readonly body = computed(() => stripTitle(this.project.value()?.bodyMarkdown ?? ''));
+
+  /** Previous / next project in /work order, for the pager at the bottom. */
+  private readonly all = toSignal(this.repo.projects(), { initialValue: [] });
+  protected readonly neighbours = computed(() => {
+    const list = sortProjects(this.all());
+    const i = list.findIndex((p) => p.slug === this.slug());
+    return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 ? list[i + 1] : undefined };
   });
 }
 
-/** Drops comments and the leading "# Title" line: the page header already is the one h1. */
+/**
+ * Drops YAML frontmatter, comments and the leading "# Title" line:
+ * the page header already shows the title (the one h1) and the facts.
+ */
 export function stripTitle(md: string): string {
-  return md.replace(/^\s*(<!--[\s\S]*?-->\s*)*#\s[^\n]*\n/, '');
+  return md
+    .replace(/^---\n[\s\S]*?\n---\n/, '')
+    .replace(/^\s*(<!--[\s\S]*?-->\s*)*(#\s[^\n]*\n)?/, '');
 }

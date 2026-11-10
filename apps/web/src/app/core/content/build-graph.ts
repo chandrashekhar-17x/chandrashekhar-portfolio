@@ -1,19 +1,35 @@
-import { Experience, KnowledgeGraphExtras, Project, Skill } from './content.types.gen';
+import {
+  Education,
+  Experience,
+  KnowledgeGraphExtras,
+  Project,
+  Skill,
+  SkillCategory,
+} from './content.types.gen';
 
 // Builds the knowledge graph from content (rules: content/README.md → Knowledge graph).
 // Pure function: no Angular, easy to test. Moves to the API in Phase 2.
 
-export type NodeKind = 'hub' | 'skill' | 'project' | 'org' | 'role' | 'topic';
-export type NodeCategory = Skill['category'] | 'project' | 'org' | 'topic';
-export type LinkRel = 'USED' | 'BUILT_AT' | 'WORKED_AT' | 'RELATED' | 'IN_CATEGORY';
+export type NodeKind = 'hub' | 'skill' | 'concept' | 'project' | 'org' | 'education' | 'topic';
+export type NodeCategory = SkillCategory | 'project' | 'org' | 'topic';
+export type LinkRel =
+  | 'USED'
+  | 'BUILT_AT'
+  | 'WORKED_AT'
+  | 'STUDIED'
+  | 'RELATED'
+  | 'IN_CATEGORY'
+  | 'BUILT_ON'
+  | 'DEMONSTRATES';
 
 export interface GraphNode {
-  id: string; // e.g. "skill:angular"
+  id: string; // e.g. "skill:angular", "project:custom-cad-editor", "edu:nit-jamshedpur"
   kind: NodeKind;
   label: string;
   category: NodeCategory;
-  /** Visual weight: hubs biggest, then orgs/projects, then skills. */
+  /** Visual weight: hubs biggest, then orgs/projects, then skills/concepts. */
   size: number;
+  /** "Growing" skill (proficiency: learning): drawn with a dashed ring. */
   learning: boolean;
 }
 
@@ -31,19 +47,25 @@ export interface KnowledgeGraph {
 export interface GraphInput {
   skills: Skill[];
   experience: Experience;
+  education: Education['education'];
   projects: Project[];
   extras: KnowledgeGraphExtras;
 }
 
-const HUB_LABELS: Record<Skill['category'], string> = {
+export const HUB_LABELS: Record<SkillCategory, string> = {
   frontend: 'FRONTEND',
-  backend: 'BACKEND',
-  ai: 'AI ENGINEERING',
-  graphics: 'GRAPHICS & DOCS',
-  tools: 'TOOLS',
+  cad: 'CAD & VISUALIZATION',
+  documents: 'DOCUMENT PROCESSING',
+  realtime: 'API & REAL-TIME',
+  performance: 'PERFORMANCE',
+  backend: 'BACKEND (GROWING)',
+  ai: 'AI (GROWING)',
+  fundamentals: 'FUNDAMENTALS',
+  leadership: 'LEADERSHIP & R&D',
 };
 
-export function buildGraph({ skills, experience, projects, extras }: GraphInput): KnowledgeGraph {
+export function buildGraph(input: GraphInput): KnowledgeGraph {
+  const { skills, experience, education, projects, extras } = input;
   const nodes = new Map<string, GraphNode>();
   const links = new Map<string, GraphLink>();
 
@@ -54,75 +76,53 @@ export function buildGraph({ skills, experience, projects, extras }: GraphInput)
     const key = [source, target].sort().join('|');
     if (!links.has(key)) links.set(key, { source, target, rel });
   };
+  const node = (id: string, kind: NodeKind, label: string, category: NodeCategory, size: number) =>
+    addNode({ id, kind, label, category, size, learning: false });
 
   // Category hubs: only for categories that actually have skills.
   for (const category of new Set(skills.map((s) => s.category))) {
-    addNode(hub(category));
+    node(`hub:${category}`, 'hub', HUB_LABELS[category], category, 13);
   }
   for (const s of skills) {
     const id = `skill:${s.id}`;
     addNode({
       id,
-      kind: 'skill',
+      kind: s.concept ? 'concept' : 'skill',
       label: s.name,
       category: s.category,
-      size: 6,
-      learning: !!s.learning,
+      size: s.concept ? 5 : 6,
+      learning: s.proficiency === 'learning',
     });
     addLink(`hub:${s.category}`, id, 'IN_CATEGORY');
   }
-  for (const o of experience.organizations) {
-    addNode({
-      id: `org:${o.id}`,
-      kind: 'org',
-      label: o.name,
-      category: 'org',
-      size: 8,
-      learning: false,
-    });
-  }
+
+  // Organisations link straight to the skills used in their roles.
+  for (const o of experience.organizations) node(`org:${o.id}`, 'org', o.name, 'org', 8);
   for (const r of experience.roles) {
-    const id = `role:${r.id}`;
-    addNode({ id, kind: 'role', label: r.title, category: 'org', size: 6, learning: false });
-    addLink(id, `org:${r.org}`, 'WORKED_AT');
     r.skills.forEach((s) => {
-      addLink(id, `skill:${s}`, 'USED');
+      addLink(`org:${r.org}`, `skill:${s}`, 'USED');
     });
   }
+  for (const e of education) {
+    const id = `edu:${e.id}`;
+    node(id, 'education', e.shortName, 'org', 8);
+    (e.skills ?? []).forEach((s) => {
+      addLink(id, `skill:${s}`, 'STUDIED');
+    });
+  }
+
   for (const p of projects) {
     const id = `project:${p.slug}`;
-    addNode({ id, kind: 'project', label: p.title, category: 'project', size: 8, learning: false });
+    node(id, 'project', p.title, 'project', 8);
     p.skills.forEach((s) => {
       addLink(id, `skill:${s}`, 'USED');
     });
     if (p.org) addLink(id, `org:${p.org}`, 'BUILT_AT');
   }
-  for (const t of extras.topics) {
-    addNode({
-      id: `topic:${t.id}`,
-      kind: 'topic',
-      label: t.label,
-      category: 'topic',
-      size: 9,
-      learning: false,
-    });
-  }
-  for (const e of extras.edges) {
-    addLink(e.src, e.dst, e.rel === 'LEARNING' ? 'RELATED' : e.rel);
-  }
+  for (const t of extras.topics) node(`topic:${t.id}`, 'topic', t.label, 'topic', 9);
+  for (const e of extras.edges) addLink(e.src, e.dst, e.rel);
 
   // Drop links whose ends don't exist (content validation should prevent this).
   const validLinks = [...links.values()].filter((l) => nodes.has(l.source) && nodes.has(l.target));
   return { nodes: [...nodes.values()], links: validLinks };
-}
-
-function hub(category: Skill['category']): GraphNode {
-  return {
-    id: `hub:${category}`,
-    kind: 'hub',
-    label: HUB_LABELS[category],
-    category,
-    size: 13,
-    learning: false,
-  };
 }

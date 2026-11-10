@@ -21,7 +21,7 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
-DATA_FILES = ("profile", "skills", "experience", "projects", "graph", "lab")
+DATA_FILES = ("profile", "skills", "experience", "education", "projects", "graph", "lab", "about")
 Json = dict[str, Any]
 
 
@@ -61,6 +61,7 @@ def reference_errors(root: Path, data: dict[str, Json]) -> list[str]:
     roles = data["experience"]["roles"]
     projects = data["projects"]["projects"]
     topics = [t["id"] for t in data["graph"]["topics"]]
+    education = data["education"]["education"]
 
     errors = [
         *duplicates("skill", skills),
@@ -68,6 +69,7 @@ def reference_errors(root: Path, data: dict[str, Json]) -> list[str]:
         *duplicates("role", [r["id"] for r in roles]),
         *duplicates("project", [p["slug"] for p in projects]),
         *duplicates("topic", topics),
+        *duplicates("education", [e["id"] for e in education]),
     ]
     skill_set, org_set = set(skills), set(orgs)
 
@@ -78,9 +80,35 @@ def reference_errors(root: Path, data: dict[str, Json]) -> list[str]:
         if "org" in item and item["org"] not in org_set:
             errors.append(f"{label}: unknown org '{item['org']}'")
 
+    # Either/or rules kept out of the JSON Schemas (oneOf makes the generated TS types loose).
+    for s in data["skills"]["skills"]:
+        if ("proficiency" in s) == bool(s.get("concept")):
+            errors.append(f"skill '{s['id']}': needs exactly one of proficiency or concept")
+    for st in data["profile"].get("stats", []):
+        if ("value" in st) == ("computed" in st):
+            errors.append(f"stat '{st['label']}': needs exactly one of value or computed")
+
+    slugs = {p["slug"] for p in projects}
     for p in projects:
         if not (root / p["body"]).is_file():
             errors.append(f"project '{p['slug']}': missing file content/{p['body']}")
+        # Confidentiality: employer projects never link to code or live systems.
+        if p["type"] == "professional" and p.get("links"):
+            errors.append(f"project '{p['slug']}': professional projects must not have links")
+    for r in roles:
+        for h in r["highlights"]:
+            if "project" in h and h["project"] not in slugs:
+                errors.append(f"role '{r['id']}': highlight links unknown project '{h['project']}'")
+    for e in education:
+        errors += [
+            f"education '{e['id']}': unknown skill '{s}'"
+            for s in e.get("skills", [])
+            if s not in skill_set
+        ]
+    for a in data["about"]["areas"]:
+        errors += [
+            f"about '{a['id']}': unknown skill '{s}'" for s in a["skills"] if s not in skill_set
+        ]
 
     photo = data["profile"]["photo"]["src"]
     if photo.startswith("/media/") and not (root / photo.lstrip("/")).is_file():
@@ -92,6 +120,7 @@ def reference_errors(root: Path, data: dict[str, Json]) -> list[str]:
         | {f"role:{r['id']}" for r in roles}
         | {f"project:{p['slug']}" for p in projects}
         | {f"topic:{i}" for i in topics}
+        | {f"edu:{e['id']}" for e in education}
     )
     for edge in data["graph"]["edges"]:
         errors += [
@@ -106,6 +135,9 @@ def find_placeholders(data: dict[str, Json]) -> list[str]:
         f"profile.stats '{s['label']}'"
         for s in data["profile"].get("stats", [])
         if s.get("placeholder")
+    ]
+    found += [
+        f"education '{e['id']}'" for e in data["education"]["education"] if e.get("placeholder")
     ]
     groups = [
         ("skill", "id", data["skills"]["skills"]),

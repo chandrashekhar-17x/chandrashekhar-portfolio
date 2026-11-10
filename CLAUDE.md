@@ -5,10 +5,11 @@
 > Full history: @docs/conversation-log.md
 
 ## Who I am (owner)
-- **Chandrashekhar**: frontend developer (Angular, TypeScript, JavaScript, RxJS, PrimeNG).
-- Built: CAD editor (canvas), PDF rendering (PDF.js), PrimeNG data tables, API integrations; loves animation (2D/3D, cursor, text, cards).
-- Currently learning **Python backend (FastAPI)** and **AI engineering** (LLMs, RAG, LangChain/LangGraph, MCP, voice agents).
-- Location: India. Open to frontend and AI-engineering roles.
+- **Chandrashekhar**: Software Engineer, Frontend (Angular) at VassarDigital.ai since Jan 2024; before that Vassar Labs (full-time Aug–Dec 2023, intern Jan–Jul 2023). MCA, NIT Jamshedpur (2020–2023). 3+ years (always computed from dates).
+- Built: a custom Three.js CAD/DXF viewer & editor from zero (flagship), railway signalling-plan editing on top of it, PDF viewers (PDF.js + Range Requests, precise highlighting), data-extraction UIs, SSE integrations; loves animation (2D/3D, cursor, text, cards).
+- Currently learning **Python backend (Django/FastAPI)** and **AI engineering** (LLMs, RAG, LangChain/LangGraph, MCP, voice agents).
+- Location: Hyderabad, India. Availability pill hidden by default (currently employed).
+- ⚠️ **Confidentiality:** office projects appear only under public titles; internal product names are never written in this public repo (`make confidential-check`, hashed list). No employer screenshots, code or repo links.
 - Explain backend/AI concepts as you go: I'm learning them while building.
 
 ## What we're building
@@ -22,7 +23,10 @@ Positioning line: *"Frontend engineer who builds complex UIs (CAD editors, PDF e
 - ✅ Clickable prototype: `prototype/index.html` (single self-contained file; open in a browser).
 - ✅ **Phase 0 (Foundation) done (2026-11-09):** pnpm + uv monorepo, Angular 22 SSR shell + design tokens, FastAPI skeleton (`/health`), Docker (pgvector pg17 on :5433, Redis on :6380), `content/` schemas + seed + validator, Makefile, pre-commit (gitleaks), GitHub Actions CI. `make check` is green.
 - ✅ **Phase 1 (Frontend foundation) built (2026-11-10), PRs 1–6 + 8:** Angular 22 site with every prototype section (hero canvas, knowledge graph with filters/list view/endless drift, tilt work cards, AI Lab orb HUD, experience timeline, contact form), skeleton-first `@defer` loading revealed one at a time, scripted chat whose citations light the graph (same event contract as the future SSE API), ⌘K palette, SEO (meta/OG/JSON-LD/sitemap/robots), axe 0 serious issues, Lighthouse 100/100/100/100, 40 Docker screenshot baselines. Custom cursors removed (owner: too slow/laggy). Data comes from `content/` via `ContentRepository` (swap to HTTP in Phase 2).
-- ⏭️ **Next: Phase 2 (Backend core + database)**: present the plan and wait for OK. Follow `docs/IMPLEMENTATION_PROMPT.md` (master brief) through Phase 9. The prototype is a reference only.
+- ✅ **Content update (2026-11-10, `feat/content-real-data`):** real data from the owner's v1+v2 content prompts (v2 wins), new schemas (education, about, project type/tags/filters/illustration, skill proficiency/concept, computed stats), LinkedIn-style durations, Person JSON-LD per §10, scripted chat + §9 eval set, confidentiality checker in CI.
+- 🔧 **Codex maintenance (2026-11-10):** completing the existing featured case-study band, fixing parsing/build issues, isolating API tests, unifying public-origin configuration, and reconciling contracts/status docs. See `docs/change-log.md` for attribution and verification. Done on `feat/web-content-ui`: About + How I work, featured band, grouped experience + education, work filters + 11 distinct thumbnails, case-study template (TOC, TL;DR, stepper, chip groups, problem cards, prev/next), graph edge labels + growing rings + phone drill-down, per-project OG images + Article JSON-LD. Still to do: the CI speed-up PR.
+- ✅ **Phase 2 PR 1 (API foundation)** and **PR 2 (DB + seed, `feat/db-seed`)** built (2026-11-10): request ids, JSON logs, error shape, readiness; content tables + Alembic `0001` + idempotent `make seed` with a lossless round-trip test on real Postgres (CI service container).
+- ⏭️ **Next: Phase 2 PR 3 (public read API + cache/ETag + web switch), then PR 4 (contact).** Follow `docs/IMPLEMENTATION_PROMPT.md` through Phase 9. The prototype is a reference only.
 - 🧑 Owner TODO: replace placeholder content (`make content-check` lists it), add `content/resume/resume.pdf`, set branch protection (`docs/CONTRIBUTING.md`), install + log in to `gh` (lets Claude open PRs and read CI), choose the domain and a hosting account for the preview deploy.
 - ⚠️ Working agreement: **propose a plan and get my OK before large implementations.** I asked to design first, then implement.
 
@@ -61,15 +65,15 @@ reference/    my 5 inspiration images (ref-1..5)
 `prototype/index.html` contains working vanilla JS to port into Angular components and directives:
 - `drawHero()`: hero canvas → `HeroCanvasComponent` (run outside Angular, pause off-screen)
 - `kg` force graph + `drawKG()`: `KnowledgeGraphComponent` (later fed by `GET /api/v1/graph`)
-- `splash` IIFE (WebGL fluid sim): `SplashCursorDirective` / service, lazy-loaded
-- cursor IIFE: `CursorComponent` (arrow + context label)
+- `splash` IIFE: historical reference only; removed by owner decision.
+- cursor IIFE: historical reference only; keep the native system cursor.
 - `lazy` IIFE: replaced natively by `@defer (on viewport)` + `@placeholder` / `@loading` blocks
 - `KB` + `ask()`: scripted chat → later replaced by the real `/api/v1/chat` SSE stream
 - `.pcard` tilt/glare: `TiltDirective`; `.magnetic`: `MagneticDirective`
 - Design tokens are the CSS custom properties at the top of the file (dark + `[data-theme="light"]`)
 
 ## Placeholders to replace with my real data
-Run `make content-check` for the live list. Real so far: name, headline, location (India), GitHub https://github.com/chandrashekhar-17x, LinkedIn https://www.linkedin.com/in/chandrashekhar1423/, skills. Dummy: summary, email, photo (`content/media/avatar-placeholder.svg`), stats, companies, roles, project write-ups, resume, domain.
+Run `make content-check` for the live list. Real since 2026-11-10 (from the owner's private profile notes): profile, bio, stats, skills, experience, education, 11 projects + case studies, about areas, lab timeline, agent eval set (`content/evals/`). Still dummy: photo (`content/media/avatar-placeholder.svg`), resume PDF, domain, learning-timeline progress values (not provided). Contact = form only (no public email).
 
 ## Conventions
 - TypeScript strict; Angular `OnPush`; no `any`.

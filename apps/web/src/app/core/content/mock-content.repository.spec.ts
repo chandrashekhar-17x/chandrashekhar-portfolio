@@ -14,8 +14,8 @@ describe('MockContentRepository (real content/ files)', () => {
   });
 
   it('loads a case study with its markdown body', async () => {
-    const detail = await firstValueFrom(repo.project('cad-editor'));
-    expect(detail?.bodyMarkdown).toContain('## Problem');
+    const detail = await firstValueFrom(repo.project('custom-cad-editor'));
+    expect(detail?.bodyMarkdown).toContain('## TL;DR');
   });
 
   it('returns undefined for an unknown project', async () => {

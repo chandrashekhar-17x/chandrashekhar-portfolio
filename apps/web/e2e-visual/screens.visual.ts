@@ -3,7 +3,7 @@ import { Page, expect, test } from '@playwright/test';
 // Visual regression: each home section and key pages, desktop + mobile, both themes.
 // Update baselines on purpose with `make visual-update` (inside Docker).
 
-const SECTIONS = ['graph', 'work', 'lab', 'xp', 'contact'] as const;
+const SECTIONS = ['featured', 'graph', 'work', 'lab', 'xp', 'contact'] as const;
 
 async function prepare(page: Page, theme: 'dark' | 'light'): Promise<void> {
   await page.addInitScript((t) => {
@@ -18,7 +18,9 @@ async function prepare(page: Page, theme: 'dark' | 'light'): Promise<void> {
  */
 async function open(page: Page, path: string): Promise<void> {
   await page.goto(path);
+  await page.evaluate(() => document.fonts.ready);
   await page.reload();
+  await page.waitForLoadState('networkidle');
   await page.evaluate(() => document.fonts.ready);
   const missing = await page.evaluate(() =>
     ['Bricolage Grotesque Variable', 'Inter Tight Variable', 'JetBrains Mono Variable'].filter(
@@ -39,6 +41,13 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(page.locator('.first-screen')).toHaveScreenshot(`${theme}-hero.png`);
     });
 
+    test('home section: about (server-rendered)', async ({ page }) => {
+      await open(page, '/');
+      const section = page.locator('#about');
+      await section.scrollIntoViewIfNeeded();
+      await expect(section).toHaveScreenshot(`${theme}-section-about.png`);
+    });
+
     for (const id of SECTIONS) {
       test(`home section: ${id}`, async ({ page }) => {
         await open(page, '/');
@@ -52,7 +61,7 @@ for (const theme of ['dark', 'light'] as const) {
 
     for (const [name, path] of [
       ['work', '/work'],
-      ['case-study', '/work/cad-editor'],
+      ['case-study', '/work/custom-cad-editor'],
       ['resume', '/resume'],
       ['not-found', '/nope'],
     ] as const) {

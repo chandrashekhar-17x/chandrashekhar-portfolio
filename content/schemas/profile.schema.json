@@ -5,9 +5,12 @@
   "type": "object",
   "required": [
     "name",
+    "title",
     "headline",
-    "summary",
+    "shortBio",
+    "bio",
     "location",
+    "locationShort",
     "availability",
     "photo",
     "links",
@@ -37,10 +40,6 @@
     },
     "location": {
       "type": "string"
-    },
-    "email": {
-      "type": "string",
-      "format": "email"
     },
     "heroTitle": {
       "title": "HeroTitle",
@@ -79,6 +78,10 @@
         "note": {
           "type": "string",
           "maxLength": 140
+        },
+        "visible": {
+          "description": "Show the availability pill (admin toggle later). Default hidden.",
+          "type": "boolean"
         }
       }
     },
@@ -110,14 +113,19 @@
       "items": {
         "title": "ProfileStat",
         "type": "object",
-        "required": ["label", "value"],
+        "required": ["label"],
         "additionalProperties": false,
+        "description": "Either a fixed value, or computed in code (e.g. years of experience from role dates).",
         "properties": {
           "label": {
             "type": "string"
           },
           "value": {
             "type": "string"
+          },
+          "computed": {
+            "description": "Computed in code from other data.",
+            "enum": ["experienceYears"]
           },
           "placeholder": {
             "$ref": "common.schema.json#/$defs/placeholder"
@@ -130,6 +138,43 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "title": {
+      "description": "Job title, e.g. \"Software Engineer, Frontend (Angular)\".",
+      "type": "string",
+      "maxLength": 80
+    },
+    "shortBio": {
+      "description": "≤160 chars: hero sub-text and meta description.",
+      "type": "string",
+      "maxLength": 160
+    },
+    "bio": {
+      "description": "Long bio for the About section, one string per paragraph.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "locationShort": {
+      "description": "Short location shown in the hero, e.g. \"Hyderabad, India\".",
+      "type": "string"
+    },
+    "heroCta": {
+      "title": "HeroCta",
+      "description": "Secondary hero link (e.g. to the flagship case study).",
+      "type": "object",
+      "required": ["label", "href"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "href": {
+          "$ref": "common.schema.json#/$defs/url"
+        }
       }
     }
   }

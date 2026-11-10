@@ -2,63 +2,136 @@
   viewBox="0 0 300 150"
   [attr.preserveAspectRatio]="fit() === 'cover' ? 'xMidYMid slice' : 'xMidYMid meet'"
 >
+  <defs>
+    <pattern [attr.id]="gridId" width="14" height="14" patternUnits="userSpaceOnUse">
+      <path class="grid-line" d="M14 0H0V14" />
+    </pattern>
+  </defs>
   <rect width="300" height="150" fill="var(--bg-2)" />
+
   @switch (kind()) {
     @case ('cad') {
-      <defs>
-        <pattern id="cad-grid" width="14" height="14" patternUnits="userSpaceOnUse">
-          <path d="M14 0H0V14" fill="none" stroke="var(--line-2)" stroke-width=".5" />
-        </pattern>
-      </defs>
-      <rect width="300" height="150" fill="url(#cad-grid)" />
-      <rect
-        x="60"
-        y="35"
-        width="110"
-        height="70"
-        fill="none"
-        stroke="var(--cyan)"
-        stroke-width="1.5"
-      />
-      <circle cx="200" cy="70" r="32" fill="none" stroke="var(--violet)" stroke-width="1.5" />
-      <path d="M60 105 L200 70" stroke="var(--pink)" stroke-dasharray="4 3" />
+      <!-- CAD: wireframe with grips and a measurement line -->
+      <rect width="300" height="150" [attr.fill]="'url(#' + gridId + ')'" />
+      <rect class="cyan" x="60" y="35" width="110" height="70" />
+      <circle class="violet" cx="200" cy="70" r="32" />
+      <path class="dash" d="M60 105 L200 70" stroke="var(--pink)" />
       @for (c of corners; track $index) {
         <rect [attr.x]="c[0] - 3" [attr.y]="c[1] - 3" width="6" height="6" fill="var(--cyan)" />
       }
     }
-    @case ('pdf') {
+    @case ('signalling') {
+      <!-- Signalling plan: track, signal glyphs, red/green change -->
+      @for (x of sleepers; track x) {
+        <rect class="ink" [attr.x]="x" y="76" width="3" height="16" />
+      }
+      <path class="cyan" d="M10 80H290M10 88H290" />
+      @for (s of signals; track s.x) {
+        <path class="violet" [attr.d]="'M' + s.x + ' 76V44'" />
+        <circle [attr.cx]="s.x" cy="38" r="7" [attr.fill]="s.on" />
+      }
+      <path d="M180 112H260" stroke="var(--rose)" stroke-width="4" />
+      <path d="M180 124H260" stroke="var(--lime)" stroke-width="4" />
+    }
+    @case ('knowledge-base') {
+      <!-- Knowledge base: upload tiles going into a locked store -->
+      @for (t of tiles; track t.x) {
+        <rect class="box" [attr.x]="t.x" y="40" width="60" height="70" rx="6" />
+        <path class="cyan" [attr.d]="'M' + (t.x + 30) + ' 62V50m-7 7l7-7 7 7'" />
+        <text class="mono" [attr.x]="t.x + 30" y="92" text-anchor="middle">{{ t.label }}</text>
+      }
+      <rect class="violet" x="240" y="70" width="28" height="24" rx="3" />
+      <path class="violet" d="M246 70v-8a8 8 0 0116 0v8" />
+    }
+    @case ('bbox') {
+      <!-- Bounding boxes: captured web page with box overlays -->
+      <rect class="box" x="25" y="15" width="250" height="120" rx="6" />
+      <path d="M25 28H275" stroke="var(--line-2)" />
+      @for (b of blocks; track $index) {
+        <rect class="ink" [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" />
+        <rect
+          class="dash"
+          stroke="var(--pink)"
+          [attr.x]="b.x - 3"
+          [attr.y]="b.y - 3"
+          [attr.width]="b.w + 6"
+          [attr.height]="b.h + 6"
+        />
+      }
+    }
+    @case ('doc-highlight') {
+      <!-- Document review: a page with highlighted text spans -->
+      <rect class="box" x="60" y="18" width="180" height="114" rx="4" />
+      @for (s of spans; track s.y) {
+        @if (s.mark) {
+          <rect
+            [attr.x]="75 + (s.mx ?? 0)"
+            [attr.y]="s.y - 3"
+            [attr.width]="s.mw"
+            height="10"
+            [attr.fill]="s.mark"
+            opacity="0.45"
+          />
+        }
+        <rect class="ink" x="75" [attr.y]="s.y" [attr.width]="s.w" height="4" rx="2" />
+      }
+    }
+    @case ('pdf-stream') {
+      <!-- Progressive PDF: pages streaming in, last one still loading -->
       @for (i of pages; track i) {
-        <g [attr.transform]="'translate(' + (40 + i * 80) + ',' + (18 + i * 6) + ')'">
-          <rect width="66" height="100" rx="3" fill="var(--panel-solid)" stroke="var(--line-2)" />
+        <g
+          [attr.transform]="'translate(' + (40 + i * 80) + ',' + (14 + i * 6) + ')'"
+          [attr.opacity]="1 - i * 0.3"
+        >
+          <rect class="box" width="66" height="96" rx="3" />
           @for (j of lines; track j) {
             <rect
+              class="ink"
               x="8"
               [attr.y]="14 + j * 11"
               [attr.width]="50 - (j % 3) * 10"
               height="4"
               rx="2"
-              [attr.fill]="j === 2 && i === 1 ? 'var(--amber)' : 'var(--line-2)'"
             />
           }
         </g>
       }
+      <rect class="ink" x="40" y="132" width="220" height="5" rx="2.5" />
+      <rect x="40" y="132" width="150" height="5" rx="2.5" fill="var(--cyan)" />
     }
-    @case ('table') {
-      @for (r of rows; track r) {
-        @for (c of cols; track c) {
-          <rect
-            [attr.x]="20 + c * 54"
-            [attr.y]="14 + r * 16"
-            width="50"
-            height="12"
-            rx="2"
-            [attr.fill]="r === 0 ? 'var(--violet)' : r === 3 ? 'var(--cyan)' : 'var(--line-2)'"
-            [attr.opacity]="r === 0 ? 0.8 : r === 3 ? 0.45 : 0.6"
-          />
-        }
+    @case ('sse') {
+      <!-- SSE: a stream of named events with growing progress -->
+      <path class="violet dash" d="M40 20V130" />
+      @for (e of events; track e.y) {
+        <circle cx="40" [attr.cy]="e.y" r="4" fill="var(--violet)" />
+        <text class="mono" x="54" [attr.y]="e.y + 3">event: {{ e.name }}</text>
+        <rect class="ink" x="150" [attr.y]="e.y - 3" width="110" height="6" rx="3" />
+        <rect x="150" [attr.y]="e.y - 3" [attr.width]="e.w" height="6" rx="3" fill="var(--cyan)" />
+      }
+    }
+    @case ('architecture') {
+      <!-- UI architecture: component tree -->
+      <path class="cyan" d="M150 34V50M90 50H210M90 50V66M210 50V66" />
+      <path class="cyan" d="M90 84V96M62 96H118M62 96V108M118 96V108" />
+      <path class="cyan" d="M210 84V96M182 96H238M182 96V108M238 96V108" />
+      <rect class="box" x="120" y="14" width="60" height="20" rx="4" />
+      @for (x of tree.mids; track x) {
+        <rect class="box" [attr.x]="x - 30" y="66" width="60" height="18" rx="4" />
+      }
+      @for (x of tree.leaves; track x) {
+        <rect
+          [attr.x]="x - 22"
+          y="108"
+          width="44"
+          height="16"
+          rx="4"
+          fill="var(--violet)"
+          opacity="0.5"
+        />
       }
     }
     @case ('rag') {
+      <!-- RAG: a small knowledge graph -->
       @for (d of dots; track $index) {
         <line [attr.x1]="d.x" [attr.y1]="d.y" x2="150" y2="75" stroke="var(--line-2)" />
         <circle [attr.cx]="d.x" [attr.cy]="d.y" [attr.r]="d.r" [attr.fill]="d.color" />
@@ -66,6 +139,7 @@
       <circle cx="150" cy="75" r="12" fill="var(--pink)" />
     }
     @case ('voice') {
+      <!-- Voice: waveform -->
       @for (b of bars; track $index) {
         <rect
           [attr.x]="b.x"
@@ -78,36 +152,19 @@
       }
     }
     @default {
-      @for (e of endpoints; track $index) {
-        <line
-          x1="150"
-          y1="75"
-          [attr.x2]="e[0]"
-          [attr.y2]="e[1]"
-          stroke="var(--cyan)"
-          stroke-dasharray="3 3"
-        />
-        <rect
-          [attr.x]="e[0] - 18"
-          [attr.y]="e[1] - 8"
-          width="36"
-          height="16"
-          rx="4"
-          fill="var(--panel-solid)"
-          stroke="var(--line-2)"
-        />
-      }
-      <circle cx="150" cy="75" r="20" fill="var(--bg-2)" stroke="var(--violet)" stroke-width="2" />
-      <text
-        x="150"
-        y="79"
-        text-anchor="middle"
-        fill="var(--violet)"
-        font-family="monospace"
-        font-size="10"
-      >
-        API
-      </text>
+      <!-- Playground: cursor selecting an entity, R-tree boxes around it -->
+      <rect width="300" height="150" [attr.fill]="'url(#' + gridId + ')'" />
+      <path class="cyan" d="M50 110L120 40H200" />
+      <circle class="cyan" cx="230" cy="90" r="22" />
+      <rect class="violet dash" x="44" y="34" width="162" height="82" />
+      <rect class="violet dash" x="204" y="64" width="52" height="52" />
+      <rect x="206" y="66" width="48" height="48" fill="var(--violet)" opacity="0.15" />
+      <path
+        d="M238 98l0 26 7-7 5 11 5-2-5-11 10 0z"
+        fill="var(--ink)"
+        stroke="var(--bg-2)"
+        stroke-width="1.5"
+      />
     }
   }
 </svg>

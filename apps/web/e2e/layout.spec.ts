@@ -16,19 +16,22 @@ test('nav links glide to their section and stop just below the sticky nav', asyn
 }) => {
   test.skip(isMobile, 'section links live in the mobile menu (covered in nav.spec)');
   await page.goto('/');
+  // Sample inside the browser before the click: Node-side polling can miss the
+  // entire animation while a busy runner waits for a protocol response.
+  await page.evaluate(() => {
+    const w = window as Window & { __navScrollPositions?: number[] };
+    w.__navScrollPositions = [];
+    let frames = 0;
+    const sample = () => {
+      w.__navScrollPositions?.push(scrollY);
+      if (++frames < 120) requestAnimationFrame(sample);
+    };
+    requestAnimationFrame(sample);
+  });
   await page
     .getByRole('navigation', { name: 'Main' })
     .getByRole('link', { name: 'Knowledge graph' })
     .click();
-
-  // Smooth scrolling: we should catch it part-way, not only at the end.
-  const positions: number[] = [];
-  for (let i = 0; i < 12; i++) {
-    positions.push(await page.evaluate(() => scrollY));
-    await page.waitForTimeout(40);
-  }
-  const target = Math.max(...positions);
-  expect(positions.some((y) => y > 0 && y < target)).toBe(true);
 
   await expect
     .poll(() => page.locator('#graph').evaluate((e) => Math.round(e.getBoundingClientRect().top)))
@@ -37,4 +40,9 @@ test('nav links glide to their section and stop just below the sticky nav', asyn
         .locator('app-site-nav')
         .evaluate((e) => Math.round(e.getBoundingClientRect().height)),
     );
+  const positions = await page.evaluate(
+    () => (window as Window & { __navScrollPositions?: number[] }).__navScrollPositions ?? [],
+  );
+  const target = Math.max(...positions);
+  expect(positions.some((y) => y > 0 && y < target)).toBe(true);
 });

@@ -11,7 +11,9 @@ Phases match `docs/plan.md` (0–9).
 - [x] Design tokens (colours, type, spacing, motion; dark + light) — `ux` · S
 - [x] `content/` schemas + seed data + validator — `be` · S
 - [x] FastAPI skeleton + settings + /health — `be` · S
-- [ ] Replace placeholder content with real data (run `make content-check` for the list) — `ux` · S
+- [x] Replace placeholder content with real data (2026-11-10; photo, resume and domain still dummy: `make content-check`) — `ux` · S
+- [x] Confidentiality check (hashed internal-name list) in `make check` + CI — `ops` · S
+- [x] Agent eval seed `content/evals/agent-evals.json` (profile-data §9), run against the scripted chat — `ai` · S
 
 ## Phase 1 · Frontend foundation
 
@@ -31,11 +33,11 @@ Phases match `docs/plan.md` (0–9).
 
 ## Phase 2 · Backend core + database
 
-- [ ] Layered FastAPI (routers/services/repositories/schemas), JSON logs + request ids — `be` · M
-- [ ] Postgres tables + Alembic + seed from content/ — `be` · M
-- [ ] Public content & graph endpoints (cache + ETag) — `be` · S
+- [x] Layered FastAPI (routers/services/repositories/schemas), JSON logs + request ids, error shape, readiness — `be` · M
+- [x] Postgres tables + Alembic + seed from content/ — `be` · M
+- [x] Public content & graph endpoints (cache + ETag) — `be` · S
 - [ ] Contact + Turnstile + rate limit + Resend — `be` · S
-- [ ] Web switches from mocks to the API — `fe` · S
+- [x] Web switches from mocks to the API — `fe` · S
 
 ## Phase 3 · Admin panel
 
@@ -57,7 +59,7 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Graph-hop retrieval expansion — `ai` · M
 - [ ] LangGraph intent router — `ai` · M
 - [ ] Recruiter JD match (/match) — `ai` · M
-- [ ] /graph full-screen page + accessible list fallback — `fe` · M
+- [x] /graph full-screen page + accessible list fallback (already shipped in Phase 1; status corrected by Codex) — `fe` · M
 
 ## Phase 6 · AI Lab + voice
 
@@ -72,14 +74,16 @@ Phases match `docs/plan.md` (0–9).
 
 ## Phase 8 · Showcase extras
 
-- [ ] Live CAD mini-demo — `fe` · M
+- [ ] **CAD Playground (public demo), high priority**: standalone lazy route `/lab/cad-playground`; Three.js; public sample DXF files (check licences); rbush R-tree with an overlay toggle; hover/select; move/copy/delete; undo/redo; fit-to-screen; DXF export; red/green diff between two sample versions; reduced-motion and mobile friendly; own e2e tests — `fe` · L
+- [ ] Bounding-box overlay demo on a public sample web page — `fe` · S
+- [ ] Live CAD mini-demo (superseded by the CAD Playground) — `fe` · M
 - [ ] PDF viewer demo — `fe` · M
 - [ ] 100k-row grid demo — `fe` · S
 - [ ] Journal / learning log — `fe` · M
 - [ ] GitHub activity widget (server-side cached) — `be` · S
 - [ ] Guestbook (moderated) — `be` · S
 - [ ] Privacy analytics (Umami/Plausible) — `ops` · S
-- [ ] OG image generation — `fe` · S
+- [x] OG image generation: one preview per project (`pnpm --filter @portfolio/web gen:og`) — `fe` · S
 
 ## Phase 9 · Security, performance, launch
 
@@ -94,3 +98,17 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Public agent-eval dashboard — `ai` · M
 - [ ] Hindi i18n — `fe` · M
 - [ ] Yearly redesign changelog — `ux` · S
+
+## Codex maintenance · 2026-11-10
+
+Attribution covers these maintenance changes, not the original Claude implementation.
+Details and verification: [change-log.md](change-log.md).
+
+- [x] Fix TL;DR parsing and featured template compilation — [Codex · 2026-11-10]
+- [x] Complete existing featured case-study lazy section and skeleton — [Codex · 2026-11-10]
+- [x] Isolate API tests from inherited environment and local .env — [Codex · 2026-11-10]
+- [x] Use one build-time public origin for all SEO consumers — [Codex · 2026-11-10]
+- [x] Align status docs, API shapes and stable graph/citation IDs — [Codex · 2026-11-10]
+- [x] Separate functional and visual Playwright artifact folders — [Codex · 2026-11-10]
+- [x] Remove locale initialization from date helpers and restore the real-data resume summary — [Codex · 2026-11-10]
+- [x] Finish final regression verification — [Codex · 2026-11-10; re-verified by Claude]

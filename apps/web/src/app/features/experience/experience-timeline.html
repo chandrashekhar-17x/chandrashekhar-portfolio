@@ -1,0 +1,49 @@
+<ol class="xp">
+  @for (g of groups(); track g.org.id; let i = $index) {
+    <li class="company reveal-item" [style.--i]="i + 1">
+      <div class="company-head">
+        <span class="mono" aria-hidden="true">{{ g.org.monogram ?? g.org.name.charAt(0) }}</span>
+        <div>
+          <h3>{{ g.org.name }}</h3>
+          <p class="total">
+            @if (g.current) {
+              <span class="present"><i aria-hidden="true"></i>Present</span>
+            }
+            {{ g.total }}
+          </p>
+        </div>
+      </div>
+
+      <ol class="roles" [class.multi]="g.roles.length > 1">
+        @for (r of g.roles; track r.id) {
+          <li class="role">
+            <h4>
+              {{ r.title }}
+              @if (r.placeholder) {
+                <span class="chip">sample</span>
+              }
+            </h4>
+            <p class="type">{{ r.employment }}</p>
+            <p class="when">{{ r.period }}</p>
+            <p class="type">{{ r.location }}</p>
+            @if (r.summary) {
+              <p class="summary">{{ r.summary }}</p>
+            }
+            @if (r.highlights.length) {
+              <ul class="highlights">
+                @for (h of r.highlights; track $index) {
+                  <li>
+                    {{ h.text }}
+                    @if (h.project) {
+                      <a [routerLink]="['/work', h.project]">case study →</a>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+      </ol>
+    </li>
+  }
+</ol>

@@ -62,9 +62,9 @@ def test_unknown_graph_node(content: Path) -> None:
 
 
 def test_missing_case_study_file(content: Path) -> None:
-    (content / "projects" / "cad-editor.md").unlink()
+    (content / "projects" / "custom-cad-editor.md").unlink()
     errors, _ = validate(content)
-    assert any("missing file content/projects/cad-editor.md" in e for e in errors)
+    assert any("missing file content/projects/custom-cad-editor.md" in e for e in errors)
 
 
 def test_missing_data_file(content: Path) -> None:
@@ -75,5 +75,38 @@ def test_missing_data_file(content: Path) -> None:
 
 def test_placeholders_are_listed(content: Path) -> None:
     _, placeholders = validate(content)
-    assert "project 'cad-editor'" in placeholders
-    assert "profile.photo" in placeholders
+    assert "profile.photo" in placeholders  # real photo not provided yet
+    edit(content, "projects", lambda d: d["projects"][0].update(placeholder=True))
+    _, placeholders = validate(content)
+    assert "project 'custom-cad-editor'" in placeholders
+
+
+def test_professional_projects_cannot_have_links(content: Path) -> None:
+    def add_link(d: dict[str, Any]) -> None:
+        d["projects"][0]["links"] = {"repo": "https://github.com/x/y"}
+
+    edit(content, "projects", add_link)
+    errors, _ = validate(content)
+    assert any("professional projects must not have links" in e for e in errors)
+
+
+def test_highlight_must_link_a_real_project(content: Path) -> None:
+    edit(
+        content,
+        "experience",
+        lambda d: d["roles"][0]["highlights"].append({"text": "x", "project": "nope"}),
+    )
+    errors, _ = validate(content)
+    assert any("unknown project 'nope'" in e for e in errors)
+
+
+def test_skill_needs_proficiency_or_concept(content: Path) -> None:
+    edit(content, "skills", lambda d: d["skills"][0].pop("proficiency"))
+    errors, _ = validate(content)
+    assert any("needs exactly one of proficiency or concept" in e for e in errors)
+
+
+def test_stat_needs_value_or_computed(content: Path) -> None:
+    edit(content, "profile", lambda d: d["stats"][1].pop("value"))
+    errors, _ = validate(content)
+    assert any("needs exactly one of value or computed" in e for e in errors)

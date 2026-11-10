@@ -21,6 +21,7 @@ export function defaultCommands(router: Router, theme: ThemeService, chat: ChatS
   });
 
   return [
+    section('about', 'About'),
     section('graph', 'Knowledge graph'),
     section('work', 'Work'),
     section('lab', 'AI Lab'),

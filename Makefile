@@ -34,6 +34,21 @@ logs: ## Follow service logs
 ps: ## Show service status
 	$(COMPOSE) ps
 
+##@ Database
+.PHONY: migrate seed db-revision graph-fixture
+migrate: ## Apply database migrations (Alembic upgrade head)
+	uv run alembic -c apps/api/alembic.ini upgrade head
+
+seed: migrate ## Validate content/, then sync it into the database (idempotent)
+	uv run python scripts/validate_content.py
+	uv run python -m portfolio_api.content.seed
+
+graph-fixture: ## Rewrite the expected knowledge graph (web + API parity tests) after content changes
+	uv run python scripts/gen_graph_fixture.py
+
+db-revision: ## New migration from model changes: make db-revision m="add x"
+	uv run alembic -c apps/api/alembic.ini revision --autogenerate -m "$(m)"
+
 ##@ Develop
 .PHONY: dev-web dev-api
 dev-web: ## Angular dev server → http://localhost:4200
@@ -43,7 +58,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -98,7 +113,10 @@ visual-update: ## Re-record screenshot baselines (review the diff before committ
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py
 
-check: lint typecheck content-check test build smoke-web e2e-web ## Everything CI runs
+confidential-check: ## No internal office-project names in the repo or the built site (hashed list)
+	python3 scripts/check_confidential.py
+
+check: lint typecheck content-check test build confidential-check smoke-web e2e-web ## Core CI checks (visual and Lighthouse run separately)
 
 ##@ Misc
 .PHONY: clean help

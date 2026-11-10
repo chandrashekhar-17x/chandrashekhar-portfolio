@@ -46,6 +46,27 @@
         "$ref": "#/$defs/id"
       },
       "uniqueItems": true
+    },
+    "year": {
+      "title": "Year",
+      "type": "integer",
+      "minimum": 1990,
+      "maximum": 2100
+    },
+    "category": {
+      "title": "SkillCategory",
+      "description": "Knowledge-graph cluster (one hub per category).",
+      "enum": [
+        "frontend",
+        "cad",
+        "documents",
+        "realtime",
+        "performance",
+        "backend",
+        "ai",
+        "fundamentals",
+        "leadership"
+      ]
     }
   }
 }

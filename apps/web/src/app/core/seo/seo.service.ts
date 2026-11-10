@@ -6,7 +6,7 @@ import { SITE_CONFIG } from './site-config';
 export interface PageSeo {
   title: string;
   description?: string;
-  /** Path of the page, e.g. "/work/cad-editor" (used for canonical + og:url). */
+  /** Path of the page, e.g. "/work/custom-cad-editor" (used for canonical + og:url). */
   path: string;
   image?: string;
   type?: 'website' | 'article' | 'profile';

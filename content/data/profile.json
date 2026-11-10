@@ -2,25 +2,35 @@
   "$schema": "../schemas/profile.schema.json",
   "name": "Chandrashekhar",
   "initials": "CS",
-  "headline": "Frontend engineer who builds complex UIs (CAD editors, PDF engines, data grids), now building the AI systems behind them.",
-  "summary": "PLACEHOLDER: I'm a frontend engineer working mainly with Angular, TypeScript and RxJS. I build interfaces that are hard to get right: a canvas-based CAD editor, PDF rendering, and data-heavy PrimeNG tables. I'm now learning Python backends (FastAPI) and AI engineering (LLMs, RAG, agents), and this site is where I build it in public.",
-  "location": "India",
-  "email": "hello@example.com",
+  "title": "Software Engineer, Frontend (Angular)",
+  "headline": "Frontend engineer who builds complex UIs (CAD/DXF viewers, PDF engines, data-extraction tools), now building the AI systems behind them.",
+  "shortBio": "Software Engineer (3+ yrs, Angular) who built a custom Three.js CAD editor from scratch. Also: PDF/document tooling and real-time UIs; now growing into AI.",
+  "bio": [
+    "I'm a Software Engineer with 3+ years of experience in frontend development, specializing in Angular, TypeScript and JavaScript. I build enterprise web applications with a focus on scalable UI architecture, reusable components, performance optimization and intuitive user experiences.",
+    "At VassarDigital.ai (and before that, Vassar Labs), I work on complex application features: CAD/DXF visualization, document processing, PDF viewers, data-extraction interfaces and API integrations. I enjoy solving challenging engineering problems and turning complex workflows into practical, user-friendly solutions.",
+    "Right now I'm expanding into backend and AI engineering (Python, Django/FastAPI, databases, authentication, system design, LLMs and RAG), and this portfolio is where I build it in public."
+  ],
+  "location": "Hyderabad, Telangana, India",
+  "locationShort": "Hyderabad, India",
   "heroTitle": {
-    "text": "Frontend engineer",
-    "highlight": "→ AI engineer."
+    "text": "Software Engineer",
+    "highlight": "Frontend → AI."
+  },
+  "heroCta": {
+    "label": "Read: building a CAD editor from zero →",
+    "href": "/work/custom-cad-editor"
   },
   "roles": [
-    "Angular apps that scale",
-    "CAD editors on canvas",
-    "PDF rendering engines",
-    "data grids with 100k rows",
-    "RAG agents in Python",
-    "voice assistants, like Jarvis"
+    "custom CAD editors in Three.js",
+    "DXF rendering engines",
+    "PDF tools with precise highlighting",
+    "real-time UIs with SSE",
+    "RAG agents in Python"
   ],
   "availability": {
     "status": "open",
-    "note": "Open to frontend & AI-engineering roles"
+    "note": "Open to opportunities",
+    "visible": false
   },
   "photo": {
     "src": "/media/avatar-placeholder.svg",
@@ -28,36 +38,37 @@
   },
   "links": [
     {
-      "kind": "github",
-      "label": "GitHub",
-      "url": "https://github.com/chandrashekhar-17x"
-    },
-    {
       "kind": "linkedin",
       "label": "LinkedIn",
       "url": "https://www.linkedin.com/in/chandrashekhar1423/"
     },
     {
-      "kind": "email",
-      "label": "Email",
-      "url": "mailto:hello@example.com"
+      "kind": "github",
+      "label": "GitHub",
+      "url": "https://github.com/chandrashekhar-17x"
     }
   ],
   "stats": [
     {
-      "label": "Years building UIs",
-      "value": "4+",
-      "placeholder": true
+      "label": "years of experience",
+      "computed": "experienceYears"
     },
     {
-      "label": "Projects shipped",
-      "value": "30+",
-      "placeholder": true
+      "label": "CAD engine built from scratch",
+      "value": "1"
     },
     {
-      "label": "Complex UIs: CAD, PDF, grids",
+      "label": "DXF entity types + tables",
+      "value": "8"
+    },
+    {
+      "label": "product teams contributed to",
+      "value": "4"
+    },
+    {
+      "label": "approaches evaluated → 1 shipped",
       "value": "3"
     }
   ],
-  "placeholderFields": ["summary", "email", "photo"]
+  "placeholderFields": ["photo"]
 }

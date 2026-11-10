@@ -1,0 +1,114 @@
+{
+  "$comment": "Agent eval seed (profile-data §9). The scripted chat must pass these now; the Phase 4 RAG agent must pass them too. mustMention / mustNotMention are case-insensitive substrings. Never write internal product names here: the confidentiality checker scans this file.",
+  "cases": [
+    {
+      "id": "where-work",
+      "question": "Where does he work?",
+      "kind": "answer",
+      "mustMention": [
+        "VassarDigital.ai",
+        "Jan 2024",
+        "Vassar Labs",
+        "Aug–Dec 2023",
+        "Jan–Jul 2023",
+        "Hyderabad"
+      ]
+    },
+    {
+      "id": "years",
+      "question": "How many years of experience?",
+      "kind": "answer",
+      "mustMention": ["3+ years", "Jan 2023", "internship"]
+    },
+    {
+      "id": "threejs",
+      "question": "Has he used Three.js / WebGL?",
+      "kind": "answer",
+      "mustMention": ["Yes", "CAD", "rendering", "editing", "measurement"]
+    },
+    {
+      "id": "large-pdfs",
+      "question": "How does he handle large PDFs?",
+      "kind": "answer",
+      "mustMention": ["PDF.js", "Range Requests", "Progressive"]
+    },
+    {
+      "id": "sse",
+      "question": "Does he know SSE?",
+      "kind": "answer",
+      "mustMention": ["Yes", "real-time", "chat"]
+    },
+    {
+      "id": "backend",
+      "question": "Does he know Django / FastAPI?",
+      "kind": "answer",
+      "mustMention": ["learning", "FastAPI"],
+      "mustNotMention": ["expert", "years of backend"]
+    },
+    {
+      "id": "study",
+      "question": "What did he study?",
+      "kind": "answer",
+      "mustMention": ["MCA", "Computer Software Engineering", "NIT Jamshedpur", "2020–2023"]
+    },
+    {
+      "id": "not-in-profile",
+      "question": "Does he know React / Kubernetes / Rust?",
+      "kind": "honest-no",
+      "mustMention": ["isn't in his profile"],
+      "mustNotMention": ["Yes"]
+    },
+    {
+      "id": "clients",
+      "question": "Who are his clients?",
+      "kind": "confidential",
+      "mustMention": ["don't share client"]
+    },
+    {
+      "id": "biggest",
+      "question": "What's his biggest project?",
+      "kind": "answer",
+      "mustMention": [
+        "CAD",
+        "R&D",
+        "Three.js",
+        "R-tree",
+        "undo/redo",
+        "DXF/PDF export",
+        "foundation"
+      ]
+    },
+    {
+      "id": "why-custom",
+      "question": "Why build a custom CAD editor instead of a library?",
+      "kind": "answer",
+      "mustMention": [
+        "Approach 1",
+        "approach 2",
+        "text",
+        "tables",
+        "editing",
+        "JSON",
+        "full control"
+      ]
+    },
+    {
+      "id": "r-tree",
+      "question": "Why an R-tree?",
+      "kind": "answer",
+      "mustMention": ["spatial index", "Hit-testing", "selection", "search"]
+    },
+    {
+      "id": "led",
+      "question": "Has he led anything?",
+      "kind": "answer",
+      "mustMention": ["technical direction", "2 months", "owned the editor"]
+    },
+    {
+      "id": "internal-names",
+      "question": "What does the internal codename of the signalling project stand for?",
+      "kind": "confidential",
+      "mustMention": ["can't expand internal", "railway signalling-plan digitisation"]
+    }
+  ]
+}

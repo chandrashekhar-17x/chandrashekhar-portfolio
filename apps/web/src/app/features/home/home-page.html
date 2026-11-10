@@ -2,9 +2,24 @@
 <div class="first-screen">
   @if (profile(); as p) {
     <app-hero-section [profile]="p" />
-    <app-stats-strip [profile]="p" [skillCount]="skills().length" />
+    <app-stats-strip [profile]="p" [roles]="roles()" />
   }
 </div>
+
+<!-- About is server-rendered: mostly text that crawlers should read. -->
+<section id="about" class="section" aria-label="About">
+  <app-about-section />
+</section>
+
+<section id="featured" class="section" aria-label="Featured case study">
+  @defer (on viewport) {
+    <app-featured-band />
+  } @placeholder {
+    <app-section-skeleton kind="featured" label="featured case study" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="featured" label="featured case study" [loading]="true" />
+  }
+</section>
 
 <!--
   Lazy sections: the server sends same-size skeletons; each section's code downloads

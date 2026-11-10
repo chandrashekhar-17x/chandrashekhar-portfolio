@@ -1,4 +1,4 @@
-import { GraphNode, KnowledgeGraph } from '../../core/content/build-graph';
+import { GraphLink, GraphNode, KnowledgeGraph } from '../../core/content/build-graph';
 
 // Small force-directed layout (port of the prototype's stepKG): nodes repel,
 // links pull like springs, everything drifts gently to the centre.
@@ -18,6 +18,7 @@ export interface SimNode extends GraphNode {
 export interface SimLink {
   source: SimNode;
   target: SimNode;
+  rel: GraphLink['rel'];
 }
 
 export interface Sim {
@@ -61,7 +62,7 @@ export function createSim(
   const links = graph.links.flatMap((l) => {
     const source = byId.get(l.source);
     const target = byId.get(l.target);
-    return source && target ? [{ source, target }] : [];
+    return source && target ? [{ source, target, rel: l.rel }] : [];
   });
   return { nodes, links, byId, alpha: 1, width, height };
 }

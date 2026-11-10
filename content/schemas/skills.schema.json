@@ -14,7 +14,7 @@
       "items": {
         "title": "Skill",
         "type": "object",
-        "required": ["id", "name", "category", "level"],
+        "required": ["id", "name", "category"],
         "additionalProperties": false,
         "properties": {
           "id": {
@@ -24,20 +24,18 @@
             "type": "string"
           },
           "category": {
-            "enum": ["frontend", "backend", "ai", "graphics", "tools"]
-          },
-          "level": {
-            "description": "1 = learning … 5 = expert",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 5
-          },
-          "learning": {
-            "description": "Currently learning (LEARNING edge in the graph).",
-            "type": "boolean"
+            "$ref": "common.schema.json#/$defs/category"
           },
           "placeholder": {
             "$ref": "common.schema.json#/$defs/placeholder"
+          },
+          "proficiency": {
+            "description": "Strong / Good / Learning (shown honestly; \"learning\" = growing).",
+            "enum": ["strong", "good", "learning"]
+          },
+          "concept": {
+            "description": "A concept/technique node for the graph (no proficiency claimed).",
+            "type": "boolean"
           }
         }
       }

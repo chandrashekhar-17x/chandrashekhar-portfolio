@@ -65,10 +65,22 @@
   }
 }
 
+// "Professional · details anonymised" / "Personal · open source".
+p.kind {
+  margin: 16px 0 0;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+
+  &.kind--personal {
+    color: var(--cyan);
+  }
+}
+
 h3 {
-  margin: 18px 0 6px;
+  margin: 6px 0 6px;
   font-size: 21px;
-  transform: translateZ(20px);
 }
 
 .stretched {
@@ -76,12 +88,16 @@ h3 {
   text-decoration: none;
 
   // The link covers the whole card (one tab stop, one announcement).
+  // No transform on the link or h3: a transformed ancestor would shrink this
+  // overlay to the heading. translateZ lifts it above the parallax layers
+  // (thumb is at 30px), so clicks anywhere on the card reach it.
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
     border-radius: 18px;
+    transform: translateZ(40px);
   }
 
   &:focus-visible {
@@ -92,6 +108,12 @@ h3 {
       box-shadow: var(--focus-ring);
     }
   }
+}
+
+// Title floats with the parallax; it is a span so the link itself stays untransformed.
+.title {
+  display: inline-block;
+  transform: translateZ(20px);
 }
 
 p {
@@ -117,10 +139,15 @@ p {
   list-style: none;
 }
 
+// "Case study →": shimmer comes from the global .shimmer-text class.
 .link {
+  position: relative;
+  z-index: 2;
   flex: none;
   font-size: 13.5px;
-  color: var(--cyan);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateZ(41px); // above the card overlay
 }
 
 // Per-card skeleton overlay while the card waits for its turn.

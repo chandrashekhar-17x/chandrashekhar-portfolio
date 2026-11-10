@@ -13,7 +13,7 @@
 | RAG chat with streaming + citations | Should      | ai   |
 | Graph highlight from citations      | Should      | ai   |
 | Command palette ⌘K                  | Should      | ux   |
-| Custom cursor, magnetic, tilt       | Should      | ux   |
+| Magnetic buttons, tilt cards       | Should      | ux   |
 | Recruiter JD match                  | Should      | ai   |
 | Admin: ingest + chat logs           | Should      | be   |
 | Jarvis voice mode                   | Could       | ai   |

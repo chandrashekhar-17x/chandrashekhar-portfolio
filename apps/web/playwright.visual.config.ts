@@ -8,6 +8,8 @@ const baseURL = `http://localhost:${String(PORT)}`;
 
 export default defineConfig({
   testDir: './e2e-visual',
+  // Keep screenshot runs from deleting normal e2e traces when both are invoked.
+  outputDir: './test-results-visual',
   testMatch: '**/*.visual.ts',
   snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{arg}{ext}',
   fullyParallel: true,
@@ -15,6 +17,7 @@ export default defineConfig({
   forbidOnly: !!process.env['CI'],
   reporter: process.env['CI'] ? [['github'], ['html', { open: 'never' }]] : 'list',
   expect: {
+    timeout: 15_000,
     toHaveScreenshot: {
       animations: 'disabled',
       caret: 'hide',

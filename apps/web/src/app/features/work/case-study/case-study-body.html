@@ -1,0 +1,62 @@
+<div class="layout" [class.with-toc]="toc().length > 2">
+  @if (toc().length > 2) {
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-title">On this page</p>
+      <ol>
+        @for (s of toc(); track s.id) {
+          <li>
+            <a [routerLink]="path()" [fragment]="s.id">{{ s.title }}</a>
+          </li>
+        }
+      </ol>
+    </nav>
+  }
+
+  <article class="body">
+    @for (s of sections(); track s.id) {
+      <section [id]="s.id" [class]="'sec sec--' + s.kind">
+        @if (s.title) {
+          <h2>{{ s.title }}</h2>
+        }
+        @switch (s.kind) {
+          @case ('tldr') {
+            <ul class="tldr">
+              @for (item of s.items; track $index) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          }
+          @case ('chips') {
+            <div class="groups">
+              @for (g of s.groups; track g.label) {
+                <div class="group">
+                  <h3>{{ g.label }}</h3>
+                  <ul class="chips" role="list">
+                    @for (item of g.items; track item) {
+                      <li class="tag">{{ item }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+          }
+          @case ('problems') {
+            <ul class="problems" role="list">
+              @for (r of s.rows; track r.challenge) {
+                <li>
+                  <details>
+                    <summary>{{ r.challenge }}</summary>
+                    <p>{{ r.approach }}</p>
+                  </details>
+                </li>
+              }
+            </ul>
+          }
+          @default {
+            <div class="prose" [innerHTML]="s.html"></div>
+          }
+        }
+      </section>
+    }
+  </article>
+</div>

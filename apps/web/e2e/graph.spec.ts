@@ -23,7 +23,9 @@ test.describe('knowledge graph', () => {
   test('list view lists every category with connections', async ({ page }) => {
     await page.getByRole('button', { name: 'View as list' }).click();
     await expect(page.getByRole('heading', { name: /Projects \(\d+\)/ })).toBeVisible();
-    await expect(page.locator('app-graph-list b', { hasText: 'Canvas CAD Editor' })).toBeVisible();
+    await expect(
+      page.locator('app-graph-list b', { hasText: 'Custom CAD Viewer & Editor, built from zero' }),
+    ).toBeVisible();
     await page.getByRole('button', { name: 'Show graph' }).click();
     await expect(page.locator('#graph app-graph-canvas')).toBeVisible();
   });
@@ -75,4 +77,38 @@ test('list view fits its panel and scrolls to the last group', async ({ page }) 
   const last = page.locator('app-graph-list section').last();
   await last.scrollIntoViewIfNeeded();
   await expect(last.locator('li').first()).toBeVisible();
+});
+
+test('phones get a drill-down: hubs first, then one area, then back', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, 'desktop keeps the full network');
+  await page.goto('/graph');
+  const stage = page.locator('app-graph-explorer .stage');
+  await expect(stage).toContainText('Tap an area to open it');
+  await page.locator('app-graph-filters button', { hasText: 'CAD' }).first().click();
+  const back = stage.getByRole('button', { name: '← All areas' });
+  await expect(back).toBeVisible();
+  await expect(stage).toContainText('CAD & VISUALIZATION');
+  await back.click();
+  await expect(stage).toContainText('Tap an area to open it');
+});
+
+test('desktop filters dim nodes in place without rebuilding the graph', async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, 'phones use the drill-down, which swaps views on purpose');
+  await page.goto('/graph');
+  const canvas = page.locator('app-graph-canvas canvas');
+  await expect(canvas).toBeVisible();
+  // Tag the canvas element: if the graph were remounted, the tag would be gone.
+  await canvas.evaluate((c) => {
+    c.setAttribute('data-test-same', '1');
+  });
+  for (const name of ['CAD', 'Frontend', 'Projects']) {
+    await page.locator('app-graph-filters button', { hasText: name }).first().click();
+  }
+  await expect(page.locator('app-graph-canvas canvas[data-test-same="1"]')).toHaveCount(1);
 });

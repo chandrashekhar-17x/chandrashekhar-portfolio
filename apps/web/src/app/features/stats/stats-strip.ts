@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { Profile } from '../../core/content/content.types.gen';
+import { Experience, Profile } from '../../core/content/content.types.gen';
+import { experienceYears } from '../../core/time/duration';
 import { CountUp } from '../../shared/ui/count-up.directive';
 
 /** Row of headline numbers under the hero (prototype .stats). */
@@ -22,11 +23,14 @@ import { CountUp } from '../../shared/ui/count-up.directive';
 })
 export class StatsStrip {
   readonly profile = input.required<Profile>();
-  /** Graph size is computed, not typed into content, so it is always true. */
-  readonly skillCount = input.required<number>();
+  /** Roles, so "years of experience" is computed from dates and never goes stale. */
+  readonly roles = input.required<Experience['roles']>();
 
-  protected readonly items = computed(() => [
-    ...(this.profile().stats ?? []),
-    { label: 'Skills in the knowledge graph', value: String(this.skillCount()) },
-  ]);
+  protected readonly items = computed(() =>
+    (this.profile().stats ?? []).map((s) => ({
+      label: s.label,
+      // "3+ yrs" → "3+": the label already says "years".
+      value: s.computed ? experienceYears(this.roles()).replace(/\s*yrs?$/, '') : (s.value ?? ''),
+    })),
+  );
 }

@@ -1,10 +1,15 @@
-import { byRecency, formatPeriod } from './format-period';
+import { byRecency, formatEmployment, formatPeriod } from './format-period';
 
 describe('formatPeriod', () => {
-  it('formats current, finished and single-year periods', () => {
-    expect(formatPeriod('2023-01')).toBe('2023 — now');
-    expect(formatPeriod('2021-06', '2022-12')).toBe('2021 — 2022');
-    expect(formatPeriod('2022-01', '2022-09')).toBe('2022');
+  it('formats current and finished roles with LinkedIn-style durations', () => {
+    const nov2026 = new Date(2026, 10, 10);
+    expect(formatPeriod('2024-01', undefined, nov2026)).toBe('Jan 2024 – Present · 2 yrs 11 mos');
+    expect(formatPeriod('2023-08', '2023-12')).toBe('Aug 2023 – Dec 2023 · 5 mos');
+  });
+
+  it('labels employment type and workplace', () => {
+    expect(formatEmployment('full-time', 'on-site')).toBe('Full-time · On-site');
+    expect(formatEmployment('internship')).toBe('Internship');
   });
 });
 

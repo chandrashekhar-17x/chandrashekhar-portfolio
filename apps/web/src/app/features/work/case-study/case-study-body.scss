@@ -1,0 +1,214 @@
+// Two columns on wide screens: sticky TOC + body. One column below 900px.
+.layout.with-toc {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr); // plain 1fr grows to fit wide code blocks
+  }
+}
+
+.toc {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+  font-size: 13.5px;
+
+  @container site (max-width: 900px) {
+    position: static;
+    padding: 14px 16px;
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+  }
+
+  ol {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    color: var(--ink-2);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--ink);
+    }
+  }
+}
+
+.toc-title {
+  margin-bottom: 10px;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.body {
+  min-width: 0;
+  max-width: 72ch;
+}
+
+.sec {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+  margin-bottom: var(--space-7);
+
+  h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-xl);
+  }
+}
+
+// TL;DR: highlighted card.
+.sec--tldr {
+  padding: 20px 24px;
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--violet);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.tldr {
+  display: grid;
+  gap: 8px;
+  padding-left: 18px;
+  color: var(--ink-2);
+}
+
+// "What I built": one chip cloud per group.
+.groups {
+  display: grid;
+  gap: 16px;
+}
+
+.group h3 {
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+.chips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-block;
+  }
+}
+
+// Hard problems: expandable cards.
+.problems {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  details {
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    background: var(--panel);
+  }
+
+  summary {
+    padding: 14px 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  p {
+    padding: 0 16px 14px;
+    color: var(--ink-2);
+  }
+}
+
+// R&D journey: the ordered list becomes a vertical stepper.
+.sec--journey .prose ::ng-deep ol {
+  position: relative;
+  padding-left: 30px;
+  list-style: none;
+  counter-reset: step;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 9px;
+    width: 2px;
+    background: linear-gradient(var(--violet), var(--cyan));
+  }
+
+  > li {
+    position: relative;
+    margin-bottom: 14px;
+    counter-increment: step;
+
+    &::before {
+      content: counter(step);
+      position: absolute;
+      top: 2px;
+      left: -30px;
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--violet);
+      color: #fff;
+      font: 600 11px var(--font-mono);
+    }
+  }
+}
+
+// Plain markdown (innerHTML), styled via ::ng-deep.
+.prose {
+  line-height: 1.7;
+
+  ::ng-deep {
+    p,
+    ul,
+    ol,
+    blockquote {
+      margin-bottom: var(--space-4);
+      color: var(--ink-2);
+    }
+
+    ul,
+    ol {
+      padding-left: 20px;
+    }
+
+    blockquote {
+      padding: 10px 16px;
+      border-left: 3px solid var(--line-2);
+      border-radius: 4px;
+      background: var(--panel);
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 6px;
+      background: var(--panel);
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      border: 1px solid var(--line-2);
+      border-radius: 12px;
+      background: var(--panel);
+      font-size: 12.5px;
+      line-height: 1.6;
+
+      code {
+        padding: 0;
+        background: none; // no per-line boxes inside diagrams
+      }
+    }
+  }
+}

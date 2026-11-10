@@ -11,8 +11,10 @@ describe('GraphList', () => {
 
     const projects = screen.getByRole('heading', { name: /Projects \(\d+\)/ }).closest('section');
     if (!projects) throw new Error('no projects group');
-    const cad = within(projects).getByText('Canvas CAD Editor').closest('li');
-    expect(cad?.textContent).toContain('Angular');
+    const cad = within(projects)
+      .getByText('Custom CAD Viewer & Editor, built from zero')
+      .closest('li');
+    expect(cad?.textContent).toContain('Three.js');
     expect(cad?.textContent).not.toContain('FRONTEND');
   });
 

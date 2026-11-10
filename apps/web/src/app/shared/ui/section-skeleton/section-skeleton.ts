@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-export type SkeletonKind = 'graph' | 'work' | 'lab' | 'xp' | 'contact';
+export type SkeletonKind = 'featured' | 'graph' | 'work' | 'lab' | 'xp' | 'contact';
 
 /**
  * Same-size placeholder for a lazy home section (prototype: .sk-sec).

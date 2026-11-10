@@ -1,17 +1,20 @@
 @if (project.value(); as p) {
   <a routerLink="/work" class="back">← All work</a>
-  <app-page-header [eyebrow]="p.role + ' · ' + p.year" [title]="p.title" [lead]="p.summary" />
+  <app-page-header [eyebrow]="eyebrow(p)" [title]="p.title" [lead]="p.summary" />
+  @if (p.role) {
+    <p class="role"><span>My role</span> {{ p.role }}</p>
+  }
   <div class="banner">
     @if (p.cover; as cover) {
       <img [src]="cover.src" [alt]="cover.alt" />
     } @else {
-      <app-project-illustration [kind]="p.illustration ?? 'api'" fit="contain" />
+      <app-project-illustration [kind]="p.illustration" fit="contain" />
     }
   </div>
   <div class="facts">
     <ul class="tags" role="list" aria-label="Technologies">
-      @for (s of p.skills; track s) {
-        <li class="tag">{{ skillNames().get(s) ?? s }}</li>
+      @for (t of p.tags; track t) {
+        <li class="tag">{{ t }}</li>
       }
     </ul>
     @if (p.links; as links) {
@@ -36,7 +39,18 @@
       </ul>
     }
   </div>
-  <article class="prose" [innerHTML]="html()"></article>
+  <app-case-study-body [markdown]="body()" [path]="'/work/' + p.slug" />
+
+  <nav class="pager" aria-label="More projects">
+    @if (neighbours().prev; as prev) {
+      <a class="prev" [routerLink]="['/work', prev.slug]">
+        <span>← Previous</span>{{ prev.title }}
+      </a>
+    }
+    @if (neighbours().next; as next) {
+      <a class="next" [routerLink]="['/work', next.slug]"> <span>Next →</span>{{ next.title }} </a>
+    }
+  </nav>
 } @else if (project.isLoading()) {
   <p class="muted" role="status">Loading case study…</p>
 } @else {

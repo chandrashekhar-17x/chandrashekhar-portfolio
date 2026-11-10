@@ -5,6 +5,7 @@ export interface NavLink {
 }
 
 export const NAV_LINKS: readonly NavLink[] = [
+  { label: 'About', fragment: 'about' },
   { label: 'Knowledge graph', fragment: 'graph' },
   { label: 'Work', fragment: 'work' },
   { label: 'AI Lab', fragment: 'lab' },

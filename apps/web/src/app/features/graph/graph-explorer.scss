@@ -60,3 +60,18 @@
     height: 100%;
   }
 }
+
+// Small screens: drill-down bar floats over the canvas (no layout shift).
+.drill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}

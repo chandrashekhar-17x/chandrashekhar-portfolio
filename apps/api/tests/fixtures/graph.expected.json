@@ -1,0 +1,1195 @@
+{
+  "nodes": [
+    {
+      "id": "hub:frontend",
+      "kind": "hub",
+      "label": "FRONTEND",
+      "category": "frontend",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:cad",
+      "kind": "hub",
+      "label": "CAD & VISUALIZATION",
+      "category": "cad",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:documents",
+      "kind": "hub",
+      "label": "DOCUMENT PROCESSING",
+      "category": "documents",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:realtime",
+      "kind": "hub",
+      "label": "API & REAL-TIME",
+      "category": "realtime",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:fundamentals",
+      "kind": "hub",
+      "label": "FUNDAMENTALS",
+      "category": "fundamentals",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:backend",
+      "kind": "hub",
+      "label": "BACKEND (GROWING)",
+      "category": "backend",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:ai",
+      "kind": "hub",
+      "label": "AI (GROWING)",
+      "category": "ai",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:performance",
+      "kind": "hub",
+      "label": "PERFORMANCE",
+      "category": "performance",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "hub:leadership",
+      "kind": "hub",
+      "label": "LEADERSHIP & R&D",
+      "category": "leadership",
+      "size": 13,
+      "learning": false
+    },
+    {
+      "id": "skill:angular",
+      "kind": "skill",
+      "label": "Angular",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:angular-cli",
+      "kind": "skill",
+      "label": "Angular CLI",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:typescript",
+      "kind": "skill",
+      "label": "TypeScript",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:javascript",
+      "kind": "skill",
+      "label": "JavaScript",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:rxjs",
+      "kind": "skill",
+      "label": "RxJS",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:reactive-forms",
+      "kind": "skill",
+      "label": "Reactive Forms",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:html",
+      "kind": "skill",
+      "label": "HTML",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:scss",
+      "kind": "skill",
+      "label": "SCSS / CSS",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:primeng",
+      "kind": "skill",
+      "label": "PrimeNG",
+      "category": "frontend",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:threejs",
+      "kind": "skill",
+      "label": "Three.js",
+      "category": "cad",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:webgl",
+      "kind": "skill",
+      "label": "WebGL",
+      "category": "cad",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:dxf",
+      "kind": "skill",
+      "label": "DXF",
+      "category": "cad",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:canvas",
+      "kind": "skill",
+      "label": "Canvas / SVG",
+      "category": "cad",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:pdfjs",
+      "kind": "skill",
+      "label": "PDF.js",
+      "category": "documents",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:range-requests",
+      "kind": "skill",
+      "label": "HTTP Range Requests",
+      "category": "documents",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:progressive-loading",
+      "kind": "skill",
+      "label": "Progressive loading",
+      "category": "documents",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:rest-apis",
+      "kind": "skill",
+      "label": "REST APIs",
+      "category": "realtime",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:sse",
+      "kind": "skill",
+      "label": "Server-Sent Events",
+      "category": "realtime",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:data-structures",
+      "kind": "skill",
+      "label": "Data Structures",
+      "category": "fundamentals",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:cpp",
+      "kind": "skill",
+      "label": "C++",
+      "category": "fundamentals",
+      "size": 6,
+      "learning": false
+    },
+    {
+      "id": "skill:python",
+      "kind": "skill",
+      "label": "Python",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:django",
+      "kind": "skill",
+      "label": "Django",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:fastapi",
+      "kind": "skill",
+      "label": "FastAPI",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:postgres",
+      "kind": "skill",
+      "label": "PostgreSQL",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:auth",
+      "kind": "skill",
+      "label": "Authentication",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:system-design",
+      "kind": "skill",
+      "label": "System design",
+      "category": "backend",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:llms",
+      "kind": "skill",
+      "label": "LLMs",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:rag",
+      "kind": "skill",
+      "label": "RAG",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:embeddings",
+      "kind": "skill",
+      "label": "Embeddings",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:langchain",
+      "kind": "skill",
+      "label": "LangChain",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:langgraph",
+      "kind": "skill",
+      "label": "LangGraph",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:mcp",
+      "kind": "skill",
+      "label": "MCP",
+      "category": "ai",
+      "size": 6,
+      "learning": true
+    },
+    {
+      "id": "skill:r-tree",
+      "kind": "concept",
+      "label": "R-tree / spatial indexing",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:undo-redo",
+      "kind": "concept",
+      "label": "Undo/Redo",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:dxf-entities",
+      "kind": "concept",
+      "label": "DXF entities",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:cad-tables",
+      "kind": "concept",
+      "label": "CAD tables",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:dxf-export",
+      "kind": "concept",
+      "label": "DXF export",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:pdf-export",
+      "kind": "concept",
+      "label": "PDF export",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:change-detection",
+      "kind": "concept",
+      "label": "Change detection (diff)",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:domain-modelling",
+      "kind": "concept",
+      "label": "Domain modelling",
+      "category": "cad",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:bounding-boxes",
+      "kind": "concept",
+      "label": "Bounding boxes",
+      "category": "documents",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:text-highlighting",
+      "kind": "concept",
+      "label": "Text highlighting",
+      "category": "documents",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:accessibility-tree",
+      "kind": "concept",
+      "label": "Accessibility tree",
+      "category": "documents",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:rbac",
+      "kind": "concept",
+      "label": "RBAC / permissions",
+      "category": "frontend",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:bulk-upload",
+      "kind": "concept",
+      "label": "Bulk upload",
+      "category": "frontend",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:large-data-ui",
+      "kind": "concept",
+      "label": "Large files & JSON",
+      "category": "performance",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:render-performance",
+      "kind": "concept",
+      "label": "Rendering-intensive views",
+      "category": "performance",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:technical-direction",
+      "kind": "concept",
+      "label": "Technical direction",
+      "category": "leadership",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:rnd",
+      "kind": "concept",
+      "label": "R&D / evaluation",
+      "category": "leadership",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "skill:web-speech",
+      "kind": "concept",
+      "label": "Web Speech API",
+      "category": "ai",
+      "size": 5,
+      "learning": false
+    },
+    {
+      "id": "org:vassardigital",
+      "kind": "org",
+      "label": "VassarDigital.ai",
+      "category": "org",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "org:vassar-labs",
+      "kind": "org",
+      "label": "Vassar Labs",
+      "category": "org",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "edu:nit-jamshedpur",
+      "kind": "education",
+      "label": "NIT Jamshedpur",
+      "category": "org",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:custom-cad-editor",
+      "kind": "project",
+      "label": "Custom CAD Viewer & Editor, built from zero",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:signalling-plan-editor",
+      "kind": "project",
+      "label": "Railway Signalling-Plan Digitisation & Editing",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:knowledge-base-ingestion",
+      "kind": "project",
+      "label": "Website & Knowledge-Base Ingestion",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:html-bbox-visualizer",
+      "kind": "project",
+      "label": "Bounding-Box Visualization for Captured Web Pages",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:document-review-viewer",
+      "kind": "project",
+      "label": "Document Review Viewer: Precise Highlighting",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:progressive-pdf-viewer",
+      "kind": "project",
+      "label": "Progressive PDF Viewer",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:realtime-integrations",
+      "kind": "project",
+      "label": "Real-time API & SSE Integrations",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:enterprise-ui-architecture",
+      "kind": "project",
+      "label": "Enterprise Angular UI Architecture",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:portfolio-rag-agent",
+      "kind": "project",
+      "label": "Portfolio RAG Agent (this site)",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:jarvis-voice",
+      "kind": "project",
+      "label": "Jarvis Voice Mode",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    },
+    {
+      "id": "project:cad-playground",
+      "kind": "project",
+      "label": "CAD Playground (public demo)",
+      "category": "project",
+      "size": 8,
+      "learning": false
+    }
+  ],
+  "links": [
+    {
+      "source": "hub:frontend",
+      "target": "skill:angular",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:angular-cli",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:typescript",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:javascript",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:rxjs",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:reactive-forms",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:html",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:scss",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:primeng",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:threejs",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:webgl",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:dxf",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:canvas",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:pdfjs",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:range-requests",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:progressive-loading",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:realtime",
+      "target": "skill:rest-apis",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:realtime",
+      "target": "skill:sse",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:fundamentals",
+      "target": "skill:data-structures",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:fundamentals",
+      "target": "skill:cpp",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:python",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:django",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:fastapi",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:postgres",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:auth",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:backend",
+      "target": "skill:system-design",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:llms",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:rag",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:embeddings",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:langchain",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:langgraph",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:mcp",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:r-tree",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:undo-redo",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:dxf-entities",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:cad-tables",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:dxf-export",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:pdf-export",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:change-detection",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:cad",
+      "target": "skill:domain-modelling",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:bounding-boxes",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:text-highlighting",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:documents",
+      "target": "skill:accessibility-tree",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:rbac",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:frontend",
+      "target": "skill:bulk-upload",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:performance",
+      "target": "skill:large-data-ui",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:performance",
+      "target": "skill:render-performance",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:leadership",
+      "target": "skill:technical-direction",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:leadership",
+      "target": "skill:rnd",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "hub:ai",
+      "target": "skill:web-speech",
+      "rel": "IN_CATEGORY"
+    },
+    {
+      "source": "org:vassardigital",
+      "target": "skill:angular-cli",
+      "rel": "USED"
+    },
+    {
+      "source": "org:vassardigital",
+      "target": "skill:javascript",
+      "rel": "USED"
+    },
+    {
+      "source": "org:vassar-labs",
+      "target": "skill:data-structures",
+      "rel": "USED"
+    },
+    {
+      "source": "org:vassar-labs",
+      "target": "skill:cpp",
+      "rel": "USED"
+    },
+    {
+      "source": "edu:nit-jamshedpur",
+      "target": "skill:data-structures",
+      "rel": "STUDIED"
+    },
+    {
+      "source": "edu:nit-jamshedpur",
+      "target": "skill:cpp",
+      "rel": "STUDIED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:threejs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:webgl",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:canvas",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:typescript",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:angular",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:dxf",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:r-tree",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:undo-redo",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:dxf-export",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:pdf-export",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:dxf-entities",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:cad-tables",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:technical-direction",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "skill:rnd",
+      "rel": "USED"
+    },
+    {
+      "source": "project:custom-cad-editor",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "skill:threejs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "skill:change-detection",
+      "rel": "USED"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "skill:domain-modelling",
+      "rel": "USED"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "skill:dxf",
+      "rel": "USED"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:angular",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:rbac",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:bulk-upload",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:bounding-boxes",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:accessibility-tree",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "skill:pdfjs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:knowledge-base-ingestion",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:html-bbox-visualizer",
+      "target": "skill:angular",
+      "rel": "USED"
+    },
+    {
+      "source": "project:html-bbox-visualizer",
+      "target": "skill:bounding-boxes",
+      "rel": "USED"
+    },
+    {
+      "source": "project:html-bbox-visualizer",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:document-review-viewer",
+      "target": "skill:pdfjs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:document-review-viewer",
+      "target": "skill:text-highlighting",
+      "rel": "USED"
+    },
+    {
+      "source": "project:document-review-viewer",
+      "target": "skill:bounding-boxes",
+      "rel": "USED"
+    },
+    {
+      "source": "project:document-review-viewer",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:progressive-pdf-viewer",
+      "target": "skill:pdfjs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:progressive-pdf-viewer",
+      "target": "skill:range-requests",
+      "rel": "USED"
+    },
+    {
+      "source": "project:progressive-pdf-viewer",
+      "target": "skill:progressive-loading",
+      "rel": "USED"
+    },
+    {
+      "source": "project:progressive-pdf-viewer",
+      "target": "skill:large-data-ui",
+      "rel": "USED"
+    },
+    {
+      "source": "project:progressive-pdf-viewer",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:realtime-integrations",
+      "target": "skill:rest-apis",
+      "rel": "USED"
+    },
+    {
+      "source": "project:realtime-integrations",
+      "target": "skill:sse",
+      "rel": "USED"
+    },
+    {
+      "source": "project:realtime-integrations",
+      "target": "skill:rxjs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:realtime-integrations",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:angular",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:typescript",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:primeng",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:reactive-forms",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:large-data-ui",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "skill:render-performance",
+      "rel": "USED"
+    },
+    {
+      "source": "project:enterprise-ui-architecture",
+      "target": "org:vassardigital",
+      "rel": "BUILT_AT"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:python",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:fastapi",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:postgres",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:llms",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:rag",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:sse",
+      "rel": "USED"
+    },
+    {
+      "source": "project:portfolio-rag-agent",
+      "target": "skill:angular",
+      "rel": "USED"
+    },
+    {
+      "source": "project:jarvis-voice",
+      "target": "skill:web-speech",
+      "rel": "USED"
+    },
+    {
+      "source": "project:jarvis-voice",
+      "target": "skill:llms",
+      "rel": "USED"
+    },
+    {
+      "source": "project:cad-playground",
+      "target": "skill:threejs",
+      "rel": "USED"
+    },
+    {
+      "source": "project:cad-playground",
+      "target": "skill:typescript",
+      "rel": "USED"
+    },
+    {
+      "source": "project:cad-playground",
+      "target": "skill:r-tree",
+      "rel": "USED"
+    },
+    {
+      "source": "project:cad-playground",
+      "target": "skill:dxf",
+      "rel": "USED"
+    },
+    {
+      "source": "project:signalling-plan-editor",
+      "target": "project:custom-cad-editor",
+      "rel": "BUILT_ON"
+    },
+    {
+      "source": "project:cad-playground",
+      "target": "project:custom-cad-editor",
+      "rel": "DEMONSTRATES"
+    }
+  ]
+}

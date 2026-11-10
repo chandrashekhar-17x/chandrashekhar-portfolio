@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/education.schema.json",
+  "education": [
+    {
+      "id": "nit-jamshedpur",
+      "institute": "National Institute of Technology (NIT) Jamshedpur",
+      "shortName": "NIT Jamshedpur",
+      "monogram": "NIT",
+      "degree": "Master of Computer Applications (MCA)",
+      "field": "Computer Software Engineering",
+      "start": 2020,
+      "end": 2023,
+      "skills": ["data-structures", "cpp"]
+    }
+  ]
+}

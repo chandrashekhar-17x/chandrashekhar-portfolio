@@ -1,16 +1,16 @@
 {
   "$schema": "../schemas/graph.schema.json",
-  "topics": [
-    { "id": "complex-uis", "label": "Complex UIs" },
-    { "id": "applied-ai", "label": "Applied AI" }
-  ],
+  "topics": [],
   "edges": [
-    { "src": "project:cad-editor", "dst": "topic:complex-uis", "rel": "RELATED" },
-    { "src": "project:pdf-engine", "dst": "topic:complex-uis", "rel": "RELATED" },
-    { "src": "project:data-grid", "dst": "topic:complex-uis", "rel": "RELATED" },
-    { "src": "skill:rag", "dst": "topic:applied-ai", "rel": "RELATED" },
-    { "src": "skill:llms", "dst": "topic:applied-ai", "rel": "RELATED" },
-    { "src": "skill:mcp", "dst": "topic:applied-ai", "rel": "RELATED" },
-    { "src": "skill:rxjs", "dst": "skill:angular", "rel": "RELATED", "weight": 0.8 }
+    {
+      "src": "project:signalling-plan-editor",
+      "dst": "project:custom-cad-editor",
+      "rel": "BUILT_ON"
+    },
+    {
+      "src": "project:cad-playground",
+      "dst": "project:custom-cad-editor",
+      "rel": "DEMONSTRATES"
+    }
   ]
 }

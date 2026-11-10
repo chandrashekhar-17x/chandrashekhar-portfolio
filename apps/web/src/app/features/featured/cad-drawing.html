@@ -1,0 +1,36 @@
+<svg
+  viewBox="0 0 400 260"
+  role="img"
+  aria-label="Illustration: a CAD drawing being built, indexed and edited"
+>
+  <defs>
+    <pattern id="cad-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" class="grid" />
+    </pattern>
+  </defs>
+  <rect width="400" height="260" fill="url(#cad-grid)" />
+
+  <g class="step s1">
+    <path class="ln" d="M40 200H360M60 200V80H200V200M200 120H320V200" />
+  </g>
+  <g class="step s2">
+    <path class="ln" d="M200 120A60 60 0 0 1 260 60" />
+    <circle class="ln" cx="130" cy="140" r="28" />
+  </g>
+  <g class="step s3">
+    <text x="64" y="72" class="txt">PLAN A-01</text>
+    <text x="210" y="112" class="txt">1:100</text>
+  </g>
+  <g class="step s4">
+    <rect class="rt" x="54" y="74" width="152" height="132" />
+    <rect class="rt" x="194" y="54" width="132" height="152" />
+    <rect class="rt" x="98" y="108" width="64" height="64" />
+  </g>
+  <g class="step s5">
+    <rect class="sel" x="96" y="106" width="68" height="68" />
+  </g>
+  <g class="step s6">
+    <path class="del" d="M220 180H300" />
+    <path class="add" d="M220 168H300" />
+  </g>
+</svg>

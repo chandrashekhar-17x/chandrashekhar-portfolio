@@ -68,57 +68,86 @@
   border-radius: var(--radius-card);
 }
 
+:host(.kind-featured) {
+  .label,
+  .head-eyebrow,
+  .head-title {
+    display: none;
+  }
+}
+
+.featured {
+  height: 485px;
+
+  @container site (max-width: 900px) {
+    height: 843px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 771px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 831px;
+  }
+}
+
+.featured-journey {
+  height: 36px;
+  margin-top: 18px;
+
+  @container site (max-width: 900px) {
+    height: 82px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 128px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 181px;
+  }
+}
+
 // Heights match the real sections (kept in sync by the CLS e2e test).
 // All heights below are measured from the real sections (desktop, tablet, phone).
 // The CLS e2e test (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't
 // shift visible content; re-measure when a section's layout changes.
 .graph {
-  height: 640px;
+  height: 671px;
   border-radius: var(--radius-panel);
 
   @container site (max-width: 900px) {
-    height: 1092px; // side panel stacks above the canvas
+    height: 1049px; // side panel stacks above the canvas
   }
 
   @container site (max-width: 600px) {
-    height: 970px;
+    height: 1017px;
   }
 }
 
 .card {
   // Real project card heights (all cards in a grid are equal; wider = shorter).
-  height: 349px;
+  height: 446px;
 
   @container site (max-width: 900px) {
-    height: 394px;
-  }
-
-  @container site (max-width: 600px) {
-    height: 390px;
+    height: 472px;
   }
 }
 
 .hud {
-  height: 380px;
-
-  @container site (max-width: 600px) {
-    height: 400px;
-  }
+  height: 450px;
 }
 
 .form {
-  height: 360px;
-
-  @container site (max-width: 600px) {
-    height: 600px; // the form stacks into one tall column on phones
-  }
+  height: 572px;
 }
 
 .aside {
-  height: 200px;
+  height: 226px;
 
-  @container site (max-width: 600px) {
-    height: 220px;
+  @container site (max-width: 900px) {
+    height: 248px;
   }
 }
 
@@ -149,38 +178,45 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-.rows {
+.xp-layout {
   display: grid;
-  gap: 28px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 40px;
+  align-items: start;
 
-  // Phones: each role wraps to several lines (title, summary, highlights).
-  @container site (max-width: 600px) {
-    > div {
-      min-height: 210px;
-    }
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr;
   }
 }
 
-.line {
-  height: 12px;
-  margin-top: 8px;
+// Real heights: the current company has a summary + highlights, the other two short roles.
+.rows {
+  display: grid;
+  gap: 28px;
 }
 
-.line-lg {
-  height: 20px;
-  margin-top: 8px;
+.company-1 {
+  height: 293px;
+
+  @container site (max-width: 600px) {
+    height: 377px;
+  }
 }
 
-.w-90 {
-  width: 90px;
+.company-2 {
+  height: 238px;
 }
 
-.w-45 {
-  width: 45%;
-}
+.edu {
+  height: 213px;
 
-.w-70 {
-  width: 70%;
+  @container site (max-width: 900px) {
+    height: 166px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 214px;
+  }
 }
 
 // AI Lab uses the real HUD layout: 3 columns → tablet: core panel spans a row,
@@ -192,12 +228,18 @@
   @container site (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
 
+    // The core (orb) panel comes first here and is shorter than the other two.
     > :first-child {
       grid-column: 1 / -1;
+      height: 410px;
     }
   }
 
   @container site (max-width: 600px) {
     grid-template-columns: 1fr;
+
+    > :nth-child(2) {
+      height: 386px; // agents panel
+    }
   }
 }

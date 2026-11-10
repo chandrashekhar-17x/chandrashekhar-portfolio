@@ -11,7 +11,6 @@ import {
   input,
   output,
   signal,
-  untracked,
   viewChild,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -41,6 +40,8 @@ import {
  * highlight. The canvas is decorative for assistive tech; the list view
  * (GraphList) carries the same information accessibly.
  */
+import { tipPosition } from './tip-position';
+
 @Component({
   selector: 'app-graph-canvas',
   templateUrl: './graph-canvas.html',
@@ -87,13 +88,7 @@ export class GraphCanvas {
       this.theme.theme();
       if (browser) this.palette = readPalette();
     });
-    // A new filter shakes the layout a little, like the prototype.
-    effect(() => {
-      this.filter();
-      untracked(() => {
-        if (this.sim) this.sim.alpha = Math.max(this.sim.alpha, 0.5);
-      });
-    });
+    // A filter only dims/brightens nodes; the layout stays where it is (owner request).
   }
 
   private start(): void {
@@ -195,9 +190,10 @@ export class GraphCanvas {
   /** Tooltip follows the pointer via direct style writes (no change detection). */
   private moveTip(x: number, y: number): void {
     const tip = this.tip().nativeElement;
-    const w = this.fitted?.width ?? 0;
-    const left = x + 260 > w ? x - 250 : x + 14;
-    tip.style.transform = `translate(${String(left)}px, ${String(y + 14)}px)`;
+    const box = { width: this.fitted?.width ?? 0, height: this.fitted?.height ?? 0 };
+    const size = { width: tip.offsetWidth, height: tip.offsetHeight };
+    const { left, top } = tipPosition(x, y, size, box);
+    tip.style.transform = `translate(${String(left)}px, ${String(top)}px)`;
   }
 }
 

@@ -1,5 +1,12 @@
-import { SimNode } from './graph-sim';
-import { RenderState, growth, isDimmed } from './graph-renderer';
+import { Sim, SimNode } from './graph-sim';
+import {
+  RenderState,
+  edgeLabels,
+  growth,
+  isDimmed,
+  shortLabel,
+  splitLabel,
+} from './graph-renderer';
 
 const node = (over: Partial<SimNode> = {}): SimNode => ({
   id: 'skill:a',
@@ -54,5 +61,34 @@ describe('graph renderer helpers', () => {
     const s = state({ lit: new Set(['skill:a']) });
     expect(isDimmed(node(), s, null)).toBe(false);
     expect(isDimmed(node({ id: 'skill:b' }), s, null)).toBe(true);
+  });
+
+  it('labels only the hovered node\'s "built on" / "demonstrates" links, at the midpoint', () => {
+    const a = node({ id: 'project:a', x: 0, y: 0 });
+    const b = node({ id: 'project:b', x: 100, y: 50 });
+    const c = node({ id: 'skill:c', x: 10, y: 10 });
+    const sim = {
+      nodes: [a, b, c],
+      links: [
+        { source: b, target: a, rel: 'BUILT_ON' },
+        { source: a, target: c, rel: 'USED' },
+      ],
+    } as unknown as Sim;
+    expect(edgeLabels(sim, a)).toEqual([{ text: 'built on', x: 50, y: 21 }]);
+    expect(edgeLabels(sim, c)).toEqual([]);
+  });
+
+  it('shortens long canvas labels and leaves short ones alone', () => {
+    expect(shortLabel('Portfolio RAG Agent (this site)')).toBe('Portfolio RAG Agent');
+    expect(shortLabel('Custom CAD Viewer & Editor, built from zero')).toBe(
+      'Custom CAD Viewer & E…',
+    );
+    expect(shortLabel('Angular')).toBe('Angular');
+  });
+
+  it('splits long hub names into two balanced lines', () => {
+    expect(splitLabel('DOCUMENT PROCESSING')).toEqual(['DOCUMENT', 'PROCESSING']);
+    expect(splitLabel('CAD & VISUALIZATION')).toEqual(['CAD &', 'VISUALIZATION']);
+    expect(splitLabel('FRONTEND')).toEqual(['FRONTEND']);
   });
 });

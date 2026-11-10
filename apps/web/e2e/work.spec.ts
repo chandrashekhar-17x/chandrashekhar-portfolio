@@ -2,30 +2,33 @@ import { expect, test } from '@playwright/test';
 
 test('home work cards fill in one by one, then link to case studies', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#work').scrollIntoViewIfNeeded();
-  const cards = page.locator('#work app-project-card .card');
-  await expect(cards.first()).toBeVisible();
-
-  // Record when each card finishes loading: they must finish in order, not all at once.
-  const finished = await page.evaluate(async () => {
-    const els = [...document.querySelectorAll('#work app-project-card .card')];
-    const times: number[] = els.map(() => 0);
+  // Start recording BEFORE scrolling, so no card can finish unobserved.
+  // It waits for the cards to exist, then notes when each one stops loading.
+  const recording = page.evaluate(async () => {
     const start = performance.now();
-    while (times.some((t) => t === 0) && performance.now() - start < 8000) {
+    let els: Element[] = [];
+    while (!els.length && performance.now() - start < 8000) {
+      els = [...document.querySelectorAll('#work app-project-card .card')];
+      await new Promise((r) => setTimeout(r, 10));
+    }
+    const times: number[] = els.map(() => 0);
+    while (times.some((t) => t === 0) && performance.now() - start < 10000) {
       els.forEach((el, i) => {
         if (!times[i] && !el.classList.contains('is-loading')) times[i] = performance.now() - start;
       });
-      await new Promise((r) => setTimeout(r, 20));
+      await new Promise((r) => setTimeout(r, 10));
     }
     return times;
   });
+  await page.locator('#work').scrollIntoViewIfNeeded();
+  const finished = await recording;
   expect(finished.length).toBeGreaterThan(1);
   for (let i = 1; i < finished.length; i++) {
     expect(finished[i]).toBeGreaterThan(finished[i - 1] ?? 0);
   }
 
-  await page.getByRole('link', { name: 'Canvas CAD Editor' }).click();
-  await expect(page).toHaveURL(/\/work\/cad-editor$/);
+  await page.getByRole('link', { name: 'Custom CAD Viewer & Editor, built from zero' }).click();
+  await expect(page).toHaveURL(/\/work\/custom-cad-editor$/);
 });
 
 test('/work renders every card on the server (no skeletons, works without JS)', async ({
@@ -33,7 +36,7 @@ test('/work renders every card on the server (no skeletons, works without JS)', 
 }) => {
   await page.route(/\.js$/, (route) => route.abort());
   await page.goto('/work');
-  await expect(page.locator('app-project-card')).toHaveCount(4);
+  await expect(page.locator('app-project-card')).toHaveCount(11);
   await expect(page.locator('.card.is-loading')).toHaveCount(0);
 });
 
@@ -56,5 +59,44 @@ for (const path of ['/', '/work']) {
       );
     expect(sizes.length).toBeGreaterThan(1);
     expect(new Set(sizes).size).toBe(1);
+  });
+}
+
+test('/work filters narrow the grid and "All" restores it', async ({ page }) => {
+  await page.goto('/work');
+  const cards = page.locator('app-project-card');
+  await expect(cards).toHaveCount(11);
+  const filters = page.getByRole('list', { name: 'Filter projects' });
+  await filters.getByRole('button', { name: /^Personal/ }).click();
+  await expect(cards).toHaveCount(3);
+  await expect(page.getByRole('status')).toHaveText('3 projects shown');
+  await filters.getByRole('button', { name: /^CAD & 3D/ }).click();
+  await expect(cards.first()).toContainText('Custom CAD Viewer');
+  await filters.getByRole('button', { name: /^All/ }).click();
+  await expect(cards).toHaveCount(11);
+});
+
+test('every project card has its own illustration', async ({ page }) => {
+  await page.goto('/work');
+  const svgs = await page
+    .locator('app-project-illustration svg')
+    .evaluateAll((els) => els.map((e) => e.innerHTML.replace(/ill-grid-\d+/g, '')));
+  expect(new Set(svgs).size).toBe(svgs.length);
+});
+
+// Regression: the whole card (picture, summary, "Case study →") opens the case
+// study, not only the title. A transform on the heading used to shrink the overlay.
+for (const part of ['.thumb', 'p:not(.kind)', '.link'] as const) {
+  test(`clicking the card's ${part} opens the case study`, async ({ page }) => {
+    await page.goto('/work');
+    const card = page.locator('app-project-card .card').first();
+    await expect(card).not.toHaveClass(/is-loading/);
+    // Click where a person would: the point on screen, whatever element is on top.
+    const target = card.locator(part).first();
+    await target.scrollIntoViewIfNeeded();
+    const box = await target.boundingBox();
+    if (!box) throw new Error(`${part} not visible`);
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await expect(page).toHaveURL(/\/work\/[a-z0-9-]+$/);
   });
 }

@@ -15,18 +15,19 @@ const skills = new Map<string, Skill>(
       ['llms', 'LLM APIs', 'ai'],
       ['py', 'Python', 'backend'],
     ] as const
-  ).map(([id, name, category]) => [id, { id, name, category, level: 3 }]),
+  ).map(([id, name, category]) => [id, { id, name, category, proficiency: 'strong' }]),
 );
 
 const project = (ids: string[]): Project => ({
   slug: 'demo',
   title: 'Demo Project',
   summary: 'A demo.',
-  year: 2026,
-  role: 'Engineer',
+  type: 'personal',
   status: 'shipped',
   featured: true,
   skills: ids,
+  tags: ['RAG', 'LLM APIs', 'Angular', 'Extra'],
+  filters: ['ai'],
   body: 'projects/demo.md',
   illustration: 'rag',
 });
@@ -62,11 +63,13 @@ describe('ProjectCard', () => {
     expect(screen.getAllByRole('link')).toHaveLength(1);
   });
 
-  it('shows the area tag and skill names', async () => {
+  it('shows the kind, the area tag and the first three display tags', async () => {
     await setup(false);
+    expect(screen.getByText('Personal · open source')).toBeTruthy();
     const tags = screen.getByRole('list', { name: 'Technologies' }).textContent;
     expect(tags).toContain('ai');
     expect(tags).toContain('RAG');
+    expect(tags).not.toContain('Extra');
   });
 
   it('staggered cards end up loaded once their turn comes', async () => {

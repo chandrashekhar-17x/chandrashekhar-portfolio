@@ -9,13 +9,17 @@ export interface CategoryMeta {
 
 export const CATEGORIES: readonly CategoryMeta[] = [
   { key: 'frontend', label: 'Frontend', color: '--cyan' },
-  { key: 'ai', label: 'AI engineering', color: '--pink' },
-  { key: 'backend', label: 'Backend', color: '--lime' },
-  { key: 'graphics', label: 'Graphics & docs', color: '--amber' },
-  { key: 'tools', label: 'Tools', color: '--ink-2' },
+  { key: 'cad', label: 'CAD & visualization', color: '--amber' },
+  { key: 'documents', label: 'Document processing', color: '--teal' },
+  { key: 'realtime', label: 'API & real-time', color: '--orange' },
+  { key: 'performance', label: 'Performance', color: '--rose' },
+  { key: 'backend', label: 'Backend (growing)', color: '--lime' },
+  { key: 'ai', label: 'AI (growing)', color: '--pink' },
+  { key: 'fundamentals', label: 'Fundamentals', color: '--ink-2' },
+  { key: 'leadership', label: 'Leadership & R&D', color: '--ink' },
   { key: 'project', label: 'Projects', color: '--violet' },
-  { key: 'org', label: 'Employments', color: '--blue' },
-  { key: 'topic', label: 'Topics', color: '--ink' },
+  { key: 'org', label: 'Employment & education', color: '--blue' },
+  { key: 'topic', label: 'Topics', color: '--ink-3' },
 ];
 
 const BY_KEY = new Map(CATEGORIES.map((c) => [c.key, c]));
@@ -27,14 +31,15 @@ export function categoryOf(key: NodeCategory): CategoryMeta {
 const KIND_LABEL: Record<GraphNode['kind'], string> = {
   hub: 'Category',
   skill: 'Skill',
+  concept: 'Concept',
   project: 'Project',
-  org: 'Organisation',
-  role: 'Role',
+  org: 'Employer',
+  education: 'Education',
   topic: 'Topic',
 };
 
-/** "Frontend · Skill (learning)" style description for tooltips and the list view. */
+/** "Frontend · Skill (growing)" style description for tooltips and the list view. */
 export function describeNode(n: GraphNode): string {
-  const learning = n.learning ? ' (learning)' : '';
-  return `${categoryOf(n.category).label} · ${KIND_LABEL[n.kind]}${learning}`;
+  const growing = n.learning ? ' (growing)' : '';
+  return `${categoryOf(n.category).label} · ${KIND_LABEL[n.kind]}${growing}`;
 }

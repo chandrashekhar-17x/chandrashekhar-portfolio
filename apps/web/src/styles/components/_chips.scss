@@ -32,7 +32,20 @@
   font-size: 10.5px;
   color: var(--ink-2);
 
-  @each $name, $color in (frontend: cyan, backend: lime, ai: pink, graphics: amber, tools: violet) {
+  @each $name,
+    $color
+      in (
+        frontend: cyan,
+        cad: amber,
+        documents: teal,
+        realtime: orange,
+        performance: rose,
+        backend: lime,
+        ai: pink,
+        fundamentals: ink-2,
+        leadership: ink
+      )
+  {
     &--#{$name} {
       color: var(--#{$color});
       border-color: color-mix(in oklab, var(--#{$color}) 45%, transparent);

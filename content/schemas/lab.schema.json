@@ -15,7 +15,7 @@
       "items": {
         "title": "TimelineEntry",
         "type": "object",
-        "required": ["when", "topic", "progress"],
+        "required": ["topic"],
         "additionalProperties": false,
         "properties": {
           "when": {

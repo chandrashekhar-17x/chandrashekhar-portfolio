@@ -22,6 +22,25 @@
   @if (showList()) {
     <app-graph-list [graph]="graph()" [lit]="highlights.ids()" />
   } @else {
-    <app-graph-canvas [graph]="graph()" [filter]="filter()" (activate)="onActivate($event)" />
+    @if (narrow()) {
+      <div class="drill">
+        @if (filter()) {
+          <button type="button" class="btn btn--ghost btn--sm" (click)="filter.set(null)">
+            ← All areas
+          </button>
+          <span>{{ clusterTitle() }}</span>
+        } @else {
+          <span>Tap an area to open it</span>
+        }
+      </div>
+    }
+    <!-- Narrow screens show a smaller view, so the canvas gets no extra dimming. -->
+    @for (k of viewKey(); track k) {
+      <app-graph-canvas
+        [graph]="view()"
+        [filter]="narrow() ? null : filter()"
+        (activate)="onActivate($event)"
+      />
+    }
   }
 </div>

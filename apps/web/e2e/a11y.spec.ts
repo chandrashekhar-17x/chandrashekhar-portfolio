@@ -3,7 +3,16 @@ import { Page, expect, test } from '@playwright/test';
 
 // WCAG 2.2 AA checks with axe on every route, in both themes (docs/testing.md:
 // "0 serious violations"). Moderate/minor findings are reported but don't fail.
-const ROUTES = ['/', '/work', '/work/cad-editor', '/graph', '/lab', '/resume', '/journal', '/nope'];
+const ROUTES = [
+  '/',
+  '/work',
+  '/work/custom-cad-editor',
+  '/graph',
+  '/lab',
+  '/resume',
+  '/journal',
+  '/nope',
+];
 
 async function audit(page: Page) {
   const results = await new AxeBuilder({ page })
@@ -43,7 +52,7 @@ for (const theme of ['dark', 'light'] as const) {
 
     test('home with every lazy section loaded has no serious issues', async ({ page }) => {
       await page.goto('/');
-      for (const id of ['graph', 'work', 'lab', 'xp', 'contact']) {
+      for (const id of ['featured', 'graph', 'work', 'lab', 'xp', 'contact']) {
         await page.locator(`#${id}`).scrollIntoViewIfNeeded();
         await expect(page.locator(`#${id} .is-revealed`)).toBeVisible({ timeout: 8000 });
       }

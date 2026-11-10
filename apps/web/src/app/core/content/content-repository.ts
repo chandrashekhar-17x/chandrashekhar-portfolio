@@ -1,6 +1,14 @@
 import { Observable } from 'rxjs';
 
-import { AILab, Experience, Profile, Project, Skill } from './content.types.gen';
+import {
+  AILab,
+  About,
+  EducationEntry,
+  Experience,
+  Profile,
+  Project,
+  Skill,
+} from './content.types.gen';
 import { KnowledgeGraph } from './build-graph';
 
 /** A project plus its case-study markdown (loaded only on the detail page). */
@@ -20,6 +28,8 @@ export abstract class ContentRepository {
   abstract profile(): Observable<Profile>;
   abstract skills(): Observable<Skill[]>;
   abstract experience(): Observable<Experience>;
+  abstract education(): Observable<EducationEntry[]>;
+  abstract about(): Observable<About>;
   abstract projects(): Observable<Project[]>;
   abstract project(slug: string): Observable<ProjectDetail | undefined>;
   abstract graph(): Observable<KnowledgeGraph>;

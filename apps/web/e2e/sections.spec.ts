@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 
-test('all five home sections reveal, one at a time and in page order', async ({ page }) => {
+test('all six home sections reveal, one at a time and in page order', async ({ page }) => {
   await page.goto('/');
   // Record when each section's real content appears while we scroll down.
   await page.evaluate(() => {
     const w = window as Window & { __revealed?: Record<string, number> };
     w.__revealed = {};
-    const ids = ['graph', 'work', 'lab', 'xp', 'contact'];
+    const ids = ['featured', 'graph', 'work', 'lab', 'xp', 'contact'];
     const tick = () => {
       for (const id of ids) {
         if (!w.__revealed?.[id] && document.querySelector(`#${id} .is-revealed`)) {
@@ -17,21 +17,21 @@ test('all five home sections reveal, one at a time and in page order', async ({ 
     };
     tick();
   });
-  for (const id of ['graph', 'work', 'lab', 'xp', 'contact']) {
+  for (const id of ['featured', 'graph', 'work', 'lab', 'xp', 'contact']) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await expect(page.locator(`#${id} .is-revealed`)).toBeVisible({ timeout: 8000 });
   }
-  // The recorder samples once per frame: wait until it has logged all five.
+  // The recorder samples once per frame: wait until it has logged all six.
   const read = () =>
     page.evaluate(
       () => (window as Window & { __revealed?: Record<string, number> }).__revealed ?? {},
     );
-  await expect.poll(async () => Object.keys(await read()).length).toBe(5);
+  await expect.poll(async () => Object.keys(await read()).length).toBe(6);
   const times = await read();
   const order = Object.entries(times)
     .sort((a, b) => a[1] - b[1])
     .map(([id]) => id);
-  expect(order).toEqual(['graph', 'work', 'lab', 'xp', 'contact']);
+  expect(order).toEqual(['featured', 'graph', 'work', 'lab', 'xp', 'contact']);
 });
 
 test('contact form validates and confirms without sending', async ({ page }) => {
@@ -67,5 +67,10 @@ test('/resume is server-rendered with experience, skills and projects', async ({
   for (const h of ['Experience', 'Skills', 'Selected projects']) {
     await expect(page.getByRole('heading', { level: 2, name: h })).toBeVisible();
   }
-  await expect(page.getByRole('link', { name: 'Canvas CAD Editor' })).toBeVisible();
+  await expect(page.locator('[aria-labelledby="r-summary"] p')).toContainText(
+    'custom Three.js CAD editor',
+  );
+  await expect(
+    page.getByRole('link', { name: 'Custom CAD Viewer & Editor, built from zero' }),
+  ).toBeVisible();
 });
