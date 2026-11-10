@@ -1,8 +1,18 @@
 # API
 
-Status: proposed contract for Phases 2–7, reconciled by Codex on 2026-11-10.
-Today the API has health checks only: `GET /health` (and `/health/live`) for liveness, `GET /health/ready` for readiness (Postgres + Redis; 503 if either is down). Every response carries `X-Request-ID`; errors use `{"error": {"code", "message", "request_id"}}`. Public content and chat routes below use `/api/v1`;
+Status: health checks and the Phase 2 public read API are implemented (2026-11-10).
+`GET /health` (and `/health/live`) for liveness, `GET /health/ready` for readiness (Postgres + Redis;
+503 if either is down). Every response carries `X-Request-ID`; errors use
+`{"error": {"code", "message", "request_id"}}`. Public content and chat routes use `/api/v1`;
 health and the future `/mcp` endpoint remain outside that prefix.
+
+**Public reads (implemented):** responses are the exact `content/` shapes, cached in Redis for
+`CONTENT_CACHE_TTL` seconds (default 300, cleared by `make seed`, fail-open if Redis is down) and
+sent with an `ETag` + `Cache-Control: public, max-age=60, stale-while-revalidate=300`; a matching
+`If-None-Match` gets `304`. `/graph` is built in Python with the same rules as the web's
+`buildGraph`; both are tested against `apps/api/tests/fixtures/graph.expected.json`.
+The web uses the API when built with `PUBLIC_API_URL` (`HttpContentRepository`, falling back to
+the bundled `content/` on errors); without it the site stays fully static.
 
 | Method | Path (under `/api/v1`) | Response / purpose | Phase |
 | --- | --- | --- | --- |

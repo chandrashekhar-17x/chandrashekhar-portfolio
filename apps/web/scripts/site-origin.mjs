@@ -14,3 +14,14 @@ export function siteOrigin(value) {
   }
   return url.origin;
 }
+
+/** Content API origin, or null when unset (the site then uses the bundled content/). */
+export function apiOrigin(value) {
+  const v = value?.trim();
+  if (!v) return null;
+  try {
+    return siteOrigin(v);
+  } catch {
+    throw new Error('PUBLIC_API_URL must be an HTTP(S) origin without credentials, path or query.');
+  }
+}
