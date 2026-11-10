@@ -27,7 +27,9 @@
   <p class="kind" [class.kind--personal]="project().type === 'personal'">{{ kind() }}</p>
   <h3>
     <!-- Stretched link: the whole card is clickable, but only the title is announced. -->
-    <a class="stretched" [routerLink]="['/work', project().slug]">{{ project().title }}</a>
+    <a class="stretched" [routerLink]="['/work', project().slug]"
+      ><span class="title">{{ project().title }}</span></a
+    >
   </h3>
   <p>{{ project().summary }}</p>
 
@@ -38,6 +40,10 @@
         <li class="tag">{{ t }}</li>
       }
     </ul>
-    <span class="link" aria-hidden="true">Case study →</span>
+    <!-- Same destination as the title; hidden from screen readers and Tab so the
+         card stays one link with one announcement. -->
+    <a class="link" [routerLink]="['/work', project().slug]" tabindex="-1" aria-hidden="true"
+      >Case study →</a
+    >
   </div>
 </article>
