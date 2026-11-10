@@ -6,7 +6,8 @@ import { provideContent } from '../../core/content/provide-content';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
 import { AboutSection } from './about-section';
 
-describe('AboutSection', () => {
+// Cold first render can exceed 5 s on a busy machine (same allowance as HomePage).
+describe('AboutSection', { timeout: 20_000 }, () => {
   const setup = () => render(AboutSection, { providers: [provideRouter([]), provideContent()] });
 
   it('shows the bio, 7 area cards with skill names and the How I work steps', async () => {

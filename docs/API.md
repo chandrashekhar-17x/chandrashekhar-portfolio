@@ -1,7 +1,7 @@
 # API
 
 Status: proposed contract for Phases 2–7, reconciled by Codex on 2026-11-10.
-Only `GET /health` exists today. Public content and chat routes below use `/api/v1`;
+Today the API has health checks only: `GET /health` (and `/health/live`) for liveness, `GET /health/ready` for readiness (Postgres + Redis; 503 if either is down). Every response carries `X-Request-ID`; errors use `{"error": {"code", "message", "request_id"}}`. Public content and chat routes below use `/api/v1`;
 health and the future `/mcp` endpoint remain outside that prefix.
 
 | Method | Path (under `/api/v1`) | Response / purpose | Phase |
