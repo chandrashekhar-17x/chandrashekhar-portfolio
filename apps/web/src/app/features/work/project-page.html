@@ -39,7 +39,18 @@
       </ul>
     }
   </div>
-  <article class="prose" [innerHTML]="html()"></article>
+  <app-case-study-body [markdown]="body()" [path]="'/work/' + p.slug" />
+
+  <nav class="pager" aria-label="More projects">
+    @if (neighbours().prev; as prev) {
+      <a class="prev" [routerLink]="['/work', prev.slug]">
+        <span>← Previous</span>{{ prev.title }}
+      </a>
+    }
+    @if (neighbours().next; as next) {
+      <a class="next" [routerLink]="['/work', next.slug]"> <span>Next →</span>{{ next.title }} </a>
+    }
+  </nav>
 } @else if (project.isLoading()) {
   <p class="muted" role="status">Loading case study…</p>
 } @else {

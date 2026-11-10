@@ -6,21 +6,22 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { marked } from 'marked';
 import { tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
 import { SeoService } from '../../core/seo/seo.service';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
+import { CaseStudyBody } from './case-study/case-study-body';
 import { ProjectIllustration } from './project-illustration';
 import { projectEyebrow } from './project-meta';
+import { sortProjects } from './work-filters';
 
 /** /work/:slug: a case study rendered from markdown. Unknown slug → 404 page + status. */
 @Component({
   selector: 'app-project-page',
-  imports: [RouterLink, PageHeader, ProjectIllustration],
+  imports: [RouterLink, PageHeader, ProjectIllustration, CaseStudyBody],
   templateUrl: './project-page.html',
   styleUrls: ['../../shared/ui/page-header/page.scss', './project-page.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -54,10 +55,15 @@ export class ProjectPage {
 
   protected readonly eyebrow = projectEyebrow;
 
-  /** Markdown → HTML. Angular's [innerHTML] sanitizer strips anything unsafe. */
-  protected readonly html = computed(() => {
-    const md = this.project.value()?.bodyMarkdown;
-    return md ? marked.parse(stripTitle(md), { async: false }) : '';
+  /** Markdown body without frontmatter or the title line (the header shows those). */
+  protected readonly body = computed(() => stripTitle(this.project.value()?.bodyMarkdown ?? ''));
+
+  /** Previous / next project in /work order, for the pager at the bottom. */
+  private readonly all = toSignal(this.repo.projects(), { initialValue: [] });
+  protected readonly neighbours = computed(() => {
+    const list = sortProjects(this.all());
+    const i = list.findIndex((p) => p.slug === this.slug());
+    return { prev: i > 0 ? list[i - 1] : undefined, next: i >= 0 ? list[i + 1] : undefined };
   });
 }
 
