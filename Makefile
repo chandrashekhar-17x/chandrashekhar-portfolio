@@ -35,13 +35,16 @@ ps: ## Show service status
 	$(COMPOSE) ps
 
 ##@ Database
-.PHONY: migrate seed db-revision
+.PHONY: migrate seed db-revision graph-fixture
 migrate: ## Apply database migrations (Alembic upgrade head)
 	uv run alembic -c apps/api/alembic.ini upgrade head
 
 seed: migrate ## Validate content/, then sync it into the database (idempotent)
 	uv run python scripts/validate_content.py
 	uv run python -m portfolio_api.content.seed
+
+graph-fixture: ## Rewrite the expected knowledge graph (web + API parity tests) after content changes
+	uv run python scripts/gen_graph_fixture.py
 
 db-revision: ## New migration from model changes: make db-revision m="add x"
 	uv run alembic -c apps/api/alembic.ini revision --autogenerate -m "$(m)"

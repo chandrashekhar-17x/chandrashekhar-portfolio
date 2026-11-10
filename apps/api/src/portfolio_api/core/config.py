@@ -41,6 +41,8 @@ class Settings(BaseSettings):
 
     # Seed source for `make seed` (the database is the source of truth after seeding).
     content_dir: Path = REPO_ROOT / "content"
+    # Seconds a public content response stays in Redis (`make seed` clears it).
+    content_cache_ttl: int = 300
 
     # Secrets use SecretStr so they never show up in logs or tracebacks.
     anthropic_api_key: SecretStr | None = None

@@ -13,6 +13,7 @@ import asyncio
 from dataclasses import dataclass
 from typing import Any
 
+from redis.exceptions import RedisError
 from sqlalchemy import delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,7 +22,9 @@ from sqlalchemy.orm import InstrumentedAttribute
 from portfolio_api.content.loader import Content, Doc, load_content
 from portfolio_api.core.config import get_settings
 from portfolio_api.db import models as m
+from portfolio_api.db.redis import make_redis
 from portfolio_api.db.session import make_engine, make_session_factory
+from portfolio_api.services.cache import clear_content_cache
 
 
 @dataclass(frozen=True)
@@ -160,6 +163,14 @@ async def main() -> None:
     finally:
         await engine.dispose()
     print(f"Seeded from {settings.content_dir}: {report}")
+    # New content should show up now, not after the cache expires.
+    redis = make_redis(settings)
+    try:
+        print(f"Cleared {await clear_content_cache(redis)} cached API responses")
+    except (RedisError, OSError):
+        print("Redis not reachable: cached API responses expire on their own")
+    finally:
+        await redis.aclose()
 
 
 if __name__ == "__main__":

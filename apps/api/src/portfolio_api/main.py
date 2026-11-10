@@ -11,13 +11,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from portfolio_api import __version__
-from portfolio_api.api.routes import health
+from portfolio_api.api.routes import content, health
 from portfolio_api.core.config import Settings, get_settings
 from portfolio_api.core.errors import install_error_handlers
 from portfolio_api.core.logging import configure_logging
 from portfolio_api.core.request_id import HEADER, RequestIdMiddleware
 from portfolio_api.db.redis import make_redis
 from portfolio_api.db.session import make_engine, make_session_factory
+from portfolio_api.services.cache import JsonCache
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -44,6 +45,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.engine = make_engine(settings)
     app.state.session_factory = make_session_factory(app.state.engine)
     app.state.redis = make_redis(settings)
+    app.state.cache = JsonCache(app.state.redis, settings.content_cache_ttl)
 
     install_error_handlers(app)
     # CORS: let the Angular site (and only it) call this API from the browser.
@@ -59,4 +61,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.add_middleware(RequestIdMiddleware)
 
     app.include_router(health.router)
+    app.include_router(content.router)
     return app

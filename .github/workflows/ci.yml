@@ -202,8 +202,13 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U portfolio" --health-interval 5s --health-timeout 3s
           --health-retries 10
+      redis:
+        image: redis:8.10-alpine
+        ports: ['6380:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
     env:
-      REQUIRE_DB: '1' # fail (don't skip) if the database is unreachable
+      REQUIRE_DB: '1' # fail (don't skip) if Postgres or Redis is unreachable
     steps:
       - uses: actions/checkout@v7
       # setup-uv publishes exact tags only (no moving "v10"); Dependabot keeps it current.

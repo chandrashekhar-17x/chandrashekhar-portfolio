@@ -10,7 +10,7 @@ import profileJson from '@content/data/profile.json';
 import projectsJson from '@content/data/projects.json';
 import skillsJson from '@content/data/skills.json';
 
-import { buildGraph, KnowledgeGraph } from './build-graph';
+import { buildGraph, GraphInput, KnowledgeGraph } from './build-graph';
 import { ContentRepository, ProjectDetail } from './content-repository';
 import {
   AILab,
@@ -34,13 +34,15 @@ const projects = (projectsJson as Projects).projects;
 const lab = labJson as AILab;
 const education = (educationJson as Education).education;
 const about = aboutJson as About;
-const graph = buildGraph({
+/** The content/ files as graph input (exported for the API parity test). */
+export const MOCK_GRAPH_INPUT: GraphInput = {
   skills,
   experience,
   education,
   projects,
   extras: graphJson as KnowledgeGraphExtras,
-});
+};
+const graph = buildGraph(MOCK_GRAPH_INPUT);
 
 /**
  * Phase 1 data source: the seed files in content/, bundled at build time.

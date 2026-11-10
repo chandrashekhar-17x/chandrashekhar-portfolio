@@ -14,12 +14,17 @@ import pytest
 from alembic import command
 from alembic.config import Config
 from httpx import ASGITransport, AsyncClient
+from pydantic import PostgresDsn, RedisDsn
+from redis.exceptions import RedisError
 from sqlalchemy import make_url, text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
-from portfolio_api.core.config import Settings, get_settings
+from portfolio_api.content.loader import load_content
+from portfolio_api.content.seed import seed
+from portfolio_api.core.config import REPO_ROOT, Settings, get_settings
 from portfolio_api.main import create_app
+from portfolio_api.services.cache import clear_content_cache
 
 
 @pytest.fixture(autouse=True)
@@ -109,3 +114,41 @@ async def db(database_url: str) -> AsyncIterator[AsyncSession]:
             await session.close()
             await trans.rollback()
     await engine.dispose()
+
+
+TEST_REDIS_URL = os.environ.get("TEST_REDIS_URL", "redis://localhost:6380/15")
+
+
+async def _seed_committed(url: str) -> None:
+    engine = create_async_engine(url)
+    try:
+        async with AsyncSession(engine) as session, session.begin():
+            await seed(session, load_content(REPO_ROOT / "content"))
+    finally:
+        await engine.dispose()
+
+
+@pytest.fixture(scope="module")
+def seeded_url(database_url: str) -> str:
+    """The test database with content/ seeded and committed (for API tests)."""
+    asyncio.run(_seed_committed(database_url))
+    return database_url
+
+
+@pytest.fixture
+async def api(seeded_url: str) -> AsyncIterator[AsyncClient]:
+    """Client for an app wired to the seeded test database and a test Redis db."""
+    app_settings = Settings(
+        environment="test", database_url=PostgresDsn(seeded_url), redis_url=RedisDsn(TEST_REDIS_URL)
+    )
+    app = create_app(app_settings)
+    try:
+        await clear_content_cache(app.state.redis)
+    except (RedisError, OSError):
+        if os.environ.get("REQUIRE_DB") == "1":
+            raise
+        pytest.skip("Redis not reachable; run `make up`")
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        yield ac
+    await app.state.redis.aclose()
+    await app.state.engine.dispose()

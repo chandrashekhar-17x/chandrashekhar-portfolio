@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from portfolio_api.core.config import Settings
 from portfolio_api.db.session import session_scope
+from portfolio_api.services.cache import JsonCache
 from portfolio_api.services.health import Probe, database_probe, redis_probe
 
 
@@ -33,6 +34,10 @@ def get_redis(request: Request) -> "Redis":
     return cast("Redis", request.app.state.redis)
 
 
+def get_cache(request: Request) -> JsonCache:
+    return cast(JsonCache, request.app.state.cache)
+
+
 def get_readiness_probes(request: Request) -> dict[str, Probe]:
     return {
         "database": database_probe(request.app.state.engine),
@@ -43,4 +48,5 @@ def get_readiness_probes(request: Request) -> dict[str, Probe]:
 SettingsDep = Annotated[Settings, Depends(get_app_settings)]
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
 RedisDep = Annotated["Redis", Depends(get_redis)]
+CacheDep = Annotated[JsonCache, Depends(get_cache)]
 ProbesDep = Annotated[dict[str, Probe], Depends(get_readiness_probes)]
