@@ -20,10 +20,11 @@
     @if (project().cover; as cover) {
       <img [src]="cover.src" [alt]="cover.alt" loading="lazy" decoding="async" />
     } @else {
-      <app-project-illustration [kind]="project().illustration ?? 'api'" />
+      <app-project-illustration [kind]="project().illustration" />
     }
   </div>
 
+  <p class="kind" [class.kind--personal]="project().type === 'personal'">{{ kind() }}</p>
   <h3>
     <!-- Stretched link: the whole card is clickable, but only the title is announced. -->
     <a class="stretched" [routerLink]="['/work', project().slug]">{{ project().title }}</a>

@@ -65,8 +65,21 @@
   }
 }
 
+// "Professional · details anonymised" / "Personal · open source".
+p.kind {
+  margin: 16px 0 0;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+
+  &.kind--personal {
+    color: var(--cyan);
+  }
+}
+
 h3 {
-  margin: 18px 0 6px;
+  margin: 6px 0 6px;
   font-size: 21px;
   transform: translateZ(20px);
 }

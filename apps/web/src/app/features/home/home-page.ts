@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { combineLatest, map } from 'rxjs';
 
@@ -36,16 +36,15 @@ import { WorkSection } from '../work/work-section';
 export class HomePage {
   private readonly repo = inject(ContentRepository);
   protected readonly profile = toSignal(this.repo.profile());
-  protected readonly skills = toSignal(this.repo.skills(), { initialValue: [] });
+  protected readonly roles = toSignal(this.repo.experience().pipe(map((xp) => xp.roles)), {
+    initialValue: [],
+  });
   /** Skeleton card count = real card count, so the placeholder has the same size. */
   protected readonly featuredCount = toSignal(
     this.repo.projects().pipe(map((ps) => ps.filter((p) => p.featured).length)),
     { initialValue: 3 },
   );
-  protected readonly roleCount = toSignal(
-    this.repo.experience().pipe(map((xp) => xp.roles.length)),
-    { initialValue: 3 },
-  );
+  protected readonly roleCount = computed(() => this.roles().length || 3);
 
   constructor() {
     // Structured data (JSON-LD) about me, rendered on the server for crawlers.
@@ -55,9 +54,11 @@ export class HomePage {
       this.repo.profile(),
       this.repo.skills(),
       this.repo.experience(),
+      this.repo.education(),
       this.repo.projects(),
-    ]).subscribe(([profile, skills, experience, projects]) => {
-      seo.jsonLd('ld-person', personSchema(site.url, profile, skills, experience, projects));
+    ]).subscribe(([profile, skills, experience, education, projects]) => {
+      const input = { siteUrl: site.url, profile, skills, experience, education, projects };
+      seo.jsonLd('ld-person', personSchema(input));
     });
     inject(DestroyRef).onDestroy(() => {
       seo.removeJsonLd('ld-person'); // only the home page carries it

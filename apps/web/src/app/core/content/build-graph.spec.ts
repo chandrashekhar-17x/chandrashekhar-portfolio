@@ -2,8 +2,9 @@ import { buildGraph, GraphInput } from './build-graph';
 
 const input: GraphInput = {
   skills: [
-    { id: 'angular', name: 'Angular', category: 'frontend', level: 5 },
-    { id: 'rag', name: 'RAG', category: 'ai', level: 2, learning: true },
+    { id: 'angular', name: 'Angular', category: 'frontend', proficiency: 'strong' },
+    { id: 'rag', name: 'RAG', category: 'ai', proficiency: 'learning' },
+    { id: 'r-tree', name: 'R-tree', category: 'cad', concept: true },
   ],
   experience: {
     organizations: [{ id: 'acme', name: 'Acme', kind: 'company' }],
@@ -13,23 +14,37 @@ const input: GraphInput = {
         org: 'acme',
         title: 'Frontend Engineer',
         start: '2023-01',
-        summary: 's',
+        location: 'Hyderabad',
+        employmentType: 'full-time',
         highlights: [],
         skills: ['angular'],
       },
     ],
   },
+  education: [
+    {
+      id: 'nit',
+      institute: 'NIT',
+      shortName: 'NIT',
+      degree: 'MCA',
+      field: 'CS',
+      start: 2020,
+      end: 2023,
+      skills: ['angular'],
+    },
+  ],
   projects: [
     {
       slug: 'cad',
       title: 'CAD',
       summary: 's',
-      year: 2024,
-      role: 'r',
+      type: 'professional',
       org: 'acme',
-      status: 'shipped',
       featured: true,
-      skills: ['angular', 'angular'],
+      skills: ['angular', 'angular', 'r-tree'],
+      tags: ['Angular'],
+      filters: ['cad'],
+      illustration: 'cad',
       body: 'projects/cad.md',
     },
   ],
@@ -49,25 +64,29 @@ describe('buildGraph', () => {
   const has = (a: string, b: string) =>
     graph.links.some((l) => [l.source, l.target].sort().join() === [a, b].sort().join());
 
-  it('creates hub, skill, org, role, project and topic nodes', () => {
+  it('creates hub, skill, concept, org, education, project and topic nodes', () => {
     expect(ids).toEqual(
       expect.arrayContaining([
         'hub:frontend',
         'hub:ai',
         'skill:angular',
         'skill:rag',
+        'skill:r-tree',
         'org:acme',
-        'role:fe',
+        'edu:nit',
         'project:cad',
         'topic:uis',
       ]),
     );
     expect(ids).not.toContain('hub:backend'); // no backend skills → no hub
+    expect(ids.some((id) => id.startsWith('role:'))).toBe(false); // orgs link straight to skills
+    expect(graph.nodes.find((n) => n.id === 'skill:r-tree')?.kind).toBe('concept');
   });
 
   it('derives links from content relations', () => {
     expect(has('hub:frontend', 'skill:angular')).toBe(true);
-    expect(has('role:fe', 'org:acme')).toBe(true);
+    expect(has('org:acme', 'skill:angular')).toBe(true);
+    expect(has('edu:nit', 'skill:angular')).toBe(true);
     expect(has('project:cad', 'skill:angular')).toBe(true);
     expect(has('project:cad', 'org:acme')).toBe(true);
     expect(has('project:cad', 'topic:uis')).toBe(true);

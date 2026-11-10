@@ -10,6 +10,10 @@ describe('stripTitle', () => {
     expect(stripTitle(md)).toBe('\n## Problem\n\nText');
   });
 
+  it('removes YAML frontmatter', () => {
+    expect(stripTitle('---\nslug: x\ntitle: T\n---\n\n## TL;DR\n')).toBe('## TL;DR\n');
+  });
+
   it('leaves markdown without a title untouched', () => {
     expect(stripTitle('## Problem\n')).toBe('## Problem\n');
   });
@@ -23,8 +27,9 @@ describe('ProjectPage', () => {
     });
 
   it('renders exactly one h1 and the case-study sections', async () => {
-    await setup('cad-editor');
-    expect(await screen.findByRole('heading', { level: 2, name: 'Problem' })).toBeTruthy();
+    await setup('custom-cad-editor');
+    expect(await screen.findByRole('heading', { level: 2, name: 'TL;DR' })).toBeTruthy();
+    expect(screen.queryByText(/^slug:/)).toBeNull(); // frontmatter is not rendered
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
   });
 
@@ -34,14 +39,15 @@ describe('ProjectPage', () => {
   });
 });
 
-describe('ProjectPage tags', () => {
-  it('shows skill names, not ids', async () => {
+describe('ProjectPage facts', () => {
+  it('labels employer work honestly and shows no repo links', async () => {
     await render(ProjectPage, {
-      inputs: { slug: 'ai-portfolio' },
+      inputs: { slug: 'progressive-pdf-viewer' },
       providers: [provideRouter([]), provideContent()],
     });
     const tags = await screen.findByRole('list', { name: 'Technologies' });
-    expect(tags.textContent).toContain('PostgreSQL');
-    expect(tags.textContent).not.toContain('postgres ');
+    expect(tags.textContent).toContain('PDF.js');
+    expect(screen.getByText(/^Professional · details anonymised/)).toBeTruthy();
+    expect(screen.queryByRole('link', { name: /Code/ })).toBeNull();
   });
 });

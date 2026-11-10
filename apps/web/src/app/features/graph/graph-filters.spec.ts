@@ -12,7 +12,7 @@ describe('GraphFilters', () => {
     const on = { activeChange: (v: unknown) => picked.push(v) };
     const { rerender } = await render(GraphFilters, { inputs: { graph, active: null }, on });
 
-    const projects = screen.getByRole('button', { name: /Projects\s*4/ });
+    const projects = screen.getByRole('button', { name: /Projects\s*11/ });
     await userEvent.click(projects);
     expect(picked).toEqual(['project']);
 

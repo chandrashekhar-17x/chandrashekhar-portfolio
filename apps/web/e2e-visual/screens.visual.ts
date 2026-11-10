@@ -52,7 +52,7 @@ for (const theme of ['dark', 'light'] as const) {
 
     for (const [name, path] of [
       ['work', '/work'],
-      ['case-study', '/work/cad-editor'],
+      ['case-study', '/work/custom-cad-editor'],
       ['resume', '/resume'],
       ['not-found', '/nope'],
     ] as const) {

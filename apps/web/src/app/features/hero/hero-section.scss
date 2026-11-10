@@ -75,6 +75,22 @@
   margin-top: 28px;
 }
 
+// Secondary CTA: the flagship case study.
+.feature-link {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 15px;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: var(--ink);
+    text-decoration-color: currentcolor;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pulse::after {
     animation: none;

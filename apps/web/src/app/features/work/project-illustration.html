@@ -3,7 +3,7 @@
   [attr.preserveAspectRatio]="fit() === 'cover' ? 'xMidYMid slice' : 'xMidYMid meet'"
 >
   <rect width="300" height="150" fill="var(--bg-2)" />
-  @switch (kind()) {
+  @switch (drawing()) {
     @case ('cad') {
       <defs>
         <pattern id="cad-grid" width="14" height="14" patternUnits="userSpaceOnUse">

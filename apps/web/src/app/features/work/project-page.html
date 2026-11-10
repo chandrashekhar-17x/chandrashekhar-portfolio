@@ -1,17 +1,20 @@
 @if (project.value(); as p) {
   <a routerLink="/work" class="back">← All work</a>
-  <app-page-header [eyebrow]="p.role + ' · ' + p.year" [title]="p.title" [lead]="p.summary" />
+  <app-page-header [eyebrow]="eyebrow(p)" [title]="p.title" [lead]="p.summary" />
+  @if (p.role) {
+    <p class="role"><span>My role</span> {{ p.role }}</p>
+  }
   <div class="banner">
     @if (p.cover; as cover) {
       <img [src]="cover.src" [alt]="cover.alt" />
     } @else {
-      <app-project-illustration [kind]="p.illustration ?? 'api'" fit="contain" />
+      <app-project-illustration [kind]="p.illustration" fit="contain" />
     }
   </div>
   <div class="facts">
     <ul class="tags" role="list" aria-label="Technologies">
-      @for (s of p.skills; track s) {
-        <li class="tag">{{ skillNames().get(s) ?? s }}</li>
+      @for (t of p.tags; track t) {
+        <li class="tag">{{ t }}</li>
       }
     </ul>
     @if (p.links; as links) {

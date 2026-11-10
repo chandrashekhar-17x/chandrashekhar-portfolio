@@ -13,6 +13,7 @@ import { Project, Skill } from '../../core/content/content.types.gen';
 import { RevealQueue } from '../../core/reveal/reveal-queue.service';
 import { Tilt } from '../../shared/ui/tilt.directive';
 import { ProjectIllustration } from './project-illustration';
+import { projectKind } from './project-meta';
 
 /**
  * Project card with 3D tilt + glare (prototype .pcard).
@@ -33,11 +34,8 @@ export class ProjectCard {
 
   /** Area tag: the most common category among the project's skills. */
   protected readonly area = computed(() => projectArea(this.project(), this.skills()));
-  protected readonly tags = computed(() =>
-    this.project()
-      .skills.slice(0, 3)
-      .map((id) => this.skills().get(id)?.name ?? id),
-  );
+  protected readonly tags = computed(() => this.project().tags.slice(0, 3));
+  protected readonly kind = computed(() => projectKind(this.project()));
 
   /** Server render and /work: loaded. Home: wait for the queue. */
   protected readonly loading = signal(false);
@@ -55,7 +53,17 @@ export class ProjectCard {
 }
 
 /** Tie-break order: AI work is the story this portfolio tells, so it wins ties. */
-const AREA_PRIORITY: Skill['category'][] = ['ai', 'backend', 'graphics', 'frontend', 'tools'];
+const AREA_PRIORITY: Skill['category'][] = [
+  'ai',
+  'cad',
+  'documents',
+  'realtime',
+  'backend',
+  'performance',
+  'leadership',
+  'fundamentals',
+  'frontend',
+];
 
 export function projectArea(
   project: Project,

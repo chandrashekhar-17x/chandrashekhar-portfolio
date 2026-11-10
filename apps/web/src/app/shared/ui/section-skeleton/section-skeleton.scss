@@ -73,52 +73,40 @@
 // The CLS e2e test (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't
 // shift visible content; re-measure when a section's layout changes.
 .graph {
-  height: 640px;
+  height: 671px;
   border-radius: var(--radius-panel);
 
   @container site (max-width: 900px) {
-    height: 1092px; // side panel stacks above the canvas
+    height: 1049px; // side panel stacks above the canvas
   }
 
   @container site (max-width: 600px) {
-    height: 970px;
+    height: 1017px;
   }
 }
 
 .card {
   // Real project card heights (all cards in a grid are equal; wider = shorter).
-  height: 349px;
+  height: 446px;
 
   @container site (max-width: 900px) {
-    height: 394px;
-  }
-
-  @container site (max-width: 600px) {
-    height: 390px;
+    height: 472px;
   }
 }
 
 .hud {
-  height: 380px;
-
-  @container site (max-width: 600px) {
-    height: 400px;
-  }
+  height: 450px;
 }
 
 .form {
-  height: 360px;
-
-  @container site (max-width: 600px) {
-    height: 600px; // the form stacks into one tall column on phones
-  }
+  height: 572px;
 }
 
 .aside {
-  height: 200px;
+  height: 226px;
 
-  @container site (max-width: 600px) {
-    height: 220px;
+  @container site (max-width: 900px) {
+    height: 248px;
   }
 }
 
@@ -151,12 +139,18 @@
 
 .rows {
   display: grid;
-  gap: 28px;
 
-  // Phones: each role wraps to several lines (title, summary, highlights).
-  @container site (max-width: 600px) {
-    > div {
-      min-height: 210px;
+  // Real row heights: the current role (first) has a summary + highlights,
+  // the earlier ones are just dates, title and type. Phones wrap more lines.
+  > div {
+    height: 96px;
+  }
+
+  > div:first-child {
+    height: 252px;
+
+    @container site (max-width: 600px) {
+      height: 336px;
     }
   }
 }
@@ -192,12 +186,18 @@
   @container site (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
 
+    // The core (orb) panel comes first here and is shorter than the other two.
     > :first-child {
       grid-column: 1 / -1;
+      height: 410px;
     }
   }
 
   @container site (max-width: 600px) {
     grid-template-columns: 1fr;
+
+    > :nth-child(2) {
+      height: 386px; // agents panel
+    }
   }
 }

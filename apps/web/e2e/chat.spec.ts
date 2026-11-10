@@ -8,10 +8,12 @@ test.describe('chat', () => {
     await expect(panel).toBeVisible();
     await expect(panel.getByRole('textbox')).toBeFocused();
 
-    await panel.getByRole('button', { name: 'Tell me about the CAD editor' }).click();
+    await panel.getByRole('button', { name: "What's his biggest project?" }).click();
     const answer = panel.locator('.msg.agent').last();
-    await expect(answer).toContainText('CAD editor', { timeout: 5000 });
-    await expect(answer.getByRole('button', { name: 'Canvas CAD Editor' })).toBeVisible();
+    await expect(answer).toContainText('CAD viewer/editor', { timeout: 5000 });
+    await expect(
+      answer.getByRole('button', { name: 'Custom CAD Viewer & Editor, built from zero' }),
+    ).toBeVisible();
   });
 
   test('says it does not know instead of guessing', async ({ page }) => {
@@ -20,7 +22,7 @@ test.describe('chat', () => {
     const panel = page.getByRole('dialog', { name: 'Talk to My Agent.' });
     await panel.getByRole('textbox').fill('Does he know Rust?');
     await panel.getByRole('button', { name: 'Send' }).click();
-    await expect(panel.locator('.msg.agent').last()).toContainText("I don't have that", {
+    await expect(panel.locator('.msg.agent').last()).toContainText("isn't in his profile", {
       timeout: 5000,
     });
   });

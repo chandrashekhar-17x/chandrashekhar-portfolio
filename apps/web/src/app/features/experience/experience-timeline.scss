@@ -61,3 +61,27 @@ h3 {
   padding-left: 18px;
   font-size: 13.5px;
 }
+
+// Neutral org badge instead of a logo (no employer branding).
+.mono {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  font: 600 11px var(--font-mono);
+  color: var(--ink-2);
+}
+
+.type {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.highlights a {
+  margin-left: 4px;
+  color: var(--cyan);
+  white-space: nowrap;
+}

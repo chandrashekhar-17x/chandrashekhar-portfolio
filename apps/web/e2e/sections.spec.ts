@@ -67,5 +67,7 @@ test('/resume is server-rendered with experience, skills and projects', async ({
   for (const h of ['Experience', 'Skills', 'Selected projects']) {
     await expect(page.getByRole('heading', { level: 2, name: h })).toBeVisible();
   }
-  await expect(page.getByRole('link', { name: 'Canvas CAD Editor' })).toBeVisible();
+  await expect(
+    page.getByRole('link', { name: 'Custom CAD Viewer & Editor, built from zero' }),
+  ).toBeVisible();
 });

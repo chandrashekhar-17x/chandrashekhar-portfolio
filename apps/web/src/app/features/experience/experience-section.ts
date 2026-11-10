@@ -18,9 +18,7 @@ import { ExperienceTimeline } from './experience-timeline';
             <p class="section-index">04 / experience</p>
             <h2 appScramble>The path so far.</h2>
           </div>
-          <p>
-            Roles, newest first. Entries marked "sample" are placeholders until real data lands.
-          </p>
+          <p>Roles, newest first. Durations are computed from the dates, LinkedIn style.</p>
         </div>
         @if (experience(); as xp) {
           <app-experience-timeline [experience]="xp" />

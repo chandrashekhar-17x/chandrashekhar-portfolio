@@ -7,6 +7,19 @@ export type Url = string;
  */
 export type Id = string;
 /**
+ * Knowledge-graph cluster (one hub per category).
+ */
+export type SkillCategory =
+  | 'frontend'
+  | 'cad'
+  | 'documents'
+  | 'realtime'
+  | 'performance'
+  | 'backend'
+  | 'ai'
+  | 'fundamentals'
+  | 'leadership';
+/**
  * Lowercase kebab-case id, unique within its collection.
  */
 export type Id1 = string;
@@ -18,20 +31,40 @@ export type YearMonth = string;
  * Date as YYYY-MM.
  */
 export type YearMonth1 = string;
-export type SkillRefs = Id[];
 /**
  * Lowercase kebab-case id, unique within its collection.
  */
 export type Id2 = string;
+export type SkillRefs = Id[];
+export type Year = number;
+/**
+ * Lowercase kebab-case id, unique within its collection.
+ */
+export type Id3 = string;
 export type NodeRef = string;
+/**
+ * Knowledge-graph cluster (one hub per category).
+ */
+export type SkillCategory1 =
+  | 'frontend'
+  | 'cad'
+  | 'documents'
+  | 'realtime'
+  | 'performance'
+  | 'backend'
+  | 'ai'
+  | 'fundamentals'
+  | 'leadership';
 
 export interface ContentBundle {
   profile: Profile;
   skills: Skills;
   experience: Experience;
+  education: Education;
   projects: Projects;
   graph: KnowledgeGraphExtras;
   lab: AILab;
+  about: About;
 }
 export interface Profile {
   $schema?: string;
@@ -41,9 +74,8 @@ export interface Profile {
    */
   initials?: string;
   headline: string;
-  summary: string;
+  summary?: string;
   location: string;
-  email?: string;
   heroTitle: HeroTitle;
   /**
    * Phrases that complete "I build …" in the hero typing effect.
@@ -57,6 +89,25 @@ export interface Profile {
    * Names of top-level fields that still hold dummy data.
    */
   placeholderFields?: string[];
+  /**
+   * Job title, e.g. "Software Engineer, Frontend (Angular)".
+   */
+  title: string;
+  /**
+   * ≤160 chars: hero sub-text and meta description.
+   */
+  shortBio: string;
+  /**
+   * Long bio for the About section, one string per paragraph.
+   *
+   * @minItems 1
+   */
+  bio: string[];
+  /**
+   * Short location shown in the hero, e.g. "Hyderabad, India".
+   */
+  locationShort: string;
+  heroCta?: HeroCta;
 }
 /**
  * Big hero heading: first line plain, second line in the gradient.
@@ -68,6 +119,10 @@ export interface HeroTitle {
 export interface Availability {
   status: 'open' | 'freelance' | 'busy' | 'not-looking';
   note?: string;
+  /**
+   * Show the availability pill (admin toggle later). Default hidden.
+   */
+  visible?: boolean;
 }
 export interface Image {
   src: Url;
@@ -78,13 +133,27 @@ export interface ProfileLink {
   label: string;
   url: Url;
 }
+/**
+ * Either a fixed value, or computed in code (e.g. years of experience from role dates).
+ */
 export interface ProfileStat {
   label: string;
-  value: string;
+  value?: string;
+  /**
+   * Computed in code from other data.
+   */
+  computed?: 'experienceYears';
   /**
    * true = dummy data that must be replaced before launch.
    */
   placeholder?: boolean;
+}
+/**
+ * Secondary hero link (e.g. to the flagship case study).
+ */
+export interface HeroCta {
+  label: string;
+  href: Url;
 }
 export interface Skills {
   $schema?: string;
@@ -93,19 +162,19 @@ export interface Skills {
 export interface Skill {
   id: Id;
   name: string;
-  category: 'frontend' | 'backend' | 'ai' | 'graphics' | 'tools';
-  /**
-   * 1 = learning … 5 = expert
-   */
-  level: number;
-  /**
-   * Currently learning (LEARNING edge in the graph).
-   */
-  learning?: boolean;
+  category: SkillCategory;
   /**
    * true = dummy data that must be replaced before launch.
    */
   placeholder?: boolean;
+  /**
+   * Strong / Good / Learning (shown honestly; "learning" = growing).
+   */
+  proficiency?: 'strong' | 'good' | 'learning';
+  /**
+   * A concept/technique node for the graph (no proficiency claimed).
+   */
+  concept?: boolean;
 }
 export interface Experience {
   $schema?: string;
@@ -115,12 +184,16 @@ export interface Experience {
 export interface Organization {
   id: Id;
   name: string;
-  kind: 'company' | 'client' | 'freelance' | 'education' | 'open-source';
+  kind: 'company' | 'client' | 'freelance' | 'open-source';
   url?: Url;
   /**
    * true = dummy data that must be replaced before launch.
    */
   placeholder?: boolean;
+  /**
+   * Neutral badge text instead of a logo, e.g. "VD".
+   */
+  monogram?: string;
 }
 export interface Role {
   id: Id;
@@ -128,13 +201,38 @@ export interface Role {
   title: string;
   start: YearMonth;
   end?: YearMonth1;
-  location?: string;
-  summary: string;
+  location: string;
+  summary?: string;
   /**
    * @maxItems 8
    */
-  highlights: string[];
+  highlights: Highlight[];
   skills: SkillRefs;
+  /**
+   * true = dummy data that must be replaced before launch.
+   */
+  placeholder?: boolean;
+  employmentType: 'full-time' | 'internship' | 'contract' | 'freelance' | 'part-time';
+  workplace?: 'on-site' | 'hybrid' | 'remote';
+}
+export interface Highlight {
+  text: string;
+  project?: Id2;
+}
+export interface Education {
+  $schema?: string;
+  education: EducationEntry[];
+}
+export interface EducationEntry {
+  id: Id;
+  institute: string;
+  shortName: string;
+  monogram?: string;
+  degree: string;
+  field: string;
+  start: Year;
+  end: Year;
+  skills?: SkillRefs;
   /**
    * true = dummy data that must be replaced before launch.
    */
@@ -148,10 +246,12 @@ export interface Project {
   slug: Id;
   title: string;
   summary: string;
-  year: number;
-  role: string;
-  org?: Id2;
-  status: 'shipped' | 'in-progress' | 'concept';
+  role?: string;
+  org?: Id3;
+  /**
+   * Only for personal projects; employer work shows no status.
+   */
+  status?: 'shipped' | 'in-progress' | 'planned';
   featured: boolean;
   skills: SkillRefs;
   links?: ProjectLinks;
@@ -165,9 +265,35 @@ export interface Project {
    */
   placeholder?: boolean;
   /**
-   * SVG thumbnail used when there is no cover image.
+   * Recreated SVG thumbnail (never employer screenshots).
    */
-  illustration?: 'cad' | 'pdf' | 'table' | 'api' | 'rag' | 'voice';
+  illustration:
+    | 'cad'
+    | 'signalling'
+    | 'knowledge-base'
+    | 'bbox'
+    | 'doc-highlight'
+    | 'pdf-stream'
+    | 'sse'
+    | 'architecture'
+    | 'rag'
+    | 'voice'
+    | 'playground';
+  /**
+   * professional = employer work (details anonymised, never links); personal = my own.
+   */
+  type: 'professional' | 'personal';
+  period?: string;
+  /**
+   * Display chips (tech / techniques).
+   *
+   * @maxItems 12
+   */
+  tags: string[];
+  /**
+   * Work-section filter chips this project appears under.
+   */
+  filters: ('cad' | 'documents' | 'knowledge-base' | 'realtime' | 'ai' | 'personal')[];
 }
 export interface ProjectLinks {
   repo?: Url;
@@ -189,7 +315,7 @@ export interface Topic {
 export interface GraphEdgeExtra {
   src: NodeRef;
   dst: NodeRef;
-  rel: 'USED' | 'BUILT_AT' | 'WORKED_AT' | 'RELATED' | 'LEARNING';
+  rel: 'USED' | 'BUILT_AT' | 'WORKED_AT' | 'RELATED' | 'BUILT_ON' | 'DEMONSTRATES';
   weight?: number;
 }
 export interface AILab {
@@ -200,10 +326,31 @@ export interface AILab {
   timeline: TimelineEntry[];
 }
 export interface TimelineEntry {
-  when: string;
+  when?: string;
   topic: string;
   /**
    * 0–100 %
    */
-  progress: number;
+  progress?: number;
+}
+export interface About {
+  $schema?: string;
+  areas: AreaOfExperience[];
+  /**
+   * @minItems 2
+   * @maxItems 7
+   */
+  howIWork: string[];
+}
+export interface AreaOfExperience {
+  id: Id;
+  title: string;
+  icon: 'code' | 'cube' | 'document' | 'plug' | 'gauge' | 'server' | 'compass' | 'sparkles';
+  summary: string;
+  skills: SkillRefs;
+  /**
+   * Still learning: styled with a dashed border + "growing" tag.
+   */
+  growing?: boolean;
+  hub: SkillCategory1;
 }

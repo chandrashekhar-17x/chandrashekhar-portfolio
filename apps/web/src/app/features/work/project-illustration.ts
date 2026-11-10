@@ -1,8 +1,23 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import { Project } from '../../core/content/content.types.gen';
 
 export type Illustration = NonNullable<Project['illustration']>;
+
+type Drawing = 'cad' | 'pdf' | 'table' | 'rag' | 'voice' | 'api';
+const DRAWING: Record<Illustration, Drawing> = {
+  cad: 'cad',
+  signalling: 'cad',
+  playground: 'cad',
+  'doc-highlight': 'pdf',
+  'pdf-stream': 'pdf',
+  'knowledge-base': 'table',
+  bbox: 'table',
+  architecture: 'table',
+  sse: 'api',
+  rag: 'rag',
+  voice: 'voice',
+};
 
 /** Six small schematic SVGs (prototype projSvg), drawn with theme tokens. */
 @Component({
@@ -23,9 +38,12 @@ export type Illustration = NonNullable<Project['illustration']>;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectIllustration {
-  readonly kind = input<Illustration>('api');
+  readonly kind = input<Illustration>('architecture');
   /** cover = fill and crop (cards); contain = fit inside (wide banners). */
   readonly fit = input<'cover' | 'contain'>('cover');
+
+  /** Which drawing to show. The next UI PR gives every kind its own drawing. */
+  protected readonly drawing = computed(() => DRAWING[this.kind()]);
 
   /** Pre-computed shapes (keeps the template free of maths). */
   protected readonly pages = [0, 1, 2];

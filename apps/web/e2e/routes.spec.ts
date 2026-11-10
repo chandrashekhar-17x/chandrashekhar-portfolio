@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 // Every route renders on the server with the right status code and one <h1>.
-const ROUTES = ['/', '/work', '/work/cad-editor', '/lab', '/graph', '/journal', '/resume'];
+const ROUTES = ['/', '/work', '/work/custom-cad-editor', '/lab', '/graph', '/journal', '/resume'];
 
 for (const path of ROUTES) {
   test(`${path} renders with status 200 and a single h1`, async ({ page }) => {
@@ -22,7 +22,7 @@ for (const path of ['/nope', '/work/nope']) {
 
 test('the work list links to each case study', async ({ page }) => {
   await page.goto('/work');
-  await page.getByRole('link', { name: 'Canvas CAD Editor' }).click();
-  await expect(page).toHaveURL(/\/work\/cad-editor$/);
-  await expect(page.getByRole('heading', { level: 2, name: 'Problem' })).toBeVisible();
+  await page.getByRole('link', { name: 'Custom CAD Viewer & Editor, built from zero' }).click();
+  await expect(page).toHaveURL(/\/work\/custom-cad-editor$/);
+  await expect(page.getByRole('heading', { level: 2, name: 'TL;DR' })).toBeVisible();
 });

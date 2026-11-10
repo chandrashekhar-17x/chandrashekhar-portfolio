@@ -9,7 +9,7 @@ import prettier from 'prettier';
 
 const schemaDir = resolve(import.meta.dirname, '../../../content/schemas');
 const outFile = resolve(import.meta.dirname, '../src/app/core/content/content.types.gen.ts');
-const files = ['profile', 'skills', 'experience', 'projects', 'graph', 'lab'];
+const files = ['profile', 'skills', 'experience', 'education', 'projects', 'graph', 'lab', 'about'];
 const checkOnly = process.argv.includes('--check');
 
 // One bundle schema that references every file, so shared types are emitted once.

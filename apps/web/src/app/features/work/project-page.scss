@@ -62,3 +62,17 @@
     }
   }
 }
+
+.role {
+  max-width: 72ch;
+  margin: calc(var(--space-5) * -1) 0 var(--space-6);
+  color: var(--ink-2);
+
+  span {
+    margin-right: var(--space-2);
+    font: 600 0.75rem var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+}

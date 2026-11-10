@@ -32,6 +32,20 @@
     </section>
   }
 
+  @if (education().length) {
+    <section aria-labelledby="r-edu">
+      <h2 id="r-edu">Education</h2>
+      <ul class="projects" role="list">
+        @for (e of education(); track e.id) {
+          <li>
+            <strong>{{ e.institute }}</strong
+            >: {{ e.degree }}, {{ e.field }} ({{ e.start }}–{{ e.end }})
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
   <section aria-labelledby="r-skills">
     <h2 id="r-skills">Skills</h2>
     <dl class="skills">
@@ -40,7 +54,8 @@
           <dt>{{ g.label }}</dt>
           <dd>
             @for (s of g.skills; track s.id; let last = $last) {
-              {{ s.name }}{{ s.learning ? ' (learning)' : '' }}{{ last ? '' : ', ' }}
+              {{ s.name }}{{ s.proficiency === 'learning' ? ' (learning)' : ''
+              }}{{ last ? '' : ', ' }}
             }
           </dd>
         </div>
@@ -53,7 +68,8 @@
     <ul class="projects" role="list">
       @for (pr of projects(); track pr.slug) {
         <li>
-          <a [routerLink]="['/work', pr.slug]">{{ pr.title }}</a> ({{ pr.year }}): {{ pr.summary }}
+          <a [routerLink]="['/work', pr.slug]">{{ pr.title }}</a
+          >: {{ pr.summary }}
         </li>
       }
     </ul>

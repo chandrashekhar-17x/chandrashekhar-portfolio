@@ -20,7 +20,9 @@ describe('scripted answers', () => {
 
   it('routes the suggested questions to sensible answers', () => {
     expect(pickAnswer('Who is Chandrashekhar?').intent).toBe('about');
-    expect(pickAnswer('Tell me about the CAD editor').citations).toContain('project:cad-editor');
+    expect(pickAnswer('Tell me about the CAD editor').citations).toContain(
+      'project:custom-cad-editor',
+    );
     expect(pickAnswer('Does he fit an Angular + AI role? (JD match)').intent).toBe('jd_match');
     for (const q of SUGGESTED_QUESTIONS) expect(pickAnswer(q)).not.toBe(FALLBACK_ANSWER);
   });

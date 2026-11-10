@@ -23,7 +23,9 @@ test.describe('knowledge graph', () => {
   test('list view lists every category with connections', async ({ page }) => {
     await page.getByRole('button', { name: 'View as list' }).click();
     await expect(page.getByRole('heading', { name: /Projects \(\d+\)/ })).toBeVisible();
-    await expect(page.locator('app-graph-list b', { hasText: 'Canvas CAD Editor' })).toBeVisible();
+    await expect(
+      page.locator('app-graph-list b', { hasText: 'Custom CAD Viewer & Editor, built from zero' }),
+    ).toBeVisible();
     await page.getByRole('button', { name: 'Show graph' }).click();
     await expect(page.locator('#graph app-graph-canvas')).toBeVisible();
   });

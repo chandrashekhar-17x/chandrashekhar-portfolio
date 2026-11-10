@@ -6,15 +6,16 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { rxResource, toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { marked } from 'marked';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
 import { SeoService } from '../../core/seo/seo.service';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { ProjectIllustration } from './project-illustration';
+import { projectEyebrow } from './project-meta';
 
 /** /work/:slug: a case study rendered from markdown. Unknown slug → 404 page + status. */
 @Component({
@@ -51,11 +52,7 @@ export class ProjectPage {
       ),
   });
 
-  /** Skill id → display name ("postgres" → "PostgreSQL"). */
-  protected readonly skillNames = toSignal(
-    this.repo.skills().pipe(map((skills) => new Map(skills.map((s) => [s.id, s.name])))),
-    { initialValue: new Map<string, string>() },
-  );
+  protected readonly eyebrow = projectEyebrow;
 
   /** Markdown → HTML. Angular's [innerHTML] sanitizer strips anything unsafe. */
   protected readonly html = computed(() => {
@@ -64,7 +61,12 @@ export class ProjectPage {
   });
 }
 
-/** Drops comments and the leading "# Title" line: the page header already is the one h1. */
+/**
+ * Drops YAML frontmatter, comments and the leading "# Title" line:
+ * the page header already shows the title (the one h1) and the facts.
+ */
 export function stripTitle(md: string): string {
-  return md.replace(/^\s*(<!--[\s\S]*?-->\s*)*#\s[^\n]*\n/, '');
+  return md
+    .replace(/^---\n[\s\S]*?\n---\n/, '')
+    .replace(/^\s*(<!--[\s\S]*?-->\s*)*(#\s[^\n]*\n)?/, '');
 }

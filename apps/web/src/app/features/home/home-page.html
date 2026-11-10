@@ -2,7 +2,7 @@
 <div class="first-screen">
   @if (profile(); as p) {
     <app-hero-section [profile]="p" />
-    <app-stats-strip [profile]="p" [skillCount]="skills().length" />
+    <app-stats-strip [profile]="p" [roles]="roles()" />
   }
 </div>
 
