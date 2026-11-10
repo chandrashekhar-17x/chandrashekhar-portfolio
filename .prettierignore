@@ -1,0 +1,18 @@
+# Generated or vendored: don't reformat.
+pnpm-lock.yaml
+uv.lock
+dist/
+coverage/
+.angular/
+node_modules/
+
+# Python is formatted by ruff, not prettier.
+**/*.py
+
+# Reference material kept exactly as delivered.
+prototype/
+reference/
+docs/
+
+# Hand-maintained project memory.
+CLAUDE.md

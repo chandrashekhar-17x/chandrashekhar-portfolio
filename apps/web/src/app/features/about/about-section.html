@@ -1,0 +1,59 @@
+@if (about(); as a) {
+  <div class="section-head">
+    <div>
+      <p class="section-index">01 / about</p>
+      <h2>What I work on.</h2>
+    </div>
+    <p>Pick an area to see its cluster in the knowledge graph.</p>
+  </div>
+
+  <div class="bio">
+    @for (para of profile()?.bio ?? []; track $index) {
+      <p>{{ para }}</p>
+    }
+  </div>
+
+  <ul class="areas" role="list" aria-label="Areas of experience">
+    @for (area of a.areas; track area.id) {
+      <li class="area" [class.growing]="area.growing">
+        <div class="top">
+          <span class="icon"><app-area-icon [icon]="area.icon" /></span>
+          @if (area.growing) {
+            <span class="grow-tag">growing</span>
+          }
+        </div>
+        <h3>
+          <!-- Stretched button: the whole card is one control. -->
+          <button
+            type="button"
+            class="stretched"
+            [attr.aria-label]="area.title + ': show in the knowledge graph'"
+            (click)="showInGraph(area)"
+          >
+            {{ area.title }}
+          </button>
+        </h3>
+        <p>{{ area.summary }}</p>
+        <ul class="chips" role="list">
+          @for (s of area.skills; track s) {
+            <li class="tag">{{ skillName()(s) }}</li>
+          }
+        </ul>
+      </li>
+    }
+  </ul>
+
+  <div class="how">
+    <h3>How I work</h3>
+    <ol>
+      @for (step of a.howIWork; track step; let last = $last) {
+        <li>
+          {{ step }}
+          @if (!last) {
+            <span class="arrow" aria-hidden="true">→</span>
+          }
+        </li>
+      }
+    </ol>
+  </div>
+}

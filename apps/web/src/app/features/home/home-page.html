@@ -1,0 +1,81 @@
+<!-- First screen: hero + stats exactly fill the viewport under the nav. -->
+<div class="first-screen">
+  @if (profile(); as p) {
+    <app-hero-section [profile]="p" />
+    <app-stats-strip [profile]="p" [roles]="roles()" />
+  }
+</div>
+
+<!-- About is server-rendered: mostly text that crawlers should read. -->
+<section id="about" class="section" aria-label="About">
+  <app-about-section />
+</section>
+
+<section id="featured" class="section" aria-label="Featured case study">
+  @defer (on viewport) {
+    <app-featured-band />
+  } @placeholder {
+    <app-section-skeleton kind="featured" label="featured case study" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="featured" label="featured case study" [loading]="true" />
+  }
+</section>
+
+<!--
+  Lazy sections: the server sends same-size skeletons; each section's code downloads
+  when it scrolls into view (@defer on viewport), then RevealQueue shows them one at a time.
+-->
+<section id="graph" class="section" aria-label="Knowledge graph">
+  @defer (on viewport) {
+    <app-graph-section />
+  } @placeholder {
+    <app-section-skeleton kind="graph" label="knowledge graph" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="graph" label="knowledge graph" [loading]="true" />
+  }
+</section>
+
+<section id="work" class="section section--work" aria-label="Selected work">
+  @defer (on viewport) {
+    <app-work-section />
+  } @placeholder {
+    <app-section-skeleton kind="work" label="selected work" [count]="featuredCount()" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton
+      kind="work"
+      label="selected work"
+      [count]="featuredCount()"
+      [loading]="true"
+    />
+  }
+</section>
+
+<section id="lab" class="section" aria-label="AI lab">
+  @defer (on viewport) {
+    <app-lab-section />
+  } @placeholder {
+    <app-section-skeleton kind="lab" label="AI lab" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="lab" label="AI lab" [loading]="true" />
+  }
+</section>
+
+<section id="xp" class="section" aria-label="Experience">
+  @defer (on viewport) {
+    <app-experience-section />
+  } @placeholder {
+    <app-section-skeleton kind="xp" label="experience" [count]="roleCount()" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="xp" label="experience" [count]="roleCount()" [loading]="true" />
+  }
+</section>
+
+<section id="contact" class="section" aria-label="Contact">
+  @defer (on viewport) {
+    <app-contact-section />
+  } @placeholder {
+    <app-section-skeleton kind="contact" label="contact" />
+  } @loading (after 100ms; minimum 400ms) {
+    <app-section-skeleton kind="contact" label="contact" [loading]="true" />
+  }
+</section>

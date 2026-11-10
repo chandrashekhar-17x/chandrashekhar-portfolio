@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lab.schema.json",
+  "title": "AI lab",
+  "type": "object",
+  "required": ["timeline"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "timeline": {
+      "description": "Learning timeline shown in the AI lab.",
+      "type": "array",
+      "items": {
+        "title": "TimelineEntry",
+        "type": "object",
+        "required": ["topic"],
+        "additionalProperties": false,
+        "properties": {
+          "when": {
+            "type": "string",
+            "maxLength": 12
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "progress": {
+            "description": "0–100 %",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      }
+    }
+  }
+}

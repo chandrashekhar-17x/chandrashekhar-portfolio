@@ -1,0 +1,36 @@
+<header class="hero">
+  <app-hero-canvas />
+  <app-hero-orb />
+  <div class="inner">
+    <p class="hello">
+      @if (profile().availability.visible) {
+        <span class="pulse" aria-hidden="true"></span>
+        {{ profile().name }} · {{ profile().availability.note }} · {{ profile().locationShort }}
+      } @else {
+        {{ profile().name }} · {{ profile().title }} · {{ profile().locationShort }}
+      }
+    </p>
+    <app-hero-title
+      [name]="profile().name"
+      [text]="profile().heroTitle.text"
+      [highlight]="profile().heroTitle.highlight"
+    />
+    <app-typewriter [phrases]="profile().roles ?? []" />
+    <div class="cta">
+      <a class="btn btn--primary" routerLink="/" fragment="work" appMagnetic>View my work →</a>
+      <button
+        type="button"
+        class="btn btn--ghost"
+        data-cursor="ask me"
+        appMagnetic
+        (click)="chat.open()"
+      >
+        ✦ Talk to my AI agent
+      </button>
+      <a class="btn btn--ghost" routerLink="/resume" appMagnetic>↓ Resume</a>
+    </div>
+    @if (profile().heroCta; as cta) {
+      <a class="feature-link" [routerLink]="cta.href">{{ cta.label }}</a>
+    }
+  </div>
+</header>

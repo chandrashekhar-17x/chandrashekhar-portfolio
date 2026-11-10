@@ -1,0 +1,63 @@
+{
+  "$schema": "../schemas/about.schema.json",
+  "areas": [
+    {
+      "id": "frontend",
+      "title": "Frontend engineering",
+      "icon": "code",
+      "hub": "frontend",
+      "summary": "Angular apps with reusable components and a modular architecture.",
+      "skills": ["angular", "angular-cli", "typescript", "javascript", "rxjs", "reactive-forms"]
+    },
+    {
+      "id": "cad",
+      "title": "CAD & visualization",
+      "icon": "cube",
+      "hub": "cad",
+      "summary": "Interactive CAD/DXF viewing and editing with Three.js and WebGL.",
+      "skills": ["threejs", "webgl", "dxf", "canvas"]
+    },
+    {
+      "id": "documents",
+      "title": "Document processing",
+      "icon": "document",
+      "hub": "documents",
+      "summary": "PDF previews, extracted-data views, progressive loading with Range Requests.",
+      "skills": ["pdfjs", "range-requests", "progressive-loading"]
+    },
+    {
+      "id": "integration",
+      "title": "API integration",
+      "icon": "plug",
+      "hub": "realtime",
+      "summary": "REST APIs and real-time updates with Server-Sent Events.",
+      "skills": ["rest-apis", "sse"]
+    },
+    {
+      "id": "performance",
+      "title": "Performance optimization",
+      "icon": "gauge",
+      "hub": "performance",
+      "summary": "Responsive UIs with large files, complex JSON and heavy rendering.",
+      "skills": ["large-data-ui", "render-performance"]
+    },
+    {
+      "id": "backend",
+      "title": "Backend development",
+      "icon": "server",
+      "hub": "backend",
+      "growing": true,
+      "summary": "Python, Django and FastAPI: APIs, databases, auth, system design.",
+      "skills": ["python", "django", "fastapi", "postgres", "auth", "system-design"]
+    },
+    {
+      "id": "rnd",
+      "title": "R&D & technical direction",
+      "icon": "compass",
+      "hub": "leadership",
+      "summary": "Evaluating approaches, pivoting on evidence, architecture decisions, working with backend teams.",
+      "skills": ["rnd", "technical-direction"]
+    }
+  ],
+  "howIWork": ["Research", "Evaluate", "Decide", "Build", "Own"]
+}

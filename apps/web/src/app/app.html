@@ -1,0 +1,12 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<app-site-nav />
+<main id="main" tabindex="-1">
+  <router-outlet />
+</main>
+<app-site-footer />
+
+<!-- Idle OR 1.5 s, whichever first: busy devices with running canvases may rarely be idle. -->
+@defer (on idle; on timer(1500ms)) {
+  <app-chat-widget />
+  <app-command-palette />
+}

@@ -1,0 +1,43 @@
+<article
+  class="card"
+  appTilt
+  data-cursor="open"
+  [class.is-loading]="loading()"
+  [attr.aria-busy]="loading()"
+>
+  @if (loading()) {
+    <div class="sk" aria-hidden="true">
+      <div class="skb" style="height: 190px"></div>
+      <div class="skb" style="height: 18px; width: 60%"></div>
+      <div class="skb" style="height: 11px"></div>
+      <div class="skb" style="height: 11px; width: 80%"></div>
+      <div class="skb" style="height: 20px; width: 45%; margin-top: auto"></div>
+    </div>
+  }
+  <div class="glare" aria-hidden="true"></div>
+
+  <div class="thumb">
+    @if (project().cover; as cover) {
+      <img [src]="cover.src" [alt]="cover.alt" loading="lazy" decoding="async" />
+    } @else {
+      <app-project-illustration [kind]="project().illustration" />
+    }
+  </div>
+
+  <p class="kind" [class.kind--personal]="project().type === 'personal'">{{ kind() }}</p>
+  <h3>
+    <!-- Stretched link: the whole card is clickable, but only the title is announced. -->
+    <a class="stretched" [routerLink]="['/work', project().slug]">{{ project().title }}</a>
+  </h3>
+  <p>{{ project().summary }}</p>
+
+  <div class="meta">
+    <ul class="tags" role="list" aria-label="Technologies">
+      <li [class]="'tag tag--' + area()">{{ area() }}</li>
+      @for (t of tags(); track t) {
+        <li class="tag">{{ t }}</li>
+      }
+    </ul>
+    <span class="link" aria-hidden="true">Case study →</span>
+  </div>
+</article>

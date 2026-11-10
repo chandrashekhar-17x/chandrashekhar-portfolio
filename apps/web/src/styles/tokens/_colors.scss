@@ -1,0 +1,66 @@
+// Colour tokens (from prototype/index.html).
+// Dark is the default theme; light is applied with <html data-theme="light">.
+// Changed from the prototype for WCAG AA (4.5:1 text): --ink3 (both), light --cyan.
+
+:root {
+  color-scheme: dark;
+
+  // Surfaces
+  --bg: #06071a;
+  --bg-2: #0b0c24;
+  --panel: rgb(20 22 58 / 62%);
+  --panel-solid: #121436;
+  --line: rgb(140 150 255 / 16%);
+  --line-2: rgb(140 150 255 / 30%);
+
+  // Text: ink (primary) → ink-2 (secondary) → ink-3 (muted)
+  --ink: #ecebff;
+  --ink-2: #a9a8d6;
+  --ink-3: #7f7eb3;
+
+  // Accents (also graph categories, see docs/Design.md)
+  --violet: #8b5cf6;
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --lime: #a3e635;
+  --amber: #fbbf24;
+  --blue: #60a5fa;
+  --teal: #2dd4bf;
+  --orange: #fb923c;
+  --rose: #fb7185;
+
+  // Cursor + splash fluid colour (React Bits splash cursor, #84cc16)
+  --cursor: #84cc16;
+
+  // Elevation is a glow, not a shadow
+  --glow: 0 0 0 1px var(--line), 0 10px 40px -10px rgb(139 92 246 / 35%);
+  --focus-ring: 0 0 0 4px rgb(139 92 246 / 45%);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #f5f4fb;
+  --bg-2: #ebe9f7;
+  --panel: rgb(255 255 255 / 75%);
+  --panel-solid: #fff;
+  --line: rgb(60 50 140 / 14%);
+  --line-2: rgb(60 50 140 / 28%);
+
+  --ink: #16133a;
+  --ink-2: #4b4877;
+  --ink-3: #66638f;
+
+  --violet: #6d3df0;
+  --cyan: #0e7490;
+  --pink: #db2777;
+  --lime: #4d7c0f;
+  --amber: #b45309;
+  --blue: #2563eb;
+  --teal: #0f766e; // AA on light backgrounds (5.0:1)
+  --orange: #c2410c;
+  --rose: #be123c;
+
+  --glow: 0 0 0 1px var(--line), 0 10px 30px -12px rgb(80 60 180 / 25%);
+  --focus-ring: 0 0 0 4px rgb(109 61 240 / 35%);
+}

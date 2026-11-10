@@ -1,0 +1,144 @@
+.xp {
+  display: grid;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.company-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h3 {
+    font-size: 19px;
+  }
+}
+
+// Neutral company badge instead of a logo (no employer branding).
+.mono {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--panel);
+  font: 600 12px var(--font-mono);
+  color: var(--ink-2);
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.present {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 8px;
+  border: 1px solid color-mix(in oklab, var(--lime) 50%, transparent);
+  border-radius: 999px;
+  font: 600 11px var(--font-mono);
+  color: var(--ink);
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+// Roles under a company: a dot per role on a thin spine (LinkedIn style).
+.roles {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  margin: 14px 0 0 19px;
+  padding: 0 0 0 26px;
+  list-style: none;
+
+  &.multi::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 0;
+    width: 2px;
+    background: linear-gradient(var(--violet), var(--cyan));
+  }
+}
+
+.role {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -31px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  h4 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+  }
+}
+
+.when {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.type {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.summary,
+.highlights {
+  max-width: 640px;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+
+.highlights {
+  padding-left: 18px;
+  font-size: 13.5px;
+
+  a {
+    margin-left: 4px;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .present i {
+    animation: none;
+  }
+}

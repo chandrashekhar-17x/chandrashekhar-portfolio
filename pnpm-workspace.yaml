@@ -1,0 +1,11 @@
+# pnpm workspace: every JS/TS package in the monorepo.
+packages:
+  - 'apps/web'
+
+# pnpm 10 blocks install scripts by default (supply-chain safety).
+# Only allow the ones we actually need; the rest stay disabled.
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: false
+  lmdb: false
+  msgpackr-extract: false

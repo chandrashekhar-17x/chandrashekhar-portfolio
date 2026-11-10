@@ -1,0 +1,21 @@
+<h1 [attr.aria-label]="name() + ' — ' + text() + ' ' + highlight()">
+  <span aria-hidden="true">
+    @for (word of lines().plain; track $index) {
+      <span class="word">
+        @for (c of word.chars; track $index) {
+          <span class="ch" [style.animation-delay.ms]="c.delay">{{ c.ch }}</span>
+        }
+      </span>
+    }
+    <br />
+    <span class="grad">
+      @for (word of lines().grad; track $index) {
+        <span class="word">
+          @for (c of word.chars; track $index) {
+            <span class="ch" [style.animation-delay.ms]="c.delay">{{ c.ch }}</span>
+          }
+        </span>
+      }
+    </span>
+  </span>
+</h1>

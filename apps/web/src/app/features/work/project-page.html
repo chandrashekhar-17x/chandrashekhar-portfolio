@@ -1,0 +1,59 @@
+@if (project.value(); as p) {
+  <a routerLink="/work" class="back">← All work</a>
+  <app-page-header [eyebrow]="eyebrow(p)" [title]="p.title" [lead]="p.summary" />
+  @if (p.role) {
+    <p class="role"><span>My role</span> {{ p.role }}</p>
+  }
+  <div class="banner">
+    @if (p.cover; as cover) {
+      <img [src]="cover.src" [alt]="cover.alt" />
+    } @else {
+      <app-project-illustration [kind]="p.illustration" fit="contain" />
+    }
+  </div>
+  <div class="facts">
+    <ul class="tags" role="list" aria-label="Technologies">
+      @for (t of p.tags; track t) {
+        <li class="tag">{{ t }}</li>
+      }
+    </ul>
+    @if (p.links; as links) {
+      <ul class="links" role="list" aria-label="Links">
+        @if (links.repo) {
+          <li>
+            <a class="btn btn--ghost btn--sm" [href]="links.repo" rel="noopener" target="_blank"
+              >Code ↗</a
+            >
+          </li>
+        }
+        @if (links.live) {
+          <li>
+            <a class="btn btn--ghost btn--sm" [href]="links.live" rel="noopener" target="_blank"
+              >Live ↗</a
+            >
+          </li>
+        }
+        @if (links.demo) {
+          <li><a class="btn btn--primary btn--sm" [href]="links.demo">Try the demo →</a></li>
+        }
+      </ul>
+    }
+  </div>
+  <app-case-study-body [markdown]="body()" [path]="'/work/' + p.slug" />
+
+  <nav class="pager" aria-label="More projects">
+    @if (neighbours().prev; as prev) {
+      <a class="prev" [routerLink]="['/work', prev.slug]">
+        <span>← Previous</span>{{ prev.title }}
+      </a>
+    }
+    @if (neighbours().next; as next) {
+      <a class="next" [routerLink]="['/work', next.slug]"> <span>Next →</span>{{ next.title }} </a>
+    }
+  </nav>
+} @else if (project.isLoading()) {
+  <p class="muted" role="status">Loading case study…</p>
+} @else {
+  <app-page-header eyebrow="404" title="Project not found" lead="That case study doesn't exist." />
+  <a routerLink="/work" class="btn btn--ghost">← All work</a>
+}

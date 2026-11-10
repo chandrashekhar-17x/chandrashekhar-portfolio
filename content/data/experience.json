@@ -1,0 +1,65 @@
+{
+  "$schema": "../schemas/experience.schema.json",
+  "organizations": [
+    {
+      "id": "vassardigital",
+      "name": "VassarDigital.ai",
+      "kind": "company",
+      "monogram": "VD"
+    },
+    {
+      "id": "vassar-labs",
+      "name": "Vassar Labs",
+      "kind": "company",
+      "monogram": "VL"
+    }
+  ],
+  "roles": [
+    {
+      "id": "vd-software-engineer",
+      "org": "vassardigital",
+      "title": "Software Engineer",
+      "employmentType": "full-time",
+      "workplace": "on-site",
+      "start": "2024-01",
+      "location": "Hyderabad, Telangana, India",
+      "summary": "Complex application features: CAD/DXF visualization, document processing, PDF viewers, data-extraction interfaces and API integrations.",
+      "highlights": [
+        {
+          "text": "Primary owner of a custom CAD viewer/editor (Three.js) that became the foundation of a core workflow",
+          "project": "custom-cad-editor"
+        },
+        {
+          "text": "Led UI technical direction for ~2 months of the workflow's initial development",
+          "project": "signalling-plan-editor"
+        },
+        {
+          "text": "Contributed across 4 product teams: knowledge-base ingestion, page-capture visualization, document review, CAD/signalling"
+        }
+      ],
+      "skills": ["angular-cli", "javascript"]
+    },
+    {
+      "id": "vl-software-engineer",
+      "org": "vassar-labs",
+      "title": "Software Engineer",
+      "employmentType": "full-time",
+      "start": "2023-08",
+      "end": "2023-12",
+      "location": "Hyderabad, Telangana, India",
+      "highlights": [],
+      "skills": ["data-structures", "cpp"]
+    },
+    {
+      "id": "vl-intern",
+      "org": "vassar-labs",
+      "title": "Software Engineer",
+      "employmentType": "internship",
+      "start": "2023-01",
+      "end": "2023-07",
+      "location": "Hyderabad, Telangana, India",
+      "highlights": [],
+      "skills": []
+    }
+  ]
+}

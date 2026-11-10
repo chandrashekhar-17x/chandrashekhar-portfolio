@@ -1,0 +1,50 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label class="field">
+    <span>name</span>
+    <input
+      formControlName="name"
+      autocomplete="name"
+      placeholder="Your name"
+      [attr.aria-invalid]="!!error('name')"
+      aria-describedby="err-name"
+    />
+    <small id="err-name" class="err">{{ error('name') }}</small>
+  </label>
+
+  <label class="field">
+    <span>email</span>
+    <input
+      type="email"
+      formControlName="email"
+      autocomplete="email"
+      placeholder="you@company.com"
+      [attr.aria-invalid]="!!error('email')"
+      aria-describedby="err-email"
+    />
+    <small id="err-email" class="err">{{ error('email') }}</small>
+  </label>
+
+  <label class="field">
+    <span>reason</span>
+    <select formControlName="reason">
+      @for (r of reasons; track r.value) {
+        <option [value]="r.value">{{ r.label }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="field">
+    <span>message</span>
+    <textarea
+      rows="4"
+      formControlName="message"
+      placeholder="Tell me about it…"
+      [attr.aria-invalid]="!!error('message')"
+      aria-describedby="err-message"
+    ></textarea>
+    <small id="err-message" class="err">{{ error('message') }}</small>
+  </label>
+
+  <button type="submit" class="btn btn--primary" appMagnetic>Send message →</button>
+  <p class="status" role="status">{{ status() }}</p>
+</form>

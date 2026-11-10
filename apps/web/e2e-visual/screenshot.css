@@ -1,0 +1,6 @@
+/* Applied only while taking screenshots: hide floating chrome that overlaps
+   whatever is being captured (nav and chat orb have their own tests). */
+app-site-nav,
+app-chat-widget {
+  visibility: hidden !important;
+}

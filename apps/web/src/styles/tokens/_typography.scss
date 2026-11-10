@@ -1,0 +1,22 @@
+// Type tokens (docs/Design.md → Typography).
+// Fonts are self-hosted (styles/base/_fonts.scss); system fonts are the fallback.
+
+:root {
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-body: 'Inter Tight Variable', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --text-xs: 0.75rem; // 12px: labels
+  --text-sm: 0.875rem; // 14px
+  --text-base: 0.9375rem; // 15px: body
+  --text-lg: 1.125rem; // 18px
+  --text-xl: 1.5rem; // 24px: section titles
+  // Hero display size: 10% of the container width, 28px → 86px.
+  // A long single word (~9em wide) still fits at 320px. Needs a size container.
+  --text-display: clamp(1.75rem, 10cqi, 5.375rem);
+
+  --leading-tight: 1.05;
+  --leading-body: 1.55;
+  --tracking-display: -0.04em;
+  --tracking-eyebrow: 0.14em;
+}

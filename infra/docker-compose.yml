@@ -1,0 +1,55 @@
+# Local development services. Start with `make up`, stop with `make down`.
+# Host ports default to 5433/6380 so they don't clash with a locally installed
+# Postgres/Redis; change them in .env (POSTGRES_PORT, REDIS_PORT).
+name: portfolio
+
+services:
+  db:
+    # Postgres 17 + pgvector (same major version as Neon/Supabase).
+    image: pgvector/pgvector:0.8.7-pg17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-portfolio}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-portfolio}
+      POSTGRES_DB: ${POSTGRES_DB:-portfolio}
+    ports:
+      - '127.0.0.1:${POSTGRES_PORT:-5433}:5432' # localhost only, never the LAN
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    # Rate limits, caches and the daily token budget counter.
+    image: redis:8.10-alpine
+    restart: unless-stopped
+    command:
+      [redis-server, --appendonly, 'yes', --maxmemory, 128mb, --maxmemory-policy, allkeys-lru]
+    ports:
+      - '127.0.0.1:${REDIS_PORT:-6380}:6379'
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  ollama:
+    # Optional local LLM for zero-cost dev (Phase 4). Start with `make up-ai`.
+    image: ollama/ollama:0.40.15
+    profiles: ['ai']
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${OLLAMA_PORT:-11434}:11434'
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  pgdata:
+  redisdata:
+  ollama:

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chandrashekhar — Frontend & AI Engineer</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Frontend engineer who builds complex UIs (CAD editors, PDF engines, data grids), now building the AI systems behind them."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#06071a" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Fonts used above the fold: fetch immediately (see styles/base/_fonts.scss). -->
+    <link
+      rel="preload"
+      href="/fonts/bricolage-grotesque-latin-opsz-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-tight-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <!-- Apply the saved theme before first paint (no flash). Needs a CSP hash in Phase 9. -->
+    <script>
+      try {
+        if (localStorage.getItem('theme') === 'light')
+          document.documentElement.dataset.theme = 'light';
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

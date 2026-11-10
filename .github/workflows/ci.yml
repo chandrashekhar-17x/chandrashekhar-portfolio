@@ -1,0 +1,233 @@
+# CI: lint, type-check, test and build on every PR and every push to develop/main.
+# Jobs only run for the parts of the repo that changed; `ci-ok` is the single
+# status check to mark as "required" in branch protection.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+      python: ${{ steps.filter.outputs.python }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            shared: &shared
+              - '.github/workflows/**'
+              - 'Makefile'
+            web:
+              - *shared
+              - 'apps/web/**'
+              - 'content/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - '.prettierrc.json'
+              - '.prettierignore'
+              - '.nvmrc'
+            python:
+              - *shared
+              - 'apps/api/**'
+              - 'apps/worker/**'
+              - 'apps/mcp/**'
+              - 'scripts/**'
+              - 'content/**'
+              - 'pyproject.toml'
+              - 'uv.lock'
+              - '.python-version'
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # scan the whole history, not just the last commit
+      - name: gitleaks
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 git /repo --redact --no-banner
+      # Internal office-project names must never be published (hashed list, stdlib only).
+      - name: Confidentiality check (source)
+        run: python3 scripts/check_confidential.py
+
+  # Lint, types and unit tests run beside the build instead of before it.
+  web-checks:
+    name: Web (lint · types · unit tests)
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6 # version comes from package.json "packageManager"
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: make lint-web
+      - run: pnpm --filter @portfolio/web typecheck
+      - run: make test-web
+
+  # Build once; e2e, screenshots and Lighthouse reuse this output.
+  web-build:
+    name: Web (build · SSR smoke)
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Angular build cache
+        uses: actions/cache@v6
+        with:
+          path: apps/web/.angular/cache
+          key: ng-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ github.sha }}
+          restore-keys: ng-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+      - run: make build
+      - name: Confidentiality check (built site)
+        run: make confidential-check
+      - run: make smoke-web
+      - uses: actions/upload-artifact@v7
+        with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 1
+
+  # Browser tests in two parallel shards, inside the Playwright image
+  # (browsers + system packages preinstalled: no per-run download).
+  e2e:
+    name: Web e2e (${{ matrix.shard }}/2)
+    needs: web-build
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: apps/web/dist
+      - run: pnpm --filter @portfolio/web exec playwright test --shard=${{ matrix.shard }}/2
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report-${{ matrix.shard }}
+          path: apps/web/playwright-report
+          retention-days: 7
+
+  visual:
+    name: Web screenshots (Playwright container)
+    needs: web-build
+    runs-on: ubuntu-latest
+    # Same image as `make visual` locally, so screenshots render identically.
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: apps/web/dist
+      - run: pnpm --filter @portfolio/web visual
+      - name: Upload screenshot diffs on failure
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-diffs
+          path: apps/web/test-results-visual
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse budgets
+    needs: web-build
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.65.0-noble
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v8
+        with:
+          name: web-dist
+          path: apps/web/dist
+      - run: make lighthouse
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse
+          path: apps/web/.lighthouseci
+          retention-days: 7
+
+  python:
+    name: Python (lint · types · test · content)
+    needs: changes
+    if: needs.changes.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    # Real Postgres (same image as `make up`) for migration and seed tests.
+    services:
+      db:
+        image: pgvector/pgvector:0.8.7-pg17-bookworm
+        env:
+          POSTGRES_USER: portfolio
+          POSTGRES_PASSWORD: portfolio
+          POSTGRES_DB: portfolio
+        ports: ['5433:5432']
+        options: >-
+          --health-cmd "pg_isready -U portfolio" --health-interval 5s --health-timeout 3s
+          --health-retries 10
+      redis:
+        image: redis:8.10-alpine
+        ports: ['6380:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      REQUIRE_DB: '1' # fail (don't skip) if Postgres or Redis is unreachable
+    steps:
+      - uses: actions/checkout@v7
+      # setup-uv publishes exact tags only (no moving "v10"); Dependabot keeps it current.
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: true
+      - run: uv sync --frozen
+      - run: make lint-py
+      - run: uv run mypy apps/api apps/worker apps/mcp scripts
+      - run: make content-check
+      - run: make test-py
+
+  ci-ok:
+    name: CI OK
+    if: always()
+    needs: [secrets, web-checks, web-build, e2e, visual, lighthouse, python]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any job failed or was cancelled (skipped is fine)
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+      - run: echo "All required checks passed."

@@ -1,0 +1,39 @@
+<app-reveal kind="featured" label="featured case study">
+  <ng-template>
+    @if (project(); as p) {
+      <article class="band reveal-item" style="--i: 0">
+        <div class="text">
+          <p class="eyebrow">Featured case study</p>
+          <h2>{{ p.title }}</h2>
+          <ul class="tldr">
+            @for (line of tldr(); track $index) {
+              <li>{{ line }}</li>
+            }
+          </ul>
+          <ul class="tags-row" role="list" aria-label="Technologies">
+            @for (t of p.tags.slice(0, 6); track t) {
+              <li class="tag">{{ t }}</li>
+            }
+          </ul>
+          <a class="btn btn--primary" [routerLink]="['/work', p.slug]">Read the case study →</a>
+        </div>
+        <app-cad-drawing class="art" />
+      </article>
+
+      @if (journey().length) {
+        <ol class="journey reveal-item" style="--i: 1" aria-label="R&D journey">
+          @for (s of journey(); track s.label; let last = $last) {
+            <li [class]="'out-' + s.kind">
+              <span class="mark" aria-hidden="true">{{ s.outcome }}</span>
+              <span>{{ s.label }}</span>
+              <span class="sr-only">({{ s.spoken }})</span>
+            </li>
+            @if (!last) {
+              <li class="arrow" aria-hidden="true">→</li>
+            }
+          }
+        </ol>
+      }
+    }
+  </ng-template>
+</app-reveal>

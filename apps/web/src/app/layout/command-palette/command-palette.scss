@@ -1,0 +1,70 @@
+.palette {
+  width: min(560px, 92vw);
+  margin: 12vh auto auto;
+  padding: 0;
+  border: 1px solid var(--line-2);
+  border-radius: 16px;
+  background: var(--panel-solid);
+  color: var(--ink);
+  box-shadow: 0 40px 100px -20px rgb(0 0 0 / 70%);
+
+  &::backdrop {
+    background: rgb(5 5 20 / 50%);
+    backdrop-filter: blur(4px);
+  }
+}
+
+input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+ul {
+  max-height: 320px;
+  margin: 0;
+  padding: 6px;
+  overflow: auto;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+
+  &.selected {
+    background: color-mix(in oklab, var(--violet) 22%, transparent);
+  }
+
+  &.empty {
+    color: var(--ink-3);
+    cursor: default;
+  }
+
+  small {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+}
+
+.hint {
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}

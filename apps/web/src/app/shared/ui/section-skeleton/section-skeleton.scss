@@ -1,0 +1,245 @@
+:host {
+  display: block;
+}
+
+.label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.spin {
+  display: none;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line-2);
+  border-top-color: var(--cyan);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+
+  :host(.is-loading) & {
+    display: inline-block;
+  }
+}
+
+.progress {
+  flex: 0 0 140px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--line);
+
+  i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--violet), var(--cyan));
+    transition: width 0.8s cubic-bezier(0.4, 0.1, 0.2, 1);
+
+    :host(.is-loading) & {
+      width: 100%;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.head-eyebrow {
+  width: 130px;
+  height: 12px;
+}
+
+.head-title {
+  width: min(55%, 520px);
+  height: 46px;
+  margin: 10px 0 28px;
+}
+
+.block {
+  border-radius: var(--radius-card);
+}
+
+:host(.kind-featured) {
+  .label,
+  .head-eyebrow,
+  .head-title {
+    display: none;
+  }
+}
+
+.featured {
+  height: 485px;
+
+  @container site (max-width: 900px) {
+    height: 843px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 771px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 831px;
+  }
+}
+
+.featured-journey {
+  height: 36px;
+  margin-top: 18px;
+
+  @container site (max-width: 900px) {
+    height: 82px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 128px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 181px;
+  }
+}
+
+// Heights match the real sections (kept in sync by the CLS e2e test).
+// All heights below are measured from the real sections (desktop, tablet, phone).
+// The CLS e2e test (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't
+// shift visible content; re-measure when a section's layout changes.
+.graph {
+  height: 671px;
+  border-radius: var(--radius-panel);
+
+  @container site (max-width: 900px) {
+    height: 1049px; // side panel stacks above the canvas
+  }
+
+  @container site (max-width: 600px) {
+    height: 1017px;
+  }
+}
+
+.card {
+  // Real project card heights (all cards in a grid are equal; wider = shorter).
+  height: 446px;
+
+  @container site (max-width: 900px) {
+    height: 472px;
+  }
+}
+
+.hud {
+  height: 450px;
+}
+
+.form {
+  height: 572px;
+}
+
+.aside {
+  height: 226px;
+
+  @container site (max-width: 900px) {
+    height: 248px;
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.cards {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+// Work cards use the same columns as the real ProjectGrid (3 → 2 → 1).
+:host(.kind-work) .cards {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @container site (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.two {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.xp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 40px;
+  align-items: start;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Real heights: the current company has a summary + highlights, the other two short roles.
+.rows {
+  display: grid;
+  gap: 28px;
+}
+
+.company-1 {
+  height: 293px;
+
+  @container site (max-width: 600px) {
+    height: 377px;
+  }
+}
+
+.company-2 {
+  height: 238px;
+}
+
+.edu {
+  height: 213px;
+
+  @container site (max-width: 900px) {
+    height: 166px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 214px;
+  }
+}
+
+// AI Lab uses the real HUD layout: 3 columns → tablet: core panel spans a row,
+// the two others share the next → phone: one column.
+:host(.kind-lab) .cards {
+  grid-template-columns: 1.1fr 1.4fr 1fr;
+  gap: 14px;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+
+    // The core (orb) panel comes first here and is shorter than the other two.
+    > :first-child {
+      grid-column: 1 / -1;
+      height: 410px;
+    }
+  }
+
+  @container site (max-width: 600px) {
+    grid-template-columns: 1fr;
+
+    > :nth-child(2) {
+      height: 386px; // agents panel
+    }
+  }
+}

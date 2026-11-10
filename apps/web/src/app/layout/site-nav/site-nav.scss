@@ -1,0 +1,119 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: block;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: var(--nav-h); // the layout relies on this exact height (sections fill the rest)
+  padding: 0 28px;
+  border-bottom: 1px solid var(--line);
+  // Near-opaque instead of backdrop-filter: blurring the animated hero behind the nav
+  // had to be recomputed every frame (big rendering cost, measured).
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-decoration: none;
+
+  b {
+    color: var(--violet);
+  }
+}
+
+.links {
+  display: flex;
+  gap: 18px;
+  padding: 0;
+  list-style: none;
+  font-size: 13.5px;
+
+  a {
+    position: relative;
+    color: var(--ink-2);
+    text-decoration: none;
+
+    // Underline that grows from the left on hover.
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -4px;
+      height: 1.5px;
+      background: var(--cyan);
+      transition: right var(--dur-base) var(--ease-out);
+    }
+
+    &:hover {
+      color: var(--ink);
+
+      &::after {
+        right: 0;
+      }
+    }
+  }
+}
+
+.spacer {
+  flex: 1;
+}
+
+.burger {
+  display: none;
+}
+
+.kbd {
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 8px 18px 14px;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-solid);
+
+  a,
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px 4px;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    font-size: inherit;
+    text-align: left;
+    text-decoration: none;
+  }
+
+  button {
+    color: var(--cyan);
+  }
+}
+
+@media (max-width: 720px) {
+  .nav {
+    padding: 0 18px;
+  }
+
+  .links,
+  .desktop {
+    display: none;
+  }
+
+  .burger {
+    display: inline-grid;
+  }
+}

@@ -1,0 +1,69 @@
+h1 {
+  margin: 18px 0;
+  font-size: clamp(2.25rem, 8cqi, 5.375rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  overflow-wrap: normal;
+}
+
+// Words never break internally; the space between words is the only wrap point.
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  margin-right: 0.25em;
+}
+
+.ch {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) rotate(6deg);
+  animation: rise 0.8s var(--ease-out) forwards;
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// One smooth gradient across the second line, even though every letter is its own
+// animated element. Each letter paints the full-line gradient shifted left by its own
+// offset (--x, measured in hero-title.ts), so together they read as one sweep.
+// --p (0 → 1) drives the slow "shine" for the whole line.
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.grad {
+  position: relative; // offsetParent for the letters' --x measurement
+  // steps(60) over 6 s = 10 updates/s: looks smooth for a slow sheen, 6× cheaper
+  // than animating the custom property every frame (each step restyles every letter).
+  animation: shine 6s steps(60) infinite;
+
+  .ch {
+    background: linear-gradient(100deg, var(--violet), var(--cyan) 50%, var(--pink));
+    background-size: calc(var(--w, 1em) * 2) 100%;
+    background-position-x: calc(var(--p) * var(--w, 1em) * -2 - var(--x, 0px));
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes shine {
+  to {
+    --p: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grad,
+  .ch {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

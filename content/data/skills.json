@@ -1,0 +1,305 @@
+{
+  "$schema": "../schemas/skills.schema.json",
+  "skills": [
+    {
+      "id": "angular",
+      "name": "Angular",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "angular-cli",
+      "name": "Angular CLI",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "typescript",
+      "name": "TypeScript",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "rxjs",
+      "name": "RxJS",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "reactive-forms",
+      "name": "Reactive Forms",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "scss",
+      "name": "SCSS / CSS",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "primeng",
+      "name": "PrimeNG",
+      "category": "frontend",
+      "proficiency": "strong"
+    },
+    {
+      "id": "threejs",
+      "name": "Three.js",
+      "category": "cad",
+      "proficiency": "strong"
+    },
+    {
+      "id": "webgl",
+      "name": "WebGL",
+      "category": "cad",
+      "proficiency": "strong"
+    },
+    {
+      "id": "dxf",
+      "name": "DXF",
+      "category": "cad",
+      "proficiency": "strong"
+    },
+    {
+      "id": "canvas",
+      "name": "Canvas / SVG",
+      "category": "cad",
+      "proficiency": "strong"
+    },
+    {
+      "id": "pdfjs",
+      "name": "PDF.js",
+      "category": "documents",
+      "proficiency": "strong"
+    },
+    {
+      "id": "range-requests",
+      "name": "HTTP Range Requests",
+      "category": "documents",
+      "proficiency": "strong"
+    },
+    {
+      "id": "progressive-loading",
+      "name": "Progressive loading",
+      "category": "documents",
+      "proficiency": "strong"
+    },
+    {
+      "id": "rest-apis",
+      "name": "REST APIs",
+      "category": "realtime",
+      "proficiency": "strong"
+    },
+    {
+      "id": "sse",
+      "name": "Server-Sent Events",
+      "category": "realtime",
+      "proficiency": "strong"
+    },
+    {
+      "id": "data-structures",
+      "name": "Data Structures",
+      "category": "fundamentals",
+      "proficiency": "good"
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "category": "fundamentals",
+      "proficiency": "good"
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "django",
+      "name": "Django",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "fastapi",
+      "name": "FastAPI",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "auth",
+      "name": "Authentication",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "system-design",
+      "name": "System design",
+      "category": "backend",
+      "proficiency": "learning"
+    },
+    {
+      "id": "llms",
+      "name": "LLMs",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "rag",
+      "name": "RAG",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "embeddings",
+      "name": "Embeddings",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "langchain",
+      "name": "LangChain",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "langgraph",
+      "name": "LangGraph",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "mcp",
+      "name": "MCP",
+      "category": "ai",
+      "proficiency": "learning"
+    },
+    {
+      "id": "r-tree",
+      "name": "R-tree / spatial indexing",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "undo-redo",
+      "name": "Undo/Redo",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "dxf-entities",
+      "name": "DXF entities",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "cad-tables",
+      "name": "CAD tables",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "dxf-export",
+      "name": "DXF export",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "pdf-export",
+      "name": "PDF export",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "change-detection",
+      "name": "Change detection (diff)",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "domain-modelling",
+      "name": "Domain modelling",
+      "category": "cad",
+      "concept": true
+    },
+    {
+      "id": "bounding-boxes",
+      "name": "Bounding boxes",
+      "category": "documents",
+      "concept": true
+    },
+    {
+      "id": "text-highlighting",
+      "name": "Text highlighting",
+      "category": "documents",
+      "concept": true
+    },
+    {
+      "id": "accessibility-tree",
+      "name": "Accessibility tree",
+      "category": "documents",
+      "concept": true
+    },
+    {
+      "id": "rbac",
+      "name": "RBAC / permissions",
+      "category": "frontend",
+      "concept": true
+    },
+    {
+      "id": "bulk-upload",
+      "name": "Bulk upload",
+      "category": "frontend",
+      "concept": true
+    },
+    {
+      "id": "large-data-ui",
+      "name": "Large files & JSON",
+      "category": "performance",
+      "concept": true
+    },
+    {
+      "id": "render-performance",
+      "name": "Rendering-intensive views",
+      "category": "performance",
+      "concept": true
+    },
+    {
+      "id": "technical-direction",
+      "name": "Technical direction",
+      "category": "leadership",
+      "concept": true
+    },
+    {
+      "id": "rnd",
+      "name": "R&D / evaluation",
+      "category": "leadership",
+      "concept": true
+    },
+    {
+      "id": "web-speech",
+      "name": "Web Speech API",
+      "category": "ai",
+      "concept": true
+    }
+  ]
+}

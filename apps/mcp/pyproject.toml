@@ -1,0 +1,13 @@
+[project]
+name = "portfolio-mcp"
+version = "0.1.0"
+description = "MCP server exposing the portfolio to AI agents (Phase 7)."
+requires-python = ">=3.13"
+dependencies = ["portfolio-api"]
+
+[tool.uv.sources]
+portfolio-api = { workspace = true }
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14"]
+build-backend = "uv_build"

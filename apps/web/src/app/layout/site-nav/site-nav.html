@@ -1,0 +1,56 @@
+<nav class="nav" aria-label="Main">
+  <!-- Accessible names start with the visible text (WCAG 2.5.3 label in name). -->
+  <a class="logo" routerLink="/" [attr.aria-label]="logoText() + ', home'">
+    {{ profile()?.initials ?? profile()?.name }}<b aria-hidden="true">.</b>dev
+  </a>
+
+  <ul class="links" role="list">
+    @for (link of links; track link.fragment) {
+      <li>
+        <a routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      </li>
+    }
+  </ul>
+
+  <span class="spacer"></span>
+  <button
+    type="button"
+    class="kbd desktop"
+    [attr.aria-label]="shortcut() + ', open command palette'"
+    (click)="commands.open()"
+  >
+    {{ shortcut() }}
+  </button>
+  <button type="button" class="btn btn--ghost btn--sm desktop" appMagnetic (click)="chat.open()">
+    Ask my agent ✦
+  </button>
+  <app-theme-toggle />
+  <button
+    type="button"
+    class="icon-btn burger"
+    aria-controls="mobile-menu"
+    [attr.aria-expanded]="menuOpen()"
+    aria-label="Menu"
+    (click)="toggleMenu()"
+  >
+    <span aria-hidden="true">☰</span>
+  </button>
+</nav>
+
+@if (menuOpen()) {
+  <ul id="mobile-menu" class="mobile-menu" role="list">
+    @for (link of links; track link.fragment) {
+      <li>
+        <a routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
+      </li>
+    }
+    <li>
+      <button type="button" (click)="menuOpen.set(false); chat.open()">Ask my agent ✦</button>
+    </li>
+    <li>
+      <button type="button" (click)="menuOpen.set(false); commands.open()">
+        Search & commands
+      </button>
+    </li>
+  </ul>
+}

@@ -31,7 +31,7 @@ Recruiters and hiring managers spend under a minute on a portfolio and can't eas
 4.  Projects + case-study pages
 5.  Experience timeline, skills, resume download
 6.  Contact form (spam-protected)
-7.  Dark / light theme, command palette, custom cursor, motion system
+7.  Dark / light theme, command palette, native cursor, motion system
 8.  Admin: edit content, re-index, read chat logs
 
 ## 5 · User journeys
@@ -80,6 +80,6 @@ Recruiters and hiring managers spend under a minute on a portfolio and can't eas
 
 ## 7 · MVP scope
 
-**In:** Angular SSR site, home sections, 3–5 projects, graph from static JSON, scripted chat fallback → real RAG chat (Phase 3), contact form, theme, a11y, SEO.
+**In:** Angular SSR site, home sections, 3–5 projects, graph from static JSON, scripted chat fallback → real RAG chat (Phase 4), contact form, theme, a11y, SEO.
 
-**Out (backlog):** voice, Jarvis dashboard, MCP server, recruiter JD match, admin UI (use JSON/MD files first), blog, i18n, 3D scene.
+**Out of MVP (later phases, see docs/plan.md):** admin UI (Phase 3), recruiter JD match (5), voice / Jarvis in /lab (6), MCP server (7), blog/journal (8), i18n, 3D scene (ideas).

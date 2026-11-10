@@ -1,0 +1,50 @@
+// Buttons (prototype: .btn.pri / .btn.ghost / .iconbtn).
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 18px;
+  border: 0;
+  border-radius: var(--radius-input);
+  background: none;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out);
+
+  &:hover {
+    box-shadow: 0 10px 40px -6px var(--violet);
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, var(--violet), #5b6cff);
+    color: #fff;
+    box-shadow: 0 8px 30px -8px var(--violet);
+  }
+
+  &--ghost {
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    color: var(--ink);
+  }
+
+  &--sm {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
 # Architecture
 
-## Frontend — Angular 20+
+## Frontend — Angular 22
 
 - **Standalone components + signals**, zoneless change detection, `OnPush` everywhere.
 - **SSR + incremental hydration** (`@defer (hydrate on viewport)`) — fast first paint, SEO.
@@ -12,16 +12,23 @@
 
 &nbsp;
 
-    apps/web/src/app/
-      core/        # interceptors, theme, seo, analytics
-      shared/ui/   # button, card, chip, tilt.directive, magnetic.directive, cursor
-      features/
-        home/  graph/  work/  lab/  chat/  journal/  contact/
-      admin/       # lazy, guarded
+    apps/web/src/app/            (as built in Phase 1)
+      core/        # cross-cutting, no UI: content/ (repository + generated types + buildGraph),
+                   # chat/ (store + SSE event contract), commands/, graph/ (highlight state),
+                   # motion/ (animation loop, prefs, seeded random), reveal/, seo/, theme/, text/
+      shared/ui/   # reusable UI: section-skeleton, reveal, page-header, tilt/magnetic/
+                   # count-up/scramble directives
+      layout/      # app chrome: site-nav, site-footer, theme-toggle, command-palette
+      features/    # one folder per section/page: home, hero, stats, graph, work, lab,
+                   # experience, contact, chat, resume, journal, not-found
+      admin/       # (Phase 3) lazy, guarded
+
+    Rules: core/ never imports features/; data only through ContentRepository / ChatSource
+    (swap providers in provideContent() / provideChat() when the API lands).
 
 ## Backend — FastAPI
 
-    apps/api/app/
+    apps/api/src/portfolio_api/   # src layout; worker + mcp import this package (uv workspace)
       main.py           # app factory, middleware
       api/v1/           # routers: content, graph, chat, contact, admin
       core/             # config (pydantic-settings), security, rate_limit

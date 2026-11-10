@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "projects.schema.json",
+  "title": "Projects",
+  "type": "object",
+  "required": ["projects"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "title": "Project",
+        "type": "object",
+        "required": [
+          "slug",
+          "title",
+          "summary",
+          "type",
+          "featured",
+          "skills",
+          "tags",
+          "filters",
+          "illustration",
+          "body"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "slug": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 280
+          },
+          "role": {
+            "type": "string"
+          },
+          "org": {
+            "description": "organizations[].id (optional)",
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "status": {
+            "description": "Only for personal projects; employer work shows no status.",
+            "enum": ["shipped", "in-progress", "planned"]
+          },
+          "featured": {
+            "type": "boolean"
+          },
+          "skills": {
+            "$ref": "common.schema.json#/$defs/skillRefs"
+          },
+          "links": {
+            "title": "ProjectLinks",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "repo": {
+                "$ref": "common.schema.json#/$defs/url"
+              },
+              "live": {
+                "$ref": "common.schema.json#/$defs/url"
+              },
+              "demo": {
+                "$ref": "common.schema.json#/$defs/url"
+              }
+            }
+          },
+          "cover": {
+            "$ref": "common.schema.json#/$defs/image"
+          },
+          "body": {
+            "description": "Case-study markdown file, relative to content/.",
+            "type": "string",
+            "pattern": "^projects/[a-z0-9-]+\\.md$"
+          },
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          },
+          "illustration": {
+            "description": "Recreated SVG thumbnail (never employer screenshots).",
+            "enum": [
+              "cad",
+              "signalling",
+              "knowledge-base",
+              "bbox",
+              "doc-highlight",
+              "pdf-stream",
+              "sse",
+              "architecture",
+              "rag",
+              "voice",
+              "playground"
+            ]
+          },
+          "type": {
+            "description": "professional = employer work (details anonymised, never links); personal = my own.",
+            "enum": ["professional", "personal"]
+          },
+          "period": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "tags": {
+            "description": "Display chips (tech / techniques).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 12
+          },
+          "filters": {
+            "description": "Work-section filter chips this project appears under.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": ["cad", "documents", "knowledge-base", "realtime", "ai", "personal"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

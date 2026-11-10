@@ -1,0 +1,245 @@
+.fab {
+  // Floating orb that opens the chat (prototype .fab). The spinning conic ring is a
+  // pseudo-element rotated with transform (GPU-composited, no repaint), instead of an
+  // animated hue-rotate filter, which repainted every frame.
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: var(--z-overlay);
+  width: 58px;
+  height: 58px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: 0 0 30px var(--violet);
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 0deg, var(--violet), var(--cyan), var(--pink), var(--violet));
+    animation: spin 8s linear infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fff, var(--violet) 60%);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.panel {
+  position: fixed;
+  right: 18px;
+  bottom: 86px;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  width: min(400px, calc(100vw - 36px));
+  max-height: min(560px, calc(100dvh - 110px));
+  border: 1px solid var(--line-2);
+  border-radius: 20px;
+  background: color-mix(in oklab, var(--panel-solid) 92%, transparent);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 60%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.98);
+  transform-origin: bottom right;
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px 10px;
+
+  h2 {
+    font-size: 20px;
+    font-style: italic;
+    letter-spacing: -0.02em;
+  }
+
+  .x {
+    margin-left: auto;
+    border: 0;
+    background: none;
+    color: var(--ink-3);
+    font-size: 22px;
+    cursor: pointer;
+  }
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 160px;
+  padding: 4px 16px 10px;
+  overflow-y: auto;
+}
+
+.hint {
+  margin: 2px 0 2px;
+  font-size: 12px;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  button {
+    padding: 7px 11px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--panel);
+    color: var(--ink-2);
+    font-size: 12.5px;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--violet);
+      color: var(--ink);
+    }
+  }
+}
+
+.msg {
+  max-width: 88%;
+  padding: 10px 13px;
+  border-radius: 14px;
+  font-size: 13.5px;
+
+  &.user {
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    background: linear-gradient(135deg, var(--violet), #5b6cff);
+    color: #fff;
+  }
+
+  &.agent {
+    align-self: flex-start;
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 4px;
+    background: var(--panel);
+  }
+}
+
+.text {
+  white-space: pre-line;
+}
+
+.tools {
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.caret {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: var(--cyan);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+
+  .muted {
+    margin-right: 4px;
+    font-size: 11px;
+  }
+
+  button {
+    padding: 2px 7px;
+    border: 1px solid color-mix(in oklab, var(--cyan) 50%, transparent);
+    border-radius: 6px;
+    background: none;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    cursor: pointer;
+  }
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--line);
+
+  input {
+    flex: 1;
+    padding: 11px 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    background: var(--panel);
+    color: var(--ink);
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--violet);
+    }
+  }
+
+  .send {
+    flex: none;
+    width: 42px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--violet);
+    color: #fff;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab::before,
+  .caret {
+    animation: none;
+  }
+}

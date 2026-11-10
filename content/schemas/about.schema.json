@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "about.schema.json",
+  "title": "About",
+  "type": "object",
+  "required": ["areas", "howIWork"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "title": "AreaOfExperience",
+        "type": "object",
+        "required": ["id", "title", "icon", "summary", "skills", "hub"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "title": {
+            "type": "string"
+          },
+          "icon": {
+            "enum": ["code", "cube", "document", "plug", "gauge", "server", "compass", "sparkles"]
+          },
+          "summary": {
+            "type": "string",
+            "maxLength": 140
+          },
+          "skills": {
+            "$ref": "common.schema.json#/$defs/skillRefs"
+          },
+          "growing": {
+            "description": "Still learning: styled with a dashed border + \"growing\" tag.",
+            "type": "boolean"
+          },
+          "hub": {
+            "description": "Graph category this card filters to.",
+            "$ref": "common.schema.json#/$defs/category"
+          }
+        }
+      }
+    },
+    "howIWork": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 20
+      },
+      "minItems": 2,
+      "maxItems": 7
+    }
+  }
+}

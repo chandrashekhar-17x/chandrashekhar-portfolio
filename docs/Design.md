@@ -25,11 +25,13 @@
 
 light --bg \#f5f4fb
 
+Contrast fixes vs the prototype (WCAG AA 4.5:1): `--ink-3` dark #7f7eb3, light #66638f; light `--cyan` #0e7490. Source of truth: `apps/web/src/styles/tokens/`.
+
 Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/docs = amber · Projects = violet · Roles = blue.
 
 ## Typography
 
-- **Display:** Bricolage Grotesque 800, tracking −0.04em, clamp(40px, 8cqw, 86px)
+- **Display:** Bricolage Grotesque 800, tracking −0.04em, clamp(28px, 10cqi, 86px) against its own container (was 40px min / 8cqw: broke the name mid-word, see debuging.md)
 - **Body:** Inter Tight 400/500, 15–16px, 1.55 line-height
 - **Mono / labels:** JetBrains Mono 11–13px, uppercase eyebrow +0.14em
 
@@ -50,7 +52,7 @@ Graph categories: Frontend = cyan · AI = pink · Backend = lime · Graphics/doc
 | ambient | 6–18 s loops                    | orb, gradient text, rings |
 
 - Animate only `transform` and `opacity`; canvas loops pause off-screen and on hidden tab.
-- Cursor: dot + lerped ring, grows on interactive; hidden on touch & reduced-motion.
+- Cursor: the **default system cursor** (decided 2026-11-09). Two custom cursors were built and removed: the WebGL splash cursor (too heavy for typical laptops) and an eased arrow cursor (felt laggy, because eased cursors always trail the real pointer). A future pointer effect must: never replace or delay the native cursor, stay off on touch and reduced motion, and cost nothing while the pointer is still. Elements already carry `data-cursor="open|drag|ask me"` hints for it.
 - Magnetic buttons max 8px pull. Tilt cards max 8°.
 
 ## Components

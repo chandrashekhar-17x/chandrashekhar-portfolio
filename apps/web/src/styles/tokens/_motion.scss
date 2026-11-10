@@ -1,0 +1,18 @@
+// Motion tokens (docs/Design.md → Motion system).
+// Rule: animate only transform + opacity; every effect must be skippable.
+
+:root {
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 150ms; // hover, focus
+  --dur-base: 300ms; // panels, chat open
+  --dur-slow: 750ms; // section reveal, hero text
+}
+
+// Reduced motion: collapse durations so nothing moves, but state changes still apply.
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+  }
+}

@@ -1,0 +1,20 @@
+// First screen: the hero takes whatever height the stats strip leaves.
+.first-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: var(--screen-h);
+
+  > app-hero-section {
+    flex: 1;
+  }
+}
+
+// Work section: faint violet band behind the cards (prototype).
+.section--work {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklab, var(--violet) 6%, transparent),
+    transparent
+  );
+}

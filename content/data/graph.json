@@ -1,0 +1,16 @@
+{
+  "$schema": "../schemas/graph.schema.json",
+  "topics": [],
+  "edges": [
+    {
+      "src": "project:signalling-plan-editor",
+      "dst": "project:custom-cad-editor",
+      "rel": "BUILT_ON"
+    },
+    {
+      "src": "project:cad-playground",
+      "dst": "project:custom-cad-editor",
+      "rel": "DEMONSTRATES"
+    }
+  ]
+}

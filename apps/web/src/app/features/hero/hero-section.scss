@@ -1,0 +1,99 @@
+:host {
+  display: flex;
+  flex-direction: column; // lets the hero stretch when the parent gives it room
+}
+
+.hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 600px;
+  overflow: hidden;
+
+  @container site (max-width: 600px) {
+    min-height: 520px;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 80px 28px 120px;
+
+  @container site (max-width: 600px) {
+    padding: 56px 18px 90px;
+  }
+}
+
+.hello {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cyan);
+}
+
+// Green "available" dot with an expanding ring (ring = pseudo-element scaled with
+// transform + opacity, so it never repaints; the old box-shadow animation did).
+.pulse {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: pulse 2s ease-out infinite;
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70%,
+  to {
+    opacity: 0;
+    transform: scale(3.5);
+  }
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+// Secondary CTA: the flagship case study.
+.feature-link {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 15px;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: var(--ink);
+    text-decoration-color: currentcolor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse::after {
+    animation: none;
+    opacity: 0;
+  }
+}

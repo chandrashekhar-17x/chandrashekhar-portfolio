@@ -1,0 +1,33 @@
+<app-reveal kind="contact" label="contact">
+  <ng-template>
+    <div class="section-head reveal-item" style="--i: 0">
+      <div>
+        <p class="section-index">06 / contact</p>
+        <h2>Let's build something.</h2>
+      </div>
+    </div>
+    <div class="grid">
+      <app-contact-form class="reveal-item" style="--i: 1" />
+      <aside class="card reveal-item" style="--i: 2" aria-labelledby="fast-lane">
+        <h3 id="fast-lane">Recruiter fast-lane</h3>
+        <p class="muted">
+          Paste a job description into my agent and get a grounded fit report: matched skills,
+          evidence from projects, and honest gaps. (Demo answers for now.)
+        </p>
+        <button type="button" class="btn btn--ghost jd" data-cursor="ask me" (click)="matchJd()">
+          🎯 Try "match my JD"
+        </button>
+        <ul class="links" role="list">
+          @for (l of profile()?.links ?? []; track l.url) {
+            <li>
+              <a class="btn btn--ghost btn--sm" [href]="l.url" target="_blank" rel="noopener">
+                {{ l.label }} ↗
+              </a>
+            </li>
+          }
+          <li><a class="btn btn--ghost btn--sm" routerLink="/resume">Resume</a></li>
+        </ul>
+      </aside>
+    </div>
+  </ng-template>
+</app-reveal>
