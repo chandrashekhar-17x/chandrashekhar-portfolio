@@ -1,8 +1,46 @@
 # Database
 
-Status: design proposal; no application tables or migrations exist yet. Codex reconciled
-this outline with the current content schemas on 2026-11-10. The Phase 2 plan must finalize
-constraints, indexes, deletion rules, ordering and migration/seed behavior before implementation.
+Status: content tables, Alembic migration `0001` and the seed are implemented
+(Phase 2 PR 2, 2026-11-10). RAG and operations tables come in their own phases.
+
+## How it works (implemented)
+
+- **Models:** `apps/api/src/portfolio_api/db/models.py`. Each content table keeps the columns we
+  join, filter or sort on (stable id, foreign keys, `position`) plus `doc`, a JSONB copy of the
+  original content object. The read API returns `doc`, so responses keep the exact shapes in
+  `content/schemas/` without one column per display field.
+- **Integrity in Postgres itself:** `role.org_id` and `project.org_id` → `organization`; link tables
+  `project_skill`, `role_skill`, `education_skill` → `skill` (`ON DELETE RESTRICT`, so a skill that
+  is still used can't be deleted). Check constraints for skill category/proficiency, project type,
+  edge relation and "profile is a single row".
+- **Migrations:** `apps/api/migrations/` (async `env.py` reads `DATABASE_URL` from the app settings).
+  `make migrate` applies them; `make db-revision m="…"` autogenerates a new one from model changes
+  (always review it before committing).
+- **Seed:** `make seed` validates `content/`, then `portfolio_api.content.seed` upserts every row by
+  stable id in one transaction and deletes rows that are no longer in `content/`. Running it twice
+  changes nothing; a broken reference rolls the whole seed back.
+- **Read back:** `portfolio_api.content.export.export_content` rebuilds the `content/data/*.json`
+  shapes; a round-trip test proves files → DB → dicts is lossless (also the base of the Phase 3 export).
+- **Tests:** each run creates a throwaway `portfolio_test_<random>` database on `TEST_DATABASE_URL`
+  (default: the `make up` container), migrates it and drops it; each test runs in a rolled-back
+  transaction. CI uses a Postgres service container with `REQUIRE_DB=1` so tests can't silently skip.
+
+| Table | Key | Notes |
+|---|---|---|
+| `profile` | `id = 1` | singleton `doc` |
+| `organization` | `id` | `name`, `doc` |
+| `skill` | `id` | `category`, `proficiency`, `doc` |
+| `role` | `id` | `org_id` FK, `start`/`end` (`YYYY-MM`, null = present), `doc` |
+| `education` | `id` | `doc` |
+| `project` | `slug` | `title`, `type`, `featured`, `org_id` FK, `body_markdown`, `doc` |
+| `project_skill` / `role_skill` / `education_skill` | pair | link tables with FKs |
+| `about_area` | `id` | `doc`; `about_step(position, text)` for "How I work" |
+| `lab_entry` | `position` | `topic`, `doc` |
+| `graph_topic` / `graph_edge` | `id` / `position` | only the hand-written extras from `graph.json` |
+
+Derived graph nodes/edges are computed from these tables by the read API (PR 3), not stored.
+
+## Original design notes
 
 ## Content
 

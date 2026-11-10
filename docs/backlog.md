@@ -34,7 +34,7 @@ Phases match `docs/plan.md` (0–9).
 ## Phase 2 · Backend core + database
 
 - [x] Layered FastAPI (routers/services/repositories/schemas), JSON logs + request ids, error shape, readiness — `be` · M
-- [ ] Postgres tables + Alembic + seed from content/ — `be` · M
+- [x] Postgres tables + Alembic + seed from content/ — `be` · M
 - [ ] Public content & graph endpoints (cache + ETag) — `be` · S
 - [ ] Contact + Turnstile + rate limit + Resend — `be` · S
 - [ ] Web switches from mocks to the API — `fe` · S

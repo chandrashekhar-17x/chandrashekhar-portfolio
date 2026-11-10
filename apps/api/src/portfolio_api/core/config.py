@@ -6,10 +6,14 @@ startup if something is missing or invalid. Think of it as a typed `.env`.
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from pydantic import Field, PostgresDsn, RedisDsn, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Repo root: apps/api/src/portfolio_api/core/config.py → 5 levels up.
+REPO_ROOT = Path(__file__).resolve().parents[5]
 
 Environment = Literal["local", "test", "staging", "production"]
 
@@ -34,6 +38,9 @@ class Settings(BaseSettings):
         "postgresql+asyncpg://portfolio:portfolio@localhost:5433/portfolio"
     )
     redis_url: RedisDsn = RedisDsn("redis://localhost:6380/0")
+
+    # Seed source for `make seed` (the database is the source of truth after seeding).
+    content_dir: Path = REPO_ROOT / "content"
 
     # Secrets use SecretStr so they never show up in logs or tracebacks.
     anthropic_api_key: SecretStr | None = None

@@ -34,6 +34,18 @@ logs: ## Follow service logs
 ps: ## Show service status
 	$(COMPOSE) ps
 
+##@ Database
+.PHONY: migrate seed db-revision
+migrate: ## Apply database migrations (Alembic upgrade head)
+	uv run alembic -c apps/api/alembic.ini upgrade head
+
+seed: migrate ## Validate content/, then sync it into the database (idempotent)
+	uv run python scripts/validate_content.py
+	uv run python -m portfolio_api.content.seed
+
+db-revision: ## New migration from model changes: make db-revision m="add x"
+	uv run alembic -c apps/api/alembic.ini revision --autogenerate -m "$(m)"
+
 ##@ Develop
 .PHONY: dev-web dev-api
 dev-web: ## Angular dev server → http://localhost:4200
