@@ -43,7 +43,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -98,7 +98,10 @@ visual-update: ## Re-record screenshot baselines (review the diff before committ
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py
 
-check: lint typecheck content-check test build smoke-web e2e-web ## Everything CI runs
+confidential-check: ## No internal office-project names in the repo or the built site (hashed list)
+	python3 scripts/check_confidential.py
+
+check: lint typecheck content-check test build confidential-check smoke-web e2e-web ## Everything CI runs
 
 ##@ Misc
 .PHONY: clean help
