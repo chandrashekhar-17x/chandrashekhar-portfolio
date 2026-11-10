@@ -83,3 +83,20 @@ test('every project card has its own illustration', async ({ page }) => {
     .evaluateAll((els) => els.map((e) => e.innerHTML.replace(/ill-grid-\d+/g, '')));
   expect(new Set(svgs).size).toBe(svgs.length);
 });
+
+// Regression: the whole card (picture, summary, "Case study →") opens the case
+// study, not only the title. A transform on the heading used to shrink the overlay.
+for (const part of ['.thumb', 'p:not(.kind)', '.link'] as const) {
+  test(`clicking the card's ${part} opens the case study`, async ({ page }) => {
+    await page.goto('/work');
+    const card = page.locator('app-project-card .card').first();
+    await expect(card).not.toHaveClass(/is-loading/);
+    // Click where a person would: the point on screen, whatever element is on top.
+    const target = card.locator(part).first();
+    await target.scrollIntoViewIfNeeded();
+    const box = await target.boundingBox();
+    if (!box) throw new Error(`${part} not visible`);
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await expect(page).toHaveURL(/\/work\/[a-z0-9-]+$/);
+  });
+}
