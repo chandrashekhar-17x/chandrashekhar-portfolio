@@ -1,12 +1,12 @@
 import pytest
-from pydantic import ValidationError
+from pydantic import SecretStr, ValidationError
 
 from portfolio_api.core.config import Settings
 from portfolio_api.main import create_app
 
 
 def test_docs_hidden_in_production() -> None:
-    app = create_app(Settings(environment="production"))
+    app = create_app(Settings(environment="production", ip_hash_salt=SecretStr("x" * 32)))
     assert app.docs_url is None
 
 
