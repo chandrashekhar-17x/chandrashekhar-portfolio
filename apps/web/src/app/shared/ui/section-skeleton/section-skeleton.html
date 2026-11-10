@@ -26,14 +26,13 @@
     </div>
   }
   @case ('xp') {
-    <div class="rows">
-      @for (i of items(); track i) {
-        <div>
-          <div class="skb line w-90"></div>
-          <div class="skb line-lg w-45"></div>
-          <div class="skb line w-70"></div>
-        </div>
-      }
+    <!-- Same layout as the real section: company blocks + education beside them. -->
+    <div class="xp-layout">
+      <div class="rows">
+        <div class="skb block company-1"></div>
+        <div class="skb block company-2"></div>
+      </div>
+      <div class="skb block edu"></div>
     </div>
   }
   @case ('contact') {

@@ -1,37 +1,109 @@
 .xp {
-  position: relative;
+  display: grid;
+  gap: 28px;
   margin: 0;
-  padding: 0 0 0 26px;
+  padding: 0;
   list-style: none;
+}
 
-  // Gradient spine
-  &::before {
-    content: '';
-    position: absolute;
-    top: 4px;
-    bottom: 4px;
-    left: 6px;
-    width: 2px;
-    background: linear-gradient(var(--violet), var(--cyan), transparent);
+.company-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h3 {
+    font-size: 19px;
   }
 }
 
-.item {
-  position: relative;
-  padding-bottom: 28px;
+// Neutral company badge instead of a logo (no employer branding).
+.mono {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--panel);
+  font: 600 12px var(--font-mono);
+  color: var(--ink-2);
+}
 
-  // Glowing dot on the spine
+.total {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.present {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 8px;
+  border: 1px solid color-mix(in oklab, var(--lime) 50%, transparent);
+  border-radius: 999px;
+  font: 600 11px var(--font-mono);
+  color: var(--ink);
+
+  i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+// Roles under a company: a dot per role on a thin spine (LinkedIn style).
+.roles {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  margin: 14px 0 0 19px;
+  padding: 0 0 0 26px;
+  list-style: none;
+
+  &.multi::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 0;
+    width: 2px;
+    background: linear-gradient(var(--violet), var(--cyan));
+  }
+}
+
+.role {
+  position: relative;
+
   &::before {
     content: '';
     position: absolute;
     top: 6px;
-    left: -25px;
+    left: -31px;
     width: 12px;
     height: 12px;
     border: 2px solid var(--cyan);
     border-radius: 50%;
     background: var(--bg);
-    box-shadow: 0 0 12px var(--cyan);
+  }
+
+  h4 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
   }
 }
 
@@ -41,12 +113,9 @@
   color: var(--ink-3);
 }
 
-h3 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  font-size: 19px;
+.type {
+  font-size: 13px;
+  color: var(--ink-3);
 }
 
 .summary,
@@ -60,28 +129,16 @@ h3 {
 .highlights {
   padding-left: 18px;
   font-size: 13.5px;
+
+  a {
+    margin-left: 4px;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
 }
 
-// Neutral org badge instead of a logo (no employer branding).
-.mono {
-  display: inline-grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--line-2);
-  border-radius: 8px;
-  font: 600 11px var(--font-mono);
-  color: var(--ink-2);
-}
-
-.type {
-  margin-top: 2px;
-  font-size: 13px;
-  color: var(--ink-3);
-}
-
-.highlights a {
-  margin-left: 4px;
-  color: var(--cyan);
-  white-space: nowrap;
+@media (prefers-reduced-motion: reduce) {
+  .present i {
+    animation: none;
+  }
 }

@@ -137,44 +137,45 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
+.xp-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 40px;
+  align-items: start;
+
+  @container site (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Real heights: the current company has a summary + highlights, the other two short roles.
 .rows {
   display: grid;
+  gap: 28px;
+}
 
-  // Real row heights: the current role (first) has a summary + highlights,
-  // the earlier ones are just dates, title and type. Phones wrap more lines.
-  > div {
-    height: 96px;
-  }
+.company-1 {
+  height: 293px;
 
-  > div:first-child {
-    height: 252px;
-
-    @container site (max-width: 600px) {
-      height: 336px;
-    }
+  @container site (max-width: 600px) {
+    height: 377px;
   }
 }
 
-.line {
-  height: 12px;
-  margin-top: 8px;
+.company-2 {
+  height: 238px;
 }
 
-.line-lg {
-  height: 20px;
-  margin-top: 8px;
-}
+.edu {
+  height: 213px;
 
-.w-90 {
-  width: 90px;
-}
+  @container site (max-width: 900px) {
+    height: 166px;
+  }
 
-.w-45 {
-  width: 45%;
-}
-
-.w-70 {
-  width: 70%;
+  @container site (max-width: 600px) {
+    height: 214px;
+  }
 }
 
 // AI Lab uses the real HUD layout: 3 columns → tablet: core panel spans a row,
