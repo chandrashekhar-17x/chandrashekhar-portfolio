@@ -2,11 +2,11 @@
 
 Angular 22 · FastAPI · PostgreSQL + pgvector · Redis · RAG agent · Knowledge graph · MCP
 
-> Frontend engineer who builds complex UIs (CAD editors, PDF engines, data grids), now building
+> Frontend engineer who builds complex UIs (CAD/DXF viewers, PDF engines, data-extraction tools), now building
 > the AI systems behind them.
 
-A portfolio that is itself a working AI system: ask a question, the answer streams in, and the
-knowledge-graph nodes it cites light up. Status: **Phase 0 (foundation)** done. See [docs/plan.md](docs/plan.md).
+A portfolio being built into a working AI system: ask a question, the answer streams in, and the
+knowledge-graph nodes it cites light up. Status: **Phase 1 frontend implemented; maintenance verification in progress.** Chat is scripted; the backend currently exposes `/health`. Database APIs and real RAG are planned. See [docs/plan.md](docs/plan.md).
 
 ## Repository layout
 
@@ -31,9 +31,10 @@ make setup      # pnpm + uv installs, git hooks, creates .env from .env.example
 make up         # Postgres (localhost:5433) + Redis (localhost:6380)
 make dev-api    # http://localhost:8000/docs
 make dev-web    # http://localhost:4200
-make check      # everything CI runs: lint, types, content, tests, build
+make check      # lint, types, content, tests, build, SSR and e2e
 ```
 
+Run `make visual` and `make lighthouse` for the separate screenshot and performance gates.
 Run `make` to list every task. Contribution rules and branch protection: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## License

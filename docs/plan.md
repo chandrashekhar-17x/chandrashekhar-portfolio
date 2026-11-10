@@ -7,7 +7,7 @@ report + manual test checklist; the next phase starts only after "next".
 | Phase                        | Ship                                                                                        | You learn                               | Status  |
 | ---------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------- | ------- |
 | 0 · Foundation               | Monorepo, Docker services, CI, pre-commit, design tokens, content/ seed + validator         | uv, GitHub Actions, repo hygiene        | ✅ done |
-| 1 · Frontend foundation      | Angular SSR site, all sections with @defer, graph, cursor/splash, ⌘K, routes, SEO, a11y, e2e | SSR, @defer, canvas perf, Playwright    | next    |
+| 1 · Frontend foundation      | Angular SSR site, all sections with @defer, graph, native cursor, ⌘K, routes, SEO, a11y, e2e | SSR, @defer, canvas perf, Playwright    | built; maintenance verification in progress |
 | 2 · Backend core + DB        | FastAPI layers, all tables, Alembic, seed, public APIs, contact, logging; web uses the API  | FastAPI, SQLAlchemy 2, Alembic, pytest  |         |
 | 3 · Admin panel              | Secure auth (argon2, JWT cookies, CSRF, 2FA), /admin CRUD, uploads, cache invalidation      | Auth & security, object storage         |         |
 | 4 · RAG agent                | Ingestion, hybrid retrieval, provider abstraction, SSE /chat, guardrails, budget, evals     | Embeddings, chunking, prompting, evals  |         |

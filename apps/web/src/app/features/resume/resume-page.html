@@ -22,7 +22,7 @@
 
   <section aria-labelledby="r-summary">
     <h2 id="r-summary">Summary</h2>
-    <p>{{ p.summary }}</p>
+    <p>{{ p.summary || p.shortBio }}</p>
   </section>
 
   @if (experience(); as xp) {

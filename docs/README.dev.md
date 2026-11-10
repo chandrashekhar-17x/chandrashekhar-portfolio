@@ -36,3 +36,14 @@ uv add --package portfolio-api sqlalchemy
 
 Copy `.env.example` → `.env`. Every variable is listed there, grouped by the phase that needs it.
 Empty values mean "not set".
+
+## Public origin (Codex maintenance, 2026-11-10)
+
+Set `PUBLIC_SITE_URL` to an HTTP(S) origin, e.g. `https://example.dev`, before building.
+The web start/build/typecheck/test scripts generate an ignored `site-origin.gen.ts` from
+that variable (shell environment wins over the root `.env`). Only this public origin is
+emitted; other environment values stay server-side. Angular SEO, Person JSON-LD, SSR,
+robots and sitemap all consume that same value. Blank/unset falls back to the documented
+placeholder domain. A changed origin requires a rebuild and restart because pages are
+prerendered; a runtime-only override cannot update existing HTML. Use `pnpm ... build`
+or `make build` rather than invoking `ng build` directly on a fresh checkout.

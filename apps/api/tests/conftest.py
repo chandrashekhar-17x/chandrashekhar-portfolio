@@ -4,13 +4,27 @@
 so tests are fast and need no network.
 """
 
-from collections.abc import AsyncIterator
+import os
+from collections.abc import AsyncIterator, Iterator
+from pathlib import Path
 
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from portfolio_api.core.config import Settings
+from portfolio_api.core.config import Settings, get_settings
 from portfolio_api.main import create_app
+
+
+@pytest.fixture(autouse=True)
+def isolated_settings(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[None]:
+    """Keep developer .env files and inherited settings out of every API test."""
+    monkeypatch.chdir(tmp_path)
+    for name in tuple(os.environ):
+        if name.lower() in Settings.model_fields:
+            monkeypatch.delenv(name)
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
 
 
 @pytest.fixture

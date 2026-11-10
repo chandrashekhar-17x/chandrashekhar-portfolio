@@ -4,7 +4,7 @@
 |-----------|------------------------------------------|-------------------------------------------------------------|
 | FE unit   | Vitest or Jest + Angular Testing Library | Services, pipes, directives (tilt, magnetic), chat store    |
 | FE e2e    | Playwright                               | Journeys: recruiter 60 s, chat flow, contact, theme, mobile |
-| Visual    | Playwright screenshots                   | Hero, graph, cards in both themes & 3 viewports             |
+| Visual    | Playwright screenshots                   | Hero, graph, cards in both themes & desktop/mobile viewports             |
 | A11y      | axe-core in Playwright                   | 0 serious violations                                        |
 | Perf      | Lighthouse CI                            | Budgets: LCP \< 2 s, JS initial \< 180 KB gz                |
 | API       | pytest + httpx AsyncClient               | Routers, validation, rate limits, auth                      |
@@ -18,6 +18,8 @@
 |---|---|
 | `make check` | lint, types, content, unit (Vitest + Testing Library), Python tests, build, SSR smoke, e2e (incl. axe) |
 | `make e2e-web` | Playwright journeys + axe, desktop (1440×900) and mobile (Pixel 7) |
-| `make visual` / `make visual-update` | screenshot tests in the Playwright Docker image (40 baselines, both themes) |
+| `make visual` / `make visual-update` | screenshot tests in the Playwright Docker image (48 baselines including featured, both themes) |
 | `make lighthouse` | Lighthouse CI on `/`, `/work`, `/resume`: perf/a11y/best-practices/SEO ≥ 95, LCP < 2 s, CLS < 0.05 (median of 3 runs) |
 | `node apps/web/scripts/parity-screens.mjs <dir>` | prototype vs app screenshots for side-by-side review |
+
+Codex maintenance results and the manual checklist are recorded in [change-log.md](change-log.md). Visual artifacts use `apps/web/test-results-visual/`, separate from normal e2e traces.

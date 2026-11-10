@@ -10,6 +10,7 @@ node_modules/
 dist/
 out-tsc/
 .angular/
+apps/web/src/app/core/seo/site-origin.gen.ts
 .pnpm-store/
 *.tsbuildinfo
 npm-debug.log*
@@ -30,6 +31,7 @@ htmlcov/
 coverage/
 playwright-report/
 test-results/
+test-results-visual/
 .lighthouseci/
 
 # --- Editors & OS ---

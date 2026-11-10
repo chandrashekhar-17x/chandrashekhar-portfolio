@@ -8,6 +8,7 @@ import express from 'express';
 import { join } from 'node:path';
 
 import projectsJson from '@content/data/projects.json';
+import { SITE_ORIGIN } from './app/core/seo/site-origin.gen';
 import { robotsTxt, sitemapXml } from './server/seo-files';
 
 // Express server that serves static files and renders Angular pages (SSR).
@@ -20,7 +21,7 @@ const angularApp = new AngularNodeAppEngine();
 app.disable('x-powered-by');
 
 // Public origin for absolute URLs (PLACEHOLDER domain until one is bought).
-const siteUrl = process.env['PUBLIC_SITE_URL'] ?? 'https://chandrashekhar.dev';
+const siteUrl = SITE_ORIGIN;
 const builtAt = new Date().toISOString().slice(0, 10);
 
 app.get('/robots.txt', (_req, res) => {

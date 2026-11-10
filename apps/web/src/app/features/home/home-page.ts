@@ -15,6 +15,7 @@ import { ContactSection } from '../contact/contact-section';
 import { ExperienceSection } from '../experience/experience-section';
 import { LabSection } from '../lab/lab-section';
 import { WorkSection } from '../work/work-section';
+import { FeaturedBand } from '../featured/featured-band';
 
 // Home page. Hero + stats are server-rendered (first paint, SEO).
 // Each later section is a lazy chunk behind @defer (see home-page.html).
@@ -24,6 +25,7 @@ import { WorkSection } from '../work/work-section';
     HeroSection,
     StatsStrip,
     AboutSection,
+    FeaturedBand,
     SectionSkeleton,
     GraphSection,
     WorkSection,

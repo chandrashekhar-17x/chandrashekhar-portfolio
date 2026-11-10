@@ -39,12 +39,24 @@ export function experienceYears(roles: readonly DatedRole[], today = new Date())
   return `${String(years)}+ yrs`;
 }
 
+// Fixed English labels: no Intl/ICU work during hydration.
+const MONTH_NAMES = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
 /** "Jan 2024" from "2024-01". */
 export function formatMonth(ym: string): string {
   const [y, m] = ym.split('-').map(Number);
-  const name = new Date(Date.UTC(y ?? 2000, (m ?? 1) - 1, 1)).toLocaleString('en', {
-    month: 'short',
-    timeZone: 'UTC',
-  });
-  return `${name} ${String(y)}`;
+  return `${MONTH_NAMES[(m ?? 1) - 1] ?? ''} ${String(y)}`;
 }

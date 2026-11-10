@@ -25,13 +25,42 @@ test.describe('hero', () => {
     await page.goto('/');
     const a = await frame();
     await page.waitForTimeout(400);
-    expect(await frame()).not.toBe(a);
+    const paused = await page
+      .locator('app-hero-canvas canvas')
+      .getAttribute('data-animation-state');
+    if (paused !== 'paused-for-performance') expect(await frame()).not.toBe(a);
 
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.reload();
     const b = await frame();
     await page.waitForTimeout(400);
     expect(await frame()).toBe(b);
+  });
+
+  test('slow decorative canvas frames pause while the page remains usable', async ({ page }) => {
+    await page.addInitScript(() => {
+      const proto = CanvasRenderingContext2D.prototype;
+      type Clear = (this: CanvasRenderingContext2D, ...box: number[]) => void;
+      const clear = Object.getOwnPropertyDescriptor(proto, 'clearRect')?.value as Clear;
+      proto.clearRect = function (this: CanvasRenderingContext2D, x, y, w, h) {
+        const started = performance.now();
+        while (performance.now() - started < 40) {
+          /* emulate a slow canvas device */
+        }
+        clear.call(this, x, y, w, h);
+      };
+    });
+    await page.goto('/');
+    const canvas = page.locator('app-hero-canvas canvas');
+    await expect(canvas).toHaveAttribute('data-animation-state', 'paused-for-performance');
+    const frame = await canvas.evaluate((c: HTMLCanvasElement) => c.toDataURL());
+    await page.waitForTimeout(200);
+    expect(await canvas.evaluate((c: HTMLCanvasElement) => c.toDataURL())).toBe(frame);
+    await page
+      .locator('app-hero-section')
+      .getByRole('button', { name: /Talk to my AI agent/ })
+      .click();
+    await expect(page.getByRole('dialog', { name: 'Talk to My Agent.' })).toBeVisible();
   });
 
   test('stats count up to their final value', async ({ page }) => {

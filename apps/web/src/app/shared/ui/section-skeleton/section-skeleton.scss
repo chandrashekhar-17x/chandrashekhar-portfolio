@@ -68,6 +68,47 @@
   border-radius: var(--radius-card);
 }
 
+:host(.kind-featured) {
+  .label,
+  .head-eyebrow,
+  .head-title {
+    display: none;
+  }
+}
+
+.featured {
+  height: 485px;
+
+  @container site (max-width: 900px) {
+    height: 843px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 771px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 831px;
+  }
+}
+
+.featured-journey {
+  height: 36px;
+  margin-top: 18px;
+
+  @container site (max-width: 900px) {
+    height: 82px;
+  }
+
+  @container site (max-width: 600px) {
+    height: 128px;
+  }
+
+  @container site (max-width: 360px) {
+    height: 181px;
+  }
+}
+
 // Heights match the real sections (kept in sync by the CLS e2e test).
 // All heights below are measured from the real sections (desktop, tablet, phone).
 // The CLS e2e test (e2e/lazy-sections.spec.ts) guards that skeleton → content doesn't

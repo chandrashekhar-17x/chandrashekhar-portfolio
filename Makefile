@@ -101,7 +101,7 @@ content-check: ## Validate content/ (schemas, references, placeholders)
 confidential-check: ## No internal office-project names in the repo or the built site (hashed list)
 	python3 scripts/check_confidential.py
 
-check: lint typecheck content-check test build confidential-check smoke-web e2e-web ## Everything CI runs
+check: lint typecheck content-check test build confidential-check smoke-web e2e-web ## Core CI checks (visual and Lighthouse run separately)
 
 ##@ Misc
 .PHONY: clean help

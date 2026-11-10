@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: visual-diffs
-          path: apps/web/test-results
+          path: apps/web/test-results-visual
           retention-days: 7
 
   lighthouse:

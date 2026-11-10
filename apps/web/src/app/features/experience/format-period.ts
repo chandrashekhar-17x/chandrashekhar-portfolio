@@ -24,5 +24,10 @@ export function formatEmployment(type: string, workplace?: string): string {
 export function byRecency<T extends { start: string; end?: string }>(a: T, b: T): number {
   const endA = a.end ?? '9999-12';
   const endB = b.end ?? '9999-12';
-  return endB.localeCompare(endA) || b.start.localeCompare(a.start);
+  // ISO months sort lexically; a locale collator adds startup cost without value.
+  return descending(endA, endB) || descending(a.start, b.start);
+}
+
+function descending(a: string, b: string): number {
+  return a === b ? 0 : a < b ? 1 : -1;
 }

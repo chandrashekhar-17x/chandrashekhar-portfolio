@@ -52,7 +52,7 @@ for (const theme of ['dark', 'light'] as const) {
 
     test('home with every lazy section loaded has no serious issues', async ({ page }) => {
       await page.goto('/');
-      for (const id of ['graph', 'work', 'lab', 'xp', 'contact']) {
+      for (const id of ['featured', 'graph', 'work', 'lab', 'xp', 'contact']) {
         await page.locator(`#${id}`).scrollIntoViewIfNeeded();
         await expect(page.locator(`#${id} .is-revealed`)).toBeVisible({ timeout: 8000 });
       }

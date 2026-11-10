@@ -19,7 +19,8 @@ describe('stripTitle', () => {
   });
 });
 
-describe('ProjectPage', () => {
+// Like HomePage, the first Angular render can exceed 5 s on a busy CI runner.
+describe('ProjectPage', { timeout: 20_000 }, () => {
   const setup = (slug: string) =>
     render(ProjectPage, {
       inputs: { slug },

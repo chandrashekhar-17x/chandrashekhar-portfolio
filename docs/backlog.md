@@ -59,7 +59,7 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Graph-hop retrieval expansion — `ai` · M
 - [ ] LangGraph intent router — `ai` · M
 - [ ] Recruiter JD match (/match) — `ai` · M
-- [ ] /graph full-screen page + accessible list fallback — `fe` · M
+- [x] /graph full-screen page + accessible list fallback (already shipped in Phase 1; status corrected by Codex) — `fe` · M
 
 ## Phase 6 · AI Lab + voice
 
@@ -98,3 +98,17 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Public agent-eval dashboard — `ai` · M
 - [ ] Hindi i18n — `fe` · M
 - [ ] Yearly redesign changelog — `ux` · S
+
+## Codex maintenance · 2026-11-10
+
+Attribution covers these maintenance changes, not the original Claude implementation.
+Details and verification: [change-log.md](change-log.md).
+
+- [x] Fix TL;DR parsing and featured template compilation — [Codex · 2026-11-10]
+- [x] Complete existing featured case-study lazy section and skeleton — [Codex · 2026-11-10]
+- [x] Isolate API tests from inherited environment and local .env — [Codex · 2026-11-10]
+- [x] Use one build-time public origin for all SEO consumers — [Codex · 2026-11-10]
+- [x] Align status docs, API shapes and stable graph/citation IDs — [Codex · 2026-11-10]
+- [x] Separate functional and visual Playwright artifact folders — [Codex · 2026-11-10]
+- [x] Remove locale initialization from date helpers and restore the real-data resume summary — [Codex · 2026-11-10]
+- [x] Finish final regression verification — [Codex · 2026-11-10; re-verified by Claude]
