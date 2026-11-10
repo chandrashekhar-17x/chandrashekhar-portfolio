@@ -61,3 +61,25 @@ for (const path of ['/', '/work']) {
     expect(new Set(sizes).size).toBe(1);
   });
 }
+
+test('/work filters narrow the grid and "All" restores it', async ({ page }) => {
+  await page.goto('/work');
+  const cards = page.locator('app-project-card');
+  await expect(cards).toHaveCount(11);
+  const filters = page.getByRole('list', { name: 'Filter projects' });
+  await filters.getByRole('button', { name: /^Personal/ }).click();
+  await expect(cards).toHaveCount(3);
+  await expect(page.getByRole('status')).toHaveText('3 projects shown');
+  await filters.getByRole('button', { name: /^CAD & 3D/ }).click();
+  await expect(cards.first()).toContainText('Custom CAD Viewer');
+  await filters.getByRole('button', { name: /^All/ }).click();
+  await expect(cards).toHaveCount(11);
+});
+
+test('every project card has its own illustration', async ({ page }) => {
+  await page.goto('/work');
+  const svgs = await page
+    .locator('app-project-illustration svg')
+    .evaluateAll((els) => els.map((e) => e.innerHTML.replace(/ill-grid-\d+/g, '')));
+  expect(new Set(svgs).size).toBe(svgs.length);
+});
