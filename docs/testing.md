@@ -23,3 +23,22 @@
 | `node apps/web/scripts/parity-screens.mjs <dir>` | prototype vs app screenshots for side-by-side review |
 
 Codex maintenance results and the manual checklist are recorded in [change-log.md](change-log.md). Visual artifacts use `apps/web/test-results-visual/`, separate from normal e2e traces.
+
+## CI pipeline (GitHub Actions)
+
+The site is built **once** and reused, and slow suites run in parallel:
+
+```text
+changes ─┬─ web-checks  (lint · types · unit tests)
+         ├─ web-build   (build · confidentiality · SSR smoke) ─┬─ e2e 1/2 ─┐
+         │                                                      ├─ e2e 2/2 ─┤
+         │                                                      ├─ visual ──┤
+         │                                                      └─ lighthouse ┤
+         ├─ python      (lint · mypy · content · tests)                     ├─ CI OK
+         └─ secrets     (gitleaks · confidentiality on source) ─────────────┘
+```
+
+- e2e, screenshots and Lighthouse run inside `mcr.microsoft.com/playwright:v1.65.0-noble`
+  (browsers and system packages preinstalled), using the `web-dist` artifact from `web-build`.
+- `CI OK` is still the only required check; skipped jobs (unchanged area) count as passing.
+- Rehearse a shard locally: `docker run … npx playwright test --shard=1/2` (see `PW_DOCKER` in the Makefile).
