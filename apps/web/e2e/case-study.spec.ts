@@ -45,3 +45,18 @@ test('case study never scrolls sideways (wide code blocks scroll inside)', async
   );
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test('case study has its own preview image and Article data', async ({ page, request }) => {
+  await page.goto('/work/custom-cad-editor');
+  const og = await page.locator('meta[property="og:image"]').getAttribute('content');
+  expect(og).toMatch(/\/og\/work\/custom-cad-editor\.jpg$/);
+  expect((await request.get(new URL(og ?? '').pathname)).headers()['content-type']).toContain(
+    'image/jpeg',
+  );
+  const ld = JSON.parse((await page.locator('#ld-article').textContent()) ?? '{}') as Record<
+    string,
+    unknown
+  >;
+  expect(ld['@type']).toBe('Article');
+  expect(ld['headline']).toBe('Custom CAD Viewer & Editor, built from zero');
+});

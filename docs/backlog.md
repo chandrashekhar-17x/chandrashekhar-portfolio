@@ -83,7 +83,7 @@ Phases match `docs/plan.md` (0–9).
 - [ ] GitHub activity widget (server-side cached) — `be` · S
 - [ ] Guestbook (moderated) — `be` · S
 - [ ] Privacy analytics (Umami/Plausible) — `ops` · S
-- [ ] OG image generation — `fe` · S
+- [x] OG image generation: one preview per project (`pnpm --filter @portfolio/web gen:og`) — `fe` · S
 
 ## Phase 9 · Security, performance, launch
 

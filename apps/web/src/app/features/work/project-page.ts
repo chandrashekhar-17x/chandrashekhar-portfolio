@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   RESPONSE_INIT,
   computed,
   inject,
@@ -11,7 +12,9 @@ import { RouterLink } from '@angular/router';
 import { tap } from 'rxjs';
 
 import { ContentRepository } from '../../core/content/content-repository';
+import { articleSchema } from '../../core/seo/article-schema';
 import { SeoService } from '../../core/seo/seo.service';
+import { SITE_CONFIG } from '../../core/seo/site-config';
 import { PageHeader } from '../../shared/ui/page-header/page-header';
 import { CaseStudyBody } from './case-study/case-study-body';
 import { ProjectIllustration } from './project-illustration';
@@ -33,6 +36,14 @@ export class ProjectPage {
   private readonly repo = inject(ContentRepository);
   private readonly response = inject(RESPONSE_INIT, { optional: true });
   private readonly seo = inject(SeoService);
+  private readonly site = inject(SITE_CONFIG);
+
+  constructor() {
+    // Only case-study pages carry the Article data.
+    inject(DestroyRef).onDestroy(() => {
+      this.seo.removeJsonLd('ld-article');
+    });
+  }
 
   protected readonly project = rxResource({
     params: () => this.slug(),
@@ -42,12 +53,15 @@ export class ProjectPage {
           // On the server, tell crawlers this page doesn't exist.
           if (!p && this.response) this.response.status = 404;
           if (p) {
+            const image = `/og/work/${p.slug}.jpg`; // made by scripts/gen-og.mjs
             this.seo.update({
               title: `${p.title} · Chandrashekhar`,
               description: p.summary,
               path: `/work/${p.slug}`,
               type: 'article',
+              image,
             });
+            this.seo.jsonLd('ld-article', articleSchema(this.site.url, p, image));
           }
         }),
       ),
