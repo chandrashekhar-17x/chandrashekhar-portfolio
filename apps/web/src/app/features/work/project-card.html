@@ -42,7 +42,11 @@
     </ul>
     <!-- Same destination as the title; hidden from screen readers and Tab so the
          card stays one link with one announcement. -->
-    <a class="link" [routerLink]="['/work', project().slug]" tabindex="-1" aria-hidden="true"
+    <a
+      class="link shimmer-text"
+      [routerLink]="['/work', project().slug]"
+      tabindex="-1"
+      aria-hidden="true"
       >Case study →</a
     >
   </div>

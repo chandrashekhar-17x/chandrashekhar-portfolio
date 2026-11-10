@@ -15,17 +15,22 @@
           evidence from projects, and honest gaps. (Demo answers for now.)
         </p>
         <button type="button" class="btn btn--ghost jd" data-cursor="ask me" (click)="matchJd()">
-          🎯 Try "match my JD"
+          <span aria-hidden="true">🎯</span>
+          <span class="shimmer-text">Try "match my JD"</span>
         </button>
         <ul class="links" role="list">
           @for (l of profile()?.links ?? []; track l.url) {
             <li>
               <a class="btn btn--ghost btn--sm" [href]="l.url" target="_blank" rel="noopener">
-                {{ l.label }} ↗
+                <span class="shimmer-text">{{ l.label }} ↗</span>
               </a>
             </li>
           }
-          <li><a class="btn btn--ghost btn--sm" routerLink="/resume">Resume</a></li>
+          <li>
+            <a class="btn btn--ghost btn--sm" routerLink="/resume"
+              ><span class="shimmer-text">Resume</span></a
+            >
+          </li>
         </ul>
       </aside>
     </div>

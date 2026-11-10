@@ -139,7 +139,7 @@ p {
   list-style: none;
 }
 
-// "Case study →" with a light sweeping across it, like a loading shimmer.
+// "Case study →": shimmer comes from the global .shimmer-text class.
 .link {
   position: relative;
   z-index: 2;
@@ -147,38 +147,7 @@ p {
   font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
-  color: var(--cyan); // fallback where background-clip: text isn't supported
-  background: linear-gradient(
-      100deg,
-      var(--cyan) 0%,
-      var(--cyan) 35%,
-      color-mix(in oklab, var(--violet) 70%, var(--ink)) 50%,
-      var(--cyan) 65%,
-      var(--cyan) 100%
-    )
-    0 0 / 250% 100%;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: link-shimmer 2.6s linear infinite;
   transform: translateZ(41px); // above the card overlay
-
-  .card:hover & {
-    animation-duration: 1.2s;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-@keyframes link-shimmer {
-  from {
-    background-position: 100% 0;
-  }
-
-  to {
-    background-position: -150% 0;
-  }
 }
 
 // Per-card skeleton overlay while the card waits for its turn.

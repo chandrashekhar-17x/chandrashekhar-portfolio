@@ -40,6 +40,8 @@ import {
  * highlight. The canvas is decorative for assistive tech; the list view
  * (GraphList) carries the same information accessibly.
  */
+import { tipPosition } from './tip-position';
+
 @Component({
   selector: 'app-graph-canvas',
   templateUrl: './graph-canvas.html',
@@ -188,9 +190,10 @@ export class GraphCanvas {
   /** Tooltip follows the pointer via direct style writes (no change detection). */
   private moveTip(x: number, y: number): void {
     const tip = this.tip().nativeElement;
-    const w = this.fitted?.width ?? 0;
-    const left = x + 260 > w ? x - 250 : x + 14;
-    tip.style.transform = `translate(${String(left)}px, ${String(y + 14)}px)`;
+    const box = { width: this.fitted?.width ?? 0, height: this.fitted?.height ?? 0 };
+    const size = { width: tip.offsetWidth, height: tip.offsetHeight };
+    const { left, top } = tipPosition(x, y, size, box);
+    tip.style.transform = `translate(${String(left)}px, ${String(top)}px)`;
   }
 }
 
