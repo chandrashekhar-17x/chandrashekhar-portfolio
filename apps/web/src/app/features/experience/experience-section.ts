@@ -15,7 +15,7 @@ import { ExperienceTimeline } from './experience-timeline';
       <ng-template>
         <div class="section-head reveal-item" style="--i: 0">
           <div>
-            <p class="section-index">04 / experience</p>
+            <p class="section-index">05 / experience</p>
             <h2 appScramble>The path so far.</h2>
           </div>
           <p>Roles, newest first. Durations are computed from the dates, LinkedIn style.</p>

@@ -14,7 +14,7 @@ import { ProjectGrid } from './project-grid';
       <ng-template>
         <div class="section-head reveal-item" style="--i: 0">
           <div>
-            <p class="section-index">02 / selected work</p>
+            <p class="section-index">03 / selected work</p>
             <h2>Things I've built.</h2>
           </div>
           <p>

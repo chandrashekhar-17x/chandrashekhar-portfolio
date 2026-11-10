@@ -1,0 +1,153 @@
+:host {
+  display: block;
+}
+
+.bio {
+  display: grid;
+  gap: 12px;
+  max-width: 72ch;
+  margin-bottom: 36px;
+  color: var(--ink-2);
+  font-size: 16px;
+}
+
+.areas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Glass card; the whole card is the button (stretched ::after).
+.area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--line-2);
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--panel) 80%, transparent);
+  transition:
+    transform var(--dur-fast),
+    border-color var(--dur-fast);
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--violet);
+  }
+
+  &.growing {
+    border-style: dashed;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  > p {
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.icon {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--violet) 14%, transparent);
+  color: var(--violet);
+}
+
+.grow-tag {
+  padding: 2px 8px;
+  border: 1px dashed var(--line-2);
+  border-radius: 999px;
+  font: 600 11px var(--font-mono);
+  color: var(--ink-2);
+}
+
+.stretched {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::after {
+      box-shadow: var(--focus-ring);
+    }
+  }
+}
+
+.chips {
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-block;
+  }
+}
+
+.how {
+  margin-top: 36px;
+
+  h3 {
+    margin-bottom: 12px;
+    font: 600 12px var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.arrow {
+  color: var(--ink-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .area:hover {
+    transform: none;
+  }
+}

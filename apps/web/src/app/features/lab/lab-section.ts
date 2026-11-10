@@ -12,7 +12,7 @@ import { LabHud } from './lab-hud';
       <ng-template>
         <div class="section-head reveal-item" style="--i: 0">
           <div>
-            <p class="section-index">03 / AI lab</p>
+            <p class="section-index">04 / AI lab</p>
             <h2>Meet the agents<br />behind this site.</h2>
           </div>
           <p>

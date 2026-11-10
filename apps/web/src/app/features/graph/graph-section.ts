@@ -14,7 +14,7 @@ import { GraphExplorer } from './graph-explorer';
       <ng-template>
         <div class="section-head reveal-item" style="--i: 0">
           <div>
-            <p class="section-index">01 / knowledge graph</p>
+            <p class="section-index">02 / knowledge graph</p>
             <h2>Everything I know,<br />connected.</h2>
           </div>
           <p>

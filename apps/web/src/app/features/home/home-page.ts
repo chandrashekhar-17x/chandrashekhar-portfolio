@@ -10,6 +10,7 @@ import { SectionSkeleton } from '../../shared/ui/section-skeleton/section-skelet
 import { GraphSection } from '../graph/graph-section';
 import { HeroSection } from '../hero/hero-section';
 import { StatsStrip } from '../stats/stats-strip';
+import { AboutSection } from '../about/about-section';
 import { ContactSection } from '../contact/contact-section';
 import { ExperienceSection } from '../experience/experience-section';
 import { LabSection } from '../lab/lab-section';
@@ -22,6 +23,7 @@ import { WorkSection } from '../work/work-section';
   imports: [
     HeroSection,
     StatsStrip,
+    AboutSection,
     SectionSkeleton,
     GraphSection,
     WorkSection,

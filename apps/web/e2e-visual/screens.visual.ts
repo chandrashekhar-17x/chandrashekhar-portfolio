@@ -39,6 +39,13 @@ for (const theme of ['dark', 'light'] as const) {
       await expect(page.locator('.first-screen')).toHaveScreenshot(`${theme}-hero.png`);
     });
 
+    test('home section: about (server-rendered)', async ({ page }) => {
+      await open(page, '/');
+      const section = page.locator('#about');
+      await section.scrollIntoViewIfNeeded();
+      await expect(section).toHaveScreenshot(`${theme}-section-about.png`);
+    });
+
     for (const id of SECTIONS) {
       test(`home section: ${id}`, async ({ page }) => {
         await open(page, '/');

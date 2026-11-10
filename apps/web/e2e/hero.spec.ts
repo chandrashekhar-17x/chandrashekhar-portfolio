@@ -7,7 +7,7 @@ test.describe('hero', () => {
     await expect(
       page.getByText(/Software Engineer, Frontend \(Angular\) · Hyderabad, India/),
     ).toBeVisible();
-    await expect(page.getByText('years of experience')).toBeVisible();
+    await expect(page.getByText('years of experience', { exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: /building a CAD editor from zero/ })).toBeVisible();
   });
 

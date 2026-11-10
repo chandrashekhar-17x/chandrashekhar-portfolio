@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
-import { GraphNode, KnowledgeGraph, NodeCategory } from '../../core/content/build-graph';
+import { GraphNode, KnowledgeGraph } from '../../core/content/build-graph';
 import { GraphFilters } from './graph-filters';
 import { ChatStore } from '../../core/chat/chat-store.service';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
@@ -21,9 +21,9 @@ export class GraphExplorer {
   /** Full-screen variant for the /graph page. */
   readonly tall = input(false);
 
-  protected readonly filter = signal<NodeCategory | null>(null);
   protected readonly showList = signal(false);
   protected readonly highlights = inject(GraphHighlightService);
+  protected readonly filter = this.highlights.filter;
   protected readonly stats = computed(
     () => `${String(this.graph().nodes.length)} nodes · ${String(this.graph().links.length)} links`,
   );
