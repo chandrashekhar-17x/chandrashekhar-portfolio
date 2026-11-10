@@ -24,13 +24,18 @@
             "type": "string"
           },
           "kind": {
-            "enum": ["company", "client", "freelance", "education", "open-source"]
+            "enum": ["company", "client", "freelance", "open-source"]
           },
           "url": {
             "$ref": "common.schema.json#/$defs/url"
           },
           "placeholder": {
             "$ref": "common.schema.json#/$defs/placeholder"
+          },
+          "monogram": {
+            "description": "Neutral badge text instead of a logo, e.g. \"VD\".",
+            "type": "string",
+            "maxLength": 4
           }
         }
       }
@@ -40,7 +45,16 @@
       "items": {
         "title": "Role",
         "type": "object",
-        "required": ["id", "org", "title", "start", "summary", "highlights", "skills"],
+        "required": [
+          "id",
+          "org",
+          "title",
+          "employmentType",
+          "start",
+          "location",
+          "highlights",
+          "skills"
+        ],
         "additionalProperties": false,
         "properties": {
           "id": {
@@ -69,16 +83,34 @@
           },
           "highlights": {
             "type": "array",
+            "maxItems": 8,
             "items": {
-              "type": "string"
-            },
-            "maxItems": 8
+              "title": "Highlight",
+              "type": "object",
+              "required": ["text"],
+              "additionalProperties": false,
+              "properties": {
+                "text": {
+                  "type": "string"
+                },
+                "project": {
+                  "description": "projects[].slug this highlight links to.",
+                  "$ref": "common.schema.json#/$defs/id"
+                }
+              }
+            }
           },
           "skills": {
             "$ref": "common.schema.json#/$defs/skillRefs"
           },
           "placeholder": {
             "$ref": "common.schema.json#/$defs/placeholder"
+          },
+          "employmentType": {
+            "enum": ["full-time", "internship", "contract", "freelance", "part-time"]
+          },
+          "workplace": {
+            "enum": ["on-site", "hybrid", "remote"]
           }
         }
       }

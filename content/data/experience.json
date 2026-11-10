@@ -2,59 +2,64 @@
   "$schema": "../schemas/experience.schema.json",
   "organizations": [
     {
-      "id": "company-a",
-      "name": "Company A (sample)",
+      "id": "vassardigital",
+      "name": "VassarDigital.ai",
       "kind": "company",
-      "placeholder": true
+      "monogram": "VD"
     },
     {
-      "id": "company-b",
-      "name": "Company B (sample)",
+      "id": "vassar-labs",
+      "name": "Vassar Labs",
       "kind": "company",
-      "placeholder": true
-    },
-    {
-      "id": "self-directed",
-      "name": "Self-directed",
-      "kind": "open-source"
+      "monogram": "VL"
     }
   ],
   "roles": [
     {
-      "id": "ai-engineering-track",
-      "org": "self-directed",
-      "title": "AI engineering track",
-      "start": "2026-01",
-      "summary": "Learning AI engineering in public: Python, FastAPI, LLM APIs, RAG with pgvector and agents, by building this portfolio's agent.",
-      "highlights": ["Building this site's RAG agent, knowledge graph and MCP server end to end."],
-      "skills": ["python", "fastapi", "postgres", "llms", "rag", "langchain", "mcp"]
-    },
-    {
-      "id": "company-a-frontend",
-      "org": "company-a",
-      "title": "Frontend Engineer",
-      "start": "2023-01",
-      "location": "India",
-      "summary": "PLACEHOLDER: Building complex Angular applications: a canvas CAD editor, PDF rendering and data-heavy tables.",
+      "id": "vd-software-engineer",
+      "org": "vassardigital",
+      "title": "Software Engineer",
+      "employmentType": "full-time",
+      "workplace": "on-site",
+      "start": "2024-01",
+      "location": "Hyderabad, Telangana, India",
+      "summary": "Complex application features: CAD/DXF visualization, document processing, PDF viewers, data-extraction interfaces and API integrations.",
       "highlights": [
-        "PLACEHOLDER: Built a canvas-based CAD editor with selection, snapping and undo/redo.",
-        "PLACEHOLDER: Rendered large PDFs in the browser with PDF.js and virtualised pages.",
-        "PLACEHOLDER: Built PrimeNG data grids with server-side paging and filtering."
+        {
+          "text": "Primary owner of a custom CAD viewer/editor (Three.js) that became the foundation of a core workflow",
+          "project": "custom-cad-editor"
+        },
+        {
+          "text": "Led UI technical direction for ~2 months of the workflow's initial development",
+          "project": "signalling-plan-editor"
+        },
+        {
+          "text": "Contributed across 4 product teams: knowledge-base ingestion, page-capture visualization, document review, CAD/signalling"
+        }
       ],
-      "skills": ["angular", "typescript", "rxjs", "canvas", "pdfjs", "primeng"],
-      "placeholder": true
+      "skills": ["angular-cli", "javascript"]
     },
     {
-      "id": "company-b-junior",
-      "org": "company-b",
-      "title": "Junior Frontend Developer",
-      "start": "2021-06",
-      "end": "2022-12",
-      "location": "India",
-      "summary": "PLACEHOLDER: Angular feature work and REST API integration.",
-      "highlights": ["PLACEHOLDER: Integrated REST APIs and built reusable UI components."],
-      "skills": ["angular", "javascript", "rest-apis", "html-css"],
-      "placeholder": true
+      "id": "vl-software-engineer",
+      "org": "vassar-labs",
+      "title": "Software Engineer",
+      "employmentType": "full-time",
+      "start": "2023-08",
+      "end": "2023-12",
+      "location": "Hyderabad, Telangana, India",
+      "highlights": [],
+      "skills": ["data-structures", "cpp"]
+    },
+    {
+      "id": "vl-intern",
+      "org": "vassar-labs",
+      "title": "Software Engineer",
+      "employmentType": "internship",
+      "start": "2023-01",
+      "end": "2023-07",
+      "location": "Hyderabad, Telangana, India",
+      "highlights": [],
+      "skills": []
     }
   ]
 }

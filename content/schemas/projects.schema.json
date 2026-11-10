@@ -18,11 +18,12 @@
           "slug",
           "title",
           "summary",
-          "year",
-          "role",
-          "status",
+          "type",
           "featured",
           "skills",
+          "tags",
+          "filters",
+          "illustration",
           "body"
         ],
         "additionalProperties": false,
@@ -37,11 +38,6 @@
             "type": "string",
             "maxLength": 280
           },
-          "year": {
-            "type": "integer",
-            "minimum": 2000,
-            "maximum": 2100
-          },
           "role": {
             "type": "string"
           },
@@ -50,7 +46,8 @@
             "$ref": "common.schema.json#/$defs/id"
           },
           "status": {
-            "enum": ["shipped", "in-progress", "concept"]
+            "description": "Only for personal projects; employer work shows no status.",
+            "enum": ["shipped", "in-progress", "planned"]
           },
           "featured": {
             "type": "boolean"
@@ -86,8 +83,44 @@
             "$ref": "common.schema.json#/$defs/placeholder"
           },
           "illustration": {
-            "description": "SVG thumbnail used when there is no cover image.",
-            "enum": ["cad", "pdf", "table", "api", "rag", "voice"]
+            "description": "Recreated SVG thumbnail (never employer screenshots).",
+            "enum": [
+              "cad",
+              "signalling",
+              "knowledge-base",
+              "bbox",
+              "doc-highlight",
+              "pdf-stream",
+              "sse",
+              "architecture",
+              "rag",
+              "voice",
+              "playground"
+            ]
+          },
+          "type": {
+            "description": "professional = employer work (details anonymised, never links); personal = my own.",
+            "enum": ["professional", "personal"]
+          },
+          "period": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "tags": {
+            "description": "Display chips (tech / techniques).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 12
+          },
+          "filters": {
+            "description": "Work-section filter chips this project appears under.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": ["cad", "documents", "knowledge-base", "realtime", "ai", "personal"]
+            }
           }
         }
       }

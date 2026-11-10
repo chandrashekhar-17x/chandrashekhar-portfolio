@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "education.schema.json",
+  "title": "Education",
+  "type": "object",
+  "required": ["education"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "education": {
+      "type": "array",
+      "items": {
+        "title": "EducationEntry",
+        "type": "object",
+        "required": ["id", "institute", "shortName", "degree", "field", "start", "end"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "common.schema.json#/$defs/id"
+          },
+          "institute": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "monogram": {
+            "type": "string",
+            "maxLength": 4
+          },
+          "degree": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          },
+          "start": {
+            "$ref": "common.schema.json#/$defs/year"
+          },
+          "end": {
+            "$ref": "common.schema.json#/$defs/year"
+          },
+          "skills": {
+            "$ref": "common.schema.json#/$defs/skillRefs"
+          },
+          "placeholder": {
+            "$ref": "common.schema.json#/$defs/placeholder"
+          }
+        }
+      }
+    }
+  }
+}

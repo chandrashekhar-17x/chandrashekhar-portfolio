@@ -2,29 +2,25 @@
   "$schema": "../schemas/lab.schema.json",
   "timeline": [
     {
-      "when": "Q1",
-      "topic": "Python fundamentals",
-      "progress": 100
+      "topic": "Python"
     },
     {
-      "when": "Q2",
-      "topic": "FastAPI + REST + Postgres",
-      "progress": 80
+      "topic": "Django / FastAPI"
     },
     {
-      "when": "Q3",
-      "topic": "LLM APIs, prompting, RAG",
-      "progress": 55
+      "topic": "Databases & authentication"
     },
     {
-      "when": "Q3",
-      "topic": "LangChain / LangGraph agents",
-      "progress": 35
+      "topic": "System design"
     },
     {
-      "when": "Q4",
-      "topic": "Evals, MCP, voice agents",
-      "progress": 15
+      "topic": "LLMs & RAG"
+    },
+    {
+      "topic": "Agents & MCP"
+    },
+    {
+      "topic": "Voice agents"
     }
   ]
 }

@@ -42,7 +42,7 @@
             "$ref": "#/$defs/nodeRef"
           },
           "rel": {
-            "enum": ["USED", "BUILT_AT", "WORKED_AT", "RELATED", "LEARNING"]
+            "enum": ["USED", "BUILT_AT", "WORKED_AT", "RELATED", "BUILT_ON", "DEMONSTRATES"]
           },
           "weight": {
             "type": "number",
@@ -57,7 +57,7 @@
     "nodeRef": {
       "title": "NodeRef",
       "type": "string",
-      "pattern": "^(skill|project|org|role|topic):[a-z0-9]+(-[a-z0-9]+)*$"
+      "pattern": "^(skill|project|org|role|topic|edu):[a-z0-9]+(-[a-z0-9]+)*$"
     }
   }
 }
