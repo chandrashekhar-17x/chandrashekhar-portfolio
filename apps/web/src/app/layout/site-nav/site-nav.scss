@@ -71,6 +71,10 @@
   display: none;
 }
 
+.kbd {
+  cursor: pointer;
+}
+
 .mobile-menu {
   display: grid;
   gap: 4px;
@@ -80,11 +84,21 @@
   border-bottom: 1px solid var(--line);
   background: var(--panel-solid);
 
-  a {
+  a,
+  button {
     display: block;
+    width: 100%;
     padding: 10px 4px;
+    border: 0;
+    background: none;
     color: var(--ink);
+    font-size: inherit;
+    text-align: left;
     text-decoration: none;
+  }
+
+  button {
+    color: var(--cyan);
   }
 }
 
@@ -93,7 +107,8 @@
     padding: 0 18px;
   }
 
-  .links {
+  .links,
+  .desktop {
     display: none;
   }
 

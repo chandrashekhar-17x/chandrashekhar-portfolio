@@ -14,6 +14,15 @@
     <app-typewriter [phrases]="profile().roles ?? []" />
     <div class="cta">
       <a class="btn btn--primary" routerLink="/" fragment="work" appMagnetic>View my work →</a>
+      <button
+        type="button"
+        class="btn btn--ghost"
+        data-cursor="ask me"
+        appMagnetic
+        (click)="chat.open()"
+      >
+        ✦ Talk to my AI agent
+      </button>
       <a class="btn btn--ghost" routerLink="/resume" appMagnetic>↓ Resume</a>
     </div>
   </div>

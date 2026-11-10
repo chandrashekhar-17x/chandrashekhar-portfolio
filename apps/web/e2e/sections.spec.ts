@@ -44,14 +44,16 @@ test('contact form validates and confirms without sending', async ({ page }) => 
   await expect(form.getByRole('status')).toContainText('Nothing was sent yet');
 });
 
-test('AI lab mic demo pulses and explains voice is coming', async ({ page }) => {
+test('AI lab mic demo pulses, then asks the chat', async ({ page }) => {
   await page.goto('/lab');
   // Locate by class: the button's accessible name changes once it is pressed.
   const mic = page.locator('app-lab-hud button.mic');
   await expect(mic).toContainText('Tap to speak');
   await mic.click();
   await expect(mic).toHaveAttribute('aria-pressed', 'true');
-  await expect(mic).toContainText('Voice mode arrives', { timeout: 4000 });
+  // After the "listening" demo it asks the chat a question (prototype behaviour).
+  await expect(mic).toContainText('answering in the chat', { timeout: 4000 });
+  await expect(page.getByRole('dialog', { name: 'Talk to My Agent.' })).toBeVisible();
 });
 
 test('/resume is server-rendered with experience, skills and projects', async ({ page }) => {

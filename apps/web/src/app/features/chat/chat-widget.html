@@ -1,0 +1,80 @@
+<button
+  #fab
+  type="button"
+  class="fab"
+  data-cursor="ask me"
+  aria-controls="chat-panel"
+  [attr.aria-expanded]="store.isOpen()"
+  [attr.aria-label]="store.isOpen() ? 'Close the AI agent chat' : 'Talk to my AI agent'"
+  (click)="store.isOpen() ? close() : store.open()"
+></button>
+
+<section
+  id="chat-panel"
+  class="panel"
+  role="dialog"
+  aria-labelledby="chat-title"
+  [class.open]="store.isOpen()"
+  [attr.aria-hidden]="!store.isOpen()"
+  [attr.inert]="store.isOpen() ? null : ''"
+>
+  <header class="head">
+    <h2 id="chat-title">Talk to My Agent.</h2>
+    @if (store.scripted) {
+      <span class="chip">demo · scripted</span>
+    }
+    <button type="button" class="x" aria-label="Close chat" (click)="close()">×</button>
+  </header>
+
+  <div #log class="body" role="log" aria-live="off">
+    @if (store.messages().length === 0) {
+      <p class="muted hint">Suggested</p>
+      <ul class="suggestions" role="list">
+        @for (q of suggestions; track q) {
+          <li>
+            <button type="button" (click)="store.ask(q)">{{ q }}</button>
+          </li>
+        }
+      </ul>
+    }
+    @for (m of store.messages(); track m.id) {
+      <div class="msg" [class.user]="m.role === 'user'" [class.agent]="m.role === 'assistant'">
+        @if (m.role === 'assistant' && m.intent) {
+          <p class="tools">
+            ⚙ router → {{ m.intent === 'off-topic' ? 'off-topic' : 'search_kb' }} · retrieved
+            {{ m.citations.length }} nodes
+          </p>
+        }
+        <p class="text">
+          {{ m.text }}
+          @if (m.streaming) {
+            <span class="caret" aria-hidden="true"></span>
+          }
+        </p>
+        @if (!m.streaming && m.citations.length) {
+          <div class="sources">
+            <span class="muted">sources</span>
+            @for (id of m.citations; track id) {
+              <button type="button" (click)="showNode(id)">{{ labels().get(id) ?? id }}</button>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <p class="sr-only" aria-live="polite">{{ announcement() }}</p>
+
+  <form class="form" (submit)="send($event)">
+    <label class="sr-only" for="chat-input">Ask anything about Chandrashekhar</label>
+    <input
+      #input
+      id="chat-input"
+      autocomplete="off"
+      placeholder="Ask anything about me…"
+      [maxLength]="maxLength"
+      [value]="draft()"
+      (input)="onInput($event)"
+    />
+    <button type="submit" class="send" aria-label="Send" [disabled]="!draft().trim()">→</button>
+  </form>
+</section>

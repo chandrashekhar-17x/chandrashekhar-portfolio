@@ -3,17 +3,18 @@ import { provideRouter } from '@angular/router';
 
 import { App } from './app';
 import { provideContent } from './core/content/provide-content';
+import { provideChat } from './features/chat/provide-chat';
 
 describe('App shell', () => {
   it('renders a skip link that targets the main landmark', async () => {
-    await render(App, { providers: [provideRouter([]), provideContent()] });
+    await render(App, { providers: [provideRouter([]), provideContent(), provideChat()] });
 
     expect(screen.getByText('Skip to content').getAttribute('href')).toBe('#main');
     expect(screen.getByRole('main').id).toBe('main');
   });
 
   it('has a main navigation with links to every home section', async () => {
-    await render(App, { providers: [provideRouter([]), provideContent()] });
+    await render(App, { providers: [provideRouter([]), provideContent(), provideChat()] });
 
     const nav = screen.getByRole('navigation', { name: 'Main' });
     for (const label of ['Knowledge graph', 'Work', 'AI Lab', 'Experience', 'Contact']) {

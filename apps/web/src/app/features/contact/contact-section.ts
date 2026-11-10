@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 
+import { ChatStore } from '../../core/chat/chat-store.service';
 import { ContentRepository } from '../../core/content/content-repository';
 import { Reveal } from '../../shared/ui/reveal/reveal';
 import { ContactForm } from './contact-form';
@@ -16,4 +17,9 @@ import { ContactForm } from './contact-form';
 })
 export class ContactSection {
   protected readonly profile = toSignal(inject(ContentRepository).profile());
+  private readonly chat = inject(ChatStore);
+
+  protected matchJd(): void {
+    this.chat.ask('Does he fit an Angular + AI role? (JD match)');
+  }
 }

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
+import { ChatStore } from '../../core/chat/chat-store.service';
 import { ContentRepository } from '../../core/content/content-repository';
 import { CoreOrb } from './core-orb';
 import { DEMO_LAB_STATUS } from './lab-status.mock';
@@ -21,6 +22,7 @@ export class LabHud {
   protected readonly listening = signal(false);
   protected readonly micText = signal('Tap to speak (demo)');
   protected readonly pulse = signal(0);
+  private readonly chat = inject(ChatStore);
   private timers: ReturnType<typeof setTimeout>[] = [];
 
   constructor() {
@@ -29,7 +31,7 @@ export class LabHud {
     });
   }
 
-  /** Demo only: pulses the orb. Real voice ("Jarvis") arrives in Phase 6. */
+  /** Demo only: pulses the orb, then asks the chat. Real voice ("Jarvis") is Phase 6. */
   protected speak(): void {
     if (this.listening()) return;
     this.listening.set(true);
@@ -37,8 +39,9 @@ export class LabHud {
     this.pulse.update((n) => n + 1);
     this.timers.push(
       setTimeout(() => {
-        this.micText.set('Voice mode arrives with the AI Lab phase');
+        this.micText.set('"What are his key skills?" → answering in the chat');
         this.pulse.update((n) => n + 1);
+        this.chat.ask('What are his key skills?');
       }, 1600),
       setTimeout(() => {
         this.listening.set(false);

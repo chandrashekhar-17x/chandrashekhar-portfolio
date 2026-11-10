@@ -8,6 +8,9 @@ const baseURL = `http://localhost:${String(PORT)}`;
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
+  // Each test drives animated canvases; more parallel browsers than this overloads
+  // a typical laptop and makes timings flaky.
+  workers: 2,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 1 : 0,
   reporter: process.env['CI'] ? [['github'], ['html', { open: 'never' }]] : 'list',
