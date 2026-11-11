@@ -102,9 +102,10 @@ ol {
 
   i {
     width: 2px;
-    height: 3px;
+    height: 15px;
     border-radius: 2px;
     background: var(--cyan);
+    transform: scaleY(0.2); // resting height ≈ 3px
     animation: eq 1s ease-in-out infinite;
 
     &:nth-child(2) {
@@ -117,9 +118,10 @@ ol {
   }
 }
 
+// scaleY instead of height: runs on the GPU, no layout or repaint per frame.
 @keyframes eq {
   50% {
-    height: 15px;
+    transform: scaleY(1);
   }
 }
 
