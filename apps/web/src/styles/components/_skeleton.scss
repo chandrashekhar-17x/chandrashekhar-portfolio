@@ -23,25 +23,23 @@
 }
 
 // Children marked .reveal-item fade/slide in one after another (--i = index).
+// Only opacity + transform: a blur filter on whole sections was slow to paint
+// and left black, unpainted bands while scrolling fast.
 .reveal-item {
   opacity: 0;
   transform: translateY(26px);
-  filter: blur(6px);
 
   .is-revealed & {
     opacity: 1;
     transform: none;
-    filter: none;
     transition:
       opacity 0.7s,
-      transform 0.7s var(--ease-out),
-      filter 0.7s;
+      transform 0.7s var(--ease-out);
     transition-delay: calc(var(--i, 0) * 140ms);
   }
 
   @media (prefers-reduced-motion: reduce) {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }

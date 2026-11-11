@@ -49,21 +49,26 @@
   max-height: min(560px, calc(100dvh - 110px));
   border: 1px solid var(--line-2);
   border-radius: 20px;
-  background: color-mix(in oklab, var(--panel-solid) 92%, transparent);
-  backdrop-filter: blur(18px);
+  // Near-opaque background instead of backdrop-filter: a fixed blur layer makes the
+  // browser repaint what's behind it on every scroll frame (black bands on fast scroll).
+  background: color-mix(in oklab, var(--panel-solid) 97%, transparent);
   box-shadow: 0 30px 80px -20px rgb(0 0 0 / 60%);
   opacity: 0;
+  visibility: hidden; // closed = not rendered at all, not just transparent
   pointer-events: none;
   transform: translateY(16px) scale(0.98);
   transform-origin: bottom right;
   transition:
     opacity var(--dur-base) var(--ease-out),
-    transform var(--dur-base) var(--ease-out);
+    transform var(--dur-base) var(--ease-out),
+    visibility 0s linear var(--dur-base);
 
   &.open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
     transform: none;
+    transition-delay: 0s;
   }
 }
 
