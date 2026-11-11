@@ -1,5 +1,6 @@
 export function siteOrigin(value) {
-  const url = new URL(value?.trim() || 'https://chandrashekhar.dev');
+  // Fallback when PUBLIC_SITE_URL is unset: the live site (chandrashekhar.dev belongs to someone else).
+  const url = new URL(value?.trim() || 'https://chandrashekhar-portfolio.mechn1423.workers.dev');
   if (
     !['http:', 'https:'].includes(url.protocol) ||
     url.username ||
