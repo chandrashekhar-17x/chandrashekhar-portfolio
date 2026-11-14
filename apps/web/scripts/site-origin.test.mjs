@@ -5,7 +5,7 @@ import { apiOrigin, siteOrigin } from './site-origin.mjs';
 test('normalizes the public origin for all SEO consumers', () => {
   assert.equal(siteOrigin(' https://example.dev/ '), 'https://example.dev');
   assert.equal(siteOrigin('http://localhost:4200'), 'http://localhost:4200');
-  assert.equal(siteOrigin(''), 'https://chandrashekhar.dev');
+  assert.equal(siteOrigin(''), 'https://chandrashekhar.pages.dev');
 });
 
 test('rejects invalid origins rather than publishing broken canonical URLs', () => {
