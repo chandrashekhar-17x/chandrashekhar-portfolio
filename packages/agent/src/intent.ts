@@ -15,12 +15,12 @@ export interface Intent {
 export const INTENTS: readonly Intent[] = [
   {
     id: 'work',
-    test: /\b(where|which company|employer|company|job|jobs|currently)\b.*\b(work|works|working|employed|job)\b|\bemployer\b|\bwork experience\b/i,
+    test: /\b(where|which company|employer|company|job|jobs|currently)\b.*\b(work|works|working|employed|job)\b|\bemployer\b|\bwork experience\b|\b(what|which) company\b|\bcurrent (job|company|role|position)\b/i,
     wants: (c) => (c.id === 'career:overview' ? 3 : c.kind === 'role' ? 2 : 0),
   },
   {
     id: 'years',
-    test: /\b(how (many|much)|years?|experience|senior|junior)\b.*\b(years?|experience)\b/i,
+    test: /\b(how (many|much)|years?|experience|senior|junior)\b.*\b(years?|experience)\b|\bhow experienced\b/i,
     wants: (c) => (c.id === 'career:overview' ? 3 : c.kind === 'role' ? 1 : 0),
   },
   {
@@ -45,7 +45,7 @@ export const INTENTS: readonly Intent[] = [
   },
   {
     id: 'flagship',
-    test: /\b(biggest|flagship|proud\w*|best|main|largest|most (important|impressive|complex))\b.*\b(project|work|thing)\b/i,
+    test: /\b(biggest|flagship|proud\w*|best|main|largest|most (important|impressive|complex))\b.*\b(project|work|thing)\b|\b(project|work)\b.*\b(proud\w*|flagship|biggest)\b/i,
     wants: (c, featured) => {
       const slug = c.nodes[0]?.replace(/^project:/, '') ?? '';
       const order = featured.get(slug);

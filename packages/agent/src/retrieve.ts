@@ -22,6 +22,8 @@ export interface AgentIndex {
   bm25: Bm25Index;
   /** Every word in the corpus, for "is this technology anywhere in my data?". */
   vocab: Set<string>;
+  /** The whole corpus as one " word word " string, for phrase lookups ("next js"). */
+  phrases: string;
   /** Display names of every node, for citations and answers. */
   labels: Map<string, string>;
   /** Featured project slugs → order (0 = flagship). */
@@ -71,6 +73,7 @@ export function buildIndex(corpus: Corpus): AgentIndex {
     ...terms(KIND_KEYWORDS[c.kind] ?? ''),
   ]);
   const vocab = new Set(chunks.flatMap((c) => toks(`${c.title} ${c.text}`)));
+  const phrases = ` ${chunks.map((c) => toks(`${c.title} ${c.text}`).join(' ')).join(' | ')} `;
   const labels = new Map(entities.map((e) => [e.node, e.label]));
   const featured = new Map(corpus.projects.filter((p) => p.featured).map((p, i) => [p.slug, i]));
   const proficiency = new Map(
@@ -89,6 +92,7 @@ export function buildIndex(corpus: Corpus): AgentIndex {
     entities,
     bm25: buildBm25(docs),
     vocab,
+    phrases,
     labels,
     featured,
     proficiency,
@@ -99,13 +103,18 @@ export function buildIndex(corpus: Corpus): AgentIndex {
 }
 
 export function analyze(text: string, index: AgentIndex): Query {
-  const nodes = linkEntities(text, index.entities);
   const words = toks(text);
   const has = (p: readonly string[]) => words.some((_, i) => p.every((w, j) => words[i + j] === w));
+  // A technology is "missing" when its whole name ("next js") never appears in my data,
+  // even if its words do ("next", "js" from "Three.js").
   const missing = COMMON_TECH.filter((_, i) => {
     const p = COMMON_TECH_TOKENS[i] ?? [];
-    return has(p) && !p.every((w) => index.vocab.has(w));
+    return has(p) && !index.phrases.includes(` ${p.join(' ')} `);
   });
+  // Link entities without the missing technologies' words ("next js" must not link "js").
+  let linkable = ` ${words.join(' ')} `;
+  for (const m of missing) linkable = linkable.replace(` ${toks(m).join(' ')} `, ' ');
+  const nodes = linkEntities(linkable, index.entities);
   return {
     text,
     terms: terms(text),

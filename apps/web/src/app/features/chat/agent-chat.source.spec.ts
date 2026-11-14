@@ -42,6 +42,12 @@ describe('AgentChatSource (the real agent in the browser)', () => {
     expect(textOf(events)).toContain('reach out to Chandrashekhar');
   });
 
+  it('"yes" accepts the follow-up the previous answer offered', async () => {
+    const first = textOf(await askAll('who is mahesh'));
+    expect(first).toContain("I don't know who Mahesh is");
+    expect(textOf(await askAll('yes'))).toContain('Software Engineer');
+  });
+
   it('maps answers to chat intents', () => {
     const base = { text: '', sources: [] };
     expect(intentOf({ ...base, kind: 'unknown', citations: [], urls: [] })).toBe('off-topic');

@@ -112,4 +112,6 @@ export interface Answer {
   urls: string[];
   /** Chunks the answer was built from (for the verifier and debugging). */
   sources: Chunk[];
+  /** A follow-up question this answer offers; "yes" next turn asks it. */
+  suggest?: string;
 }

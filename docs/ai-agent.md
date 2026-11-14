@@ -201,6 +201,30 @@ How PR 1b got there (general techniques, not per-question rules):
 - **Honesty notes**: "where is he from?" → where he is based, plus "hometown isn't in his profile".
 - **Precomputed tokens** for entity names and the tech list → p95 down ~40 %.
 
+### Generated eval: 1,036 questions (`packages/agent/test/generated.ts`)
+
+Synthetic eval generation: questions are built from `content/` and the expected behaviour
+is derived from the same data, so every expectation is correct by construction:
+
+| Group | Questions | What must happen |
+| --- | --- | --- |
+| Every skill × 8 phrasings (+ typos) | ~410 | strong/good/applied → "Yes…"; learning → "He is learning…", never "Yes" |
+| Every project × 10 phrasings | 110 | cites that project |
+| Every company × 6 phrasings | 12 | names and cites it |
+| ~70 technologies not in my data × 4 | ~280 | "isn't in his profile" + "reach out to Chandrashekhar" |
+| Off-topic, tasks ("write code…") | 40 | never a profile answer |
+| Other people × 4 phrasings | 80 | "I don't know who Rahul is" |
+| Personal, injection, confidential | ~42 | declined |
+| Profile facts × many phrasings | ~50 | the fact from the data (employer, years, degree, city, flagship…) |
+
+First run: **97.5 %**. The failures it found, all fixed with general rules:
+"Does he know **Next.js**?" said **"Yes, JavaScript"** (word-level match; now whole-phrase),
+"Write a Python function" answered with certifications (task requests now declined),
+"who is his current employer" said "I don't know" (the people rule was too broad),
+plus missing phrasings. Now **100 %**, gated in CI at ≥ 98 %.
+
+Follow-ups: an answer can offer a next question (`suggest`); "yes / sure / ok" accepts it.
+
 Still weak without an LLM (4 cases): answers that must *combine reasons* across sections
 ("why custom instead of a library?", "why an R-tree?"). That is exactly the LLM's job in PR 2.
 

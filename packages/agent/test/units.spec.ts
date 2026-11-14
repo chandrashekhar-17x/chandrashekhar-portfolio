@@ -191,3 +191,19 @@ describe('third person', () => {
     );
   });
 });
+
+describe('follow-ups', () => {
+  it('"yes" accepts the offer the previous answer made', () => {
+    const first = ask(index, 'who is mahesh').answer;
+    expect(first.suggest).toBe('Who is Chandrashekhar?');
+    const next = ask(index, 'yes', { suggest: first.suggest }).answer;
+    expect(next.kind).toBe('answer');
+    expect(next.text).toContain('Software Engineer');
+  });
+
+  it('"yes" with nothing offered asks what they want to know', () => {
+    const { answer } = ask(index, 'yes');
+    expect(answer.kind).toBe('smalltalk');
+    expect(answer.text).toMatch(/What would you like to know/);
+  });
+});

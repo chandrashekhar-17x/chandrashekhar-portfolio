@@ -28,18 +28,23 @@ export class AgentChatSource extends ChatSource {
   private readonly prefs = inject(MediaPrefs);
   private readonly wordDelay = inject(CHAT_WORD_DELAY);
   private readonly fallback = inject(ScriptedChatSource);
+  /** The follow-up the last answer offered, so a "yes" can accept it. */
+  private suggest: string | undefined;
 
   ask(message: string): Observable<ChatEvent> {
     const started = Date.now();
     const pause = this.prefs.reducedMotion() ? 0 : this.wordDelay;
-    return from(import('./agent-runtime').then((m) => m.answer(message))).pipe(
-      switchMap((a) =>
-        streamAnswer(
+    return from(
+      import('./agent-runtime').then((m) => m.answer(message, { suggest: this.suggest })),
+    ).pipe(
+      switchMap((a) => {
+        this.suggest = a.suggest;
+        return streamAnswer(
           { text: a.text, intent: intentOf(a), citations: a.citations, urls: a.urls },
           pause,
           started,
-        ),
-      ),
+        );
+      }),
       catchError(() => this.fallback.ask(message)),
     );
   }
