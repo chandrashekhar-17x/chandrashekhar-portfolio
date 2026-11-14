@@ -12,6 +12,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
 import { BlueprintService } from '../../core/blueprint/blueprint.service';
+import { sourceUrl } from '../../core/devtools/source-links';
 import { RevealTimeline, revealNote } from '../../core/reveal/reveal-timeline.service';
 import { Box, dimensions } from './dimensions';
 
@@ -94,6 +95,11 @@ export class BlueprintOverlay {
   /** Label box width for a value (the SVG has no text measuring). */
   protected labelWidth(text: string): number {
     return text.length * 8 + 14;
+  }
+
+  /** GitHub folder behind a section (pinned to this build's commit). */
+  protected source(sectionId: string): string | null {
+    return sourceUrl(sectionId, this.route());
   }
 
   protected schedule(): void {
