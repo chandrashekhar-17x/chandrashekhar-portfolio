@@ -1,0 +1,74 @@
+<svg class="bp-svg" [attr.viewBox]="'0 0 ' + vw() + ' ' + vh()" aria-hidden="true">
+  <defs>
+    <marker
+      id="bp-arrow"
+      viewBox="0 0 10 10"
+      refX="10"
+      refY="5"
+      markerWidth="7"
+      markerHeight="7"
+      orient="auto-start-reverse"
+    >
+      <path d="M0 1 L10 5 L0 9 z" />
+    </marker>
+  </defs>
+
+  @for (l of dims().lines; track l.key) {
+    <line
+      class="dim"
+      [attr.x1]="l.x1"
+      [attr.y1]="l.y1"
+      [attr.x2]="l.x2"
+      [attr.y2]="l.y2"
+      marker-start="url(#bp-arrow)"
+      marker-end="url(#bp-arrow)"
+    />
+    <g
+      class="val"
+      [attr.transform]="'translate(' + l.lx + ' ' + l.ly + ')' + (l.vertical ? ' rotate(-90)' : '')"
+    >
+      <rect
+        [attr.x]="-labelWidth(l.text) / 2"
+        y="-9"
+        [attr.width]="labelWidth(l.text)"
+        height="18"
+      />
+      <text text-anchor="middle" dy="4">{{ l.text }}</text>
+    </g>
+  }
+  @for (t of dims().tags; track t.key) {
+    <text class="tag" [attr.x]="t.x" [attr.y]="t.y">{{ t.text }}</text>
+  }
+
+  @if (pointer(); as p) {
+    <line class="cross" x1="0" [attr.y1]="p.y" [attr.x2]="vw()" [attr.y2]="p.y" />
+    <line class="cross" [attr.x1]="p.x" y1="0" [attr.x2]="p.x" [attr.y2]="vh()" />
+    <text class="coord" [attr.x]="p.x + 12" [attr.y]="p.y - 10">
+      X {{ p.x.toFixed(1) }} Y {{ (p.y + p.scrollY).toFixed(1) }}
+    </text>
+  }
+</svg>
+
+<aside class="bp-block" role="status" aria-label="Blueprint mode">
+  <div class="row head"><b>CHANDRASHEKHAR · PORTFOLIO</b><span>REV A</span></div>
+  <div class="row">
+    <span>DWG</span><b>{{ route() }}</b>
+  </div>
+  <div class="grid">
+    <span>SCALE <b>1:1</b></span>
+    <span>UNITS <b>px</b></span>
+    <span>SHEET <b>1/1</b></span>
+    <span
+      >VIEW <b>{{ vw() }}×{{ vh() }}</b></span
+    >
+    <span
+      >DPR <b>{{ dpr() }}</b></span
+    >
+    <span
+      >DATE <b>{{ date }}</b></span
+    >
+  </div>
+  <div class="row"><span>DRAWN</span><b>C.</b><span>CHECKED</span><b>you</b></div>
+  <p>This page as a CAD drawing: a nod to the DXF editor I built from scratch.</p>
+  <button type="button" class="exit" (click)="close()">Exit blueprint <kbd>Esc</kbd></button>
+</aside>
