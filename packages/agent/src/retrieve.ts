@@ -1,4 +1,5 @@
 import { type Bm25Index, buildBm25, scoreBm25 } from './bm25';
+import { type Facts, buildFacts } from './facts';
 import { buildChunks } from './chunk';
 import {
   COMMON_TECH,
@@ -36,6 +37,8 @@ export interface AgentIndex {
   years: number;
   /** Words of the owner's name ("chandrashekhar"), to tell him from other people. */
   owner: Set<string>;
+  /** Roles and projects with exact dates (the tools answer from these). */
+  facts: Facts;
 }
 
 export interface Query {
@@ -99,6 +102,7 @@ export function buildIndex(corpus: Corpus): AgentIndex {
     skillsByCategory,
     years,
     owner: new Set(toks(corpus.profile.name)),
+    facts: buildFacts(corpus),
   };
 }
 

@@ -41,12 +41,12 @@ export function fitAnswer(index: AgentIndex, q: Query): Answer | null {
     const name = LABEL[area] ?? area;
     if (strong.length) {
       parts.push(
-        `in ${name} he has production experience with ${joinAnd(strong.slice(0, 6).map((s) => s.name))}`,
+        `in ${name} he has production experience with ${joinAnd(strong.slice(0, 4).map((s) => s.name))}`,
       );
     }
     if (learning.length) {
       parts.push(
-        `in ${name} he is learning ${joinAnd(learning.slice(0, 6).map((s) => s.name))} (no production experience yet)`,
+        `in ${name} he is learning ${joinAnd(learning.slice(0, 4).map((s) => s.name))} (no production experience yet)`,
       );
     }
     citations.push(
@@ -54,14 +54,12 @@ export function fitAnswer(index: AgentIndex, q: Query): Answer | null {
       ...[...strong, ...learning].slice(0, 3).map((s) => `skill:${s.id}`),
     );
   }
-  const ai = asked.includes('ai')
-    ? ' He is building this portfolio’s AI agent in public as hands-on AI work.'
-    : '';
+  const ai = asked.includes('ai') ? ' He is building this site’s AI agent in public.' : '';
   return {
     kind: 'answer',
     text:
-      `I don't give opinions, only what his profile shows. He has ${index.years}+ years of production frontend work ` +
-      `(Angular, a custom Three.js CAD editor, PDF tooling, real-time UIs). For this role, ${parts.join('; ')}.${ai} ` +
+      `I don't give opinions, only what his profile shows. He has ${index.years}+ years of production frontend work. ` +
+      `For this role, ${parts.join('; ')}.${ai} ` +
       'For a skill-by-skill match, paste the job description into the 30-second view.',
     citations: [...new Set(citations)].slice(0, 6),
     urls: ['/recruiter', ...(asked.includes('ai') ? ['/work/portfolio-rag-agent'] : [])],

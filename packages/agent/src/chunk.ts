@@ -196,10 +196,12 @@ function projectChunks(c: Corpus): Chunk[] {
       id: `project:${p.slug}`,
       kind: 'project' as const,
       title: p.title,
+      // What it is and what it's built with first: short answers read those two sentences.
       text:
-        `${p.title} (${meta.join(', ')}). ${sentence(p.summary)}` +
-        (p.role ? ` His role: ${sentence(p.role)}` : '') +
-        (p.tags?.length ? ` Built with ${p.tags.join(', ')}.` : ''),
+        `${p.title.split(',')[0] ?? p.title}: ${sentence(p.summary)}` +
+        (p.tags?.length ? ` Built with ${p.tags.join(', ')}.` : '') +
+        ` It was a ${meta.join(', ')}.` +
+        (p.role ? ` His role: ${sentence(p.role)}` : ''),
       nodes: uniq([`project:${p.slug}`, ...(p.skills ?? []).map((s) => `skill:${s}`)]),
       url: `/work/${p.slug}`,
     };

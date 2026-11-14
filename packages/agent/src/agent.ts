@@ -1,4 +1,5 @@
-import { extractive, unknown } from './answer';
+import { CONTACT_URL, REACH_OUT, extractive, unknown } from './answer';
+import { plan, runPlan } from './plan';
 import { toks } from './entities';
 import { fitAnswer } from './fit';
 import { guard } from './guard';
@@ -46,6 +47,26 @@ export function ask(index: AgentIndex, question: string, context: Context = {}):
   const q = analyze(question, index);
   const policy = guard(q, index) ?? fitAnswer(index, q);
   if (policy) return { answer: policy, results: [], ms: performance.now() - t0 };
+
+  // Structured questions (dates, roles, filters) → a tool over exact facts → one sentence.
+  const p = plan(q, index);
+  if (p) {
+    const tool = runPlan(p, index);
+    if (tool) return { answer: tool, results: [], ms: performance.now() - t0 };
+    if (p.tool === 'projects' && p.range) {
+      return {
+        answer: {
+          kind: 'unknown',
+          text: `I don't see any dated projects ${p.range.label} in his profile. ${REACH_OUT}`,
+          citations: [],
+          urls: [CONTACT_URL],
+          sources: [],
+        },
+        results: [],
+        ms: performance.now() - t0,
+      };
+    }
+  }
 
   const results = retrieve(index, q, 6);
   const onlyMissing = q.missing.length > 0 && q.nodes.length === 0;

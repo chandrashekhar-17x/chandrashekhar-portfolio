@@ -169,7 +169,7 @@ describe('answers like a careful assistant', () => {
 
   it('answers first: yes/no questions lead with the verdict', () => {
     const { answer } = ask(index, 'Has he used PrimeNG?');
-    expect(answer.text).toMatch(/^Yes, he has worked with PrimeNG\./);
+    expect(answer.text).toMatch(/^Yes, he has used PrimeNG in /);
   });
 
   it('hedges a weak keyword-only match instead of sounding sure', () => {
@@ -205,5 +205,15 @@ describe('follow-ups', () => {
     const { answer } = ask(index, 'yes');
     expect(answer.kind).toBe('smalltalk');
     expect(answer.text).toMatch(/What would you like to know/);
+  });
+});
+
+describe('short answers', () => {
+  it('no answer is longer than 70 words: answer what was asked, not everything', () => {
+    const index2 = buildIndex(loadCorpus());
+    for (const q of loadEvals().map((c) => c.question)) {
+      const words = ask(index2, q).answer.text.split(/\s+/).length;
+      expect(words, q).toBeLessThanOrEqual(70);
+    }
   });
 });
