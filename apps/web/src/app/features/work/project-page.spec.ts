@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 
 import { provideContent } from '../../core/content/provide-content';
+import { provideChat } from '../chat/provide-chat';
 import { ProjectPage, stripTitle } from './project-page';
 
 describe('stripTitle', () => {
@@ -24,7 +25,7 @@ describe('ProjectPage', { timeout: 20_000 }, () => {
   const setup = (slug: string) =>
     render(ProjectPage, {
       inputs: { slug },
-      providers: [provideRouter([]), provideContent()],
+      providers: [provideRouter([]), provideContent(), provideChat()],
     });
 
   it('renders exactly one h1 and the case-study sections', async () => {
@@ -44,7 +45,7 @@ describe('ProjectPage facts', () => {
   it('labels employer work honestly and shows no repo links', async () => {
     await render(ProjectPage, {
       inputs: { slug: 'progressive-pdf-viewer' },
-      providers: [provideRouter([]), provideContent()],
+      providers: [provideRouter([]), provideContent(), provideChat()],
     });
     const tags = await screen.findByRole('list', { name: 'Technologies' });
     expect(tags.textContent).toContain('PDF.js');

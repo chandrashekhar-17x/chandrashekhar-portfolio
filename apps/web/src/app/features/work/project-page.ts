@@ -11,6 +11,7 @@ import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { tap } from 'rxjs';
 
+import { ChatStore } from '../../core/chat/chat-store.service';
 import { ContentRepository } from '../../core/content/content-repository';
 import { articleSchema } from '../../core/seo/article-schema';
 import { SeoService } from '../../core/seo/seo.service';
@@ -37,12 +38,18 @@ export class ProjectPage {
   private readonly response = inject(RESPONSE_INIT, { optional: true });
   private readonly seo = inject(SeoService);
   private readonly site = inject(SITE_CONFIG);
+  private readonly chat = inject(ChatStore);
 
   constructor() {
     // Only case-study pages carry the Article data.
     inject(DestroyRef).onDestroy(() => {
       this.seo.removeJsonLd('ld-article');
     });
+  }
+
+  /** Opens the agent with this project as the question; its answer cites the graph. */
+  protected ask(title: string): void {
+    this.chat.ask(`Tell me about ${title}`);
   }
 
   protected readonly project = rxResource({
