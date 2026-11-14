@@ -1,0 +1,138 @@
+// Drawing layer above the page (below the ⌘K palette). Colours come from the
+// blueprint tokens in styles/components/_blueprint.scss.
+
+.bp-svg {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 2);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+marker path {
+  fill: var(--bp-ink);
+}
+
+.dim {
+  stroke: var(--bp-ink);
+  stroke-width: 1;
+}
+
+.val rect {
+  fill: var(--bg);
+  stroke: var(--bp-ink);
+  stroke-width: 0.75;
+}
+
+.val text,
+.tag,
+.coord {
+  fill: var(--bp-ink);
+}
+
+.tag {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.cross {
+  stroke: var(--bp-ink);
+  stroke-width: 0.5;
+  stroke-dasharray: 6 4;
+  opacity: 0.55;
+}
+
+// Title block, like the corner of an engineering drawing sheet.
+.bp-block {
+  position: fixed;
+  left: max(16px, env(safe-area-inset-left, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: calc(var(--z-overlay) + 3);
+  width: min(340px, calc(100vw - 32px));
+  border: 1.5px solid var(--bp-ink);
+  background: var(--bg);
+  color: var(--bp-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+
+  > * {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--bp-line);
+  }
+
+  b {
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-2);
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+
+  b {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.head b {
+  letter-spacing: 0.1em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 4px 12px;
+}
+
+.exit {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 0;
+  border-bottom: 0;
+  background: transparent;
+  color: var(--bp-ink);
+  font: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--bp-line);
+  }
+
+  kbd {
+    padding: 0 5px;
+    border: 1px solid var(--bp-line);
+    font: inherit;
+  }
+}
+
+// Phones: keep the sheet readable, show only the essentials.
+@media (max-width: 600px) {
+  .bp-block {
+    width: min(260px, calc(100vw - 104px));
+
+    p,
+    .grid,
+    .row:not(.head) {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+// Blueprint mode (<html data-blueprint>): the whole page as a CAD drawing sheet.
+// Only tokens change, so every component follows. `:root[data-blueprint]` beats
+// `[data-theme='light']`, so the drawing looks the same from either theme.
+
+:root[data-blueprint] {
+  color-scheme: dark;
+
+  --bg: #0b2f6b;
+  --bg-2: #0e3779;
+  --panel: rgb(255 255 255 / 4%);
+  --panel-solid: #0e3779;
+  --line: rgb(220 235 255 / 30%);
+  --line-2: rgb(220 235 255 / 55%);
+  --ink: #f2f7ff;
+  --ink-2: #c7dbff;
+  --ink-3: #a7c2ee; // 5.3:1 on --bg
+  --violet: #dbe8ff;
+  --cyan: #bff0ff;
+  --pink: #ffd9ec;
+  --lime: #e4ffc2;
+  --amber: #ffe7a8;
+  --blue: #cfe2ff;
+  --teal: #c4fff3;
+  --orange: #ffdcc2;
+  --rose: #ffd3da;
+  --glow: 0 0 0 1px var(--line);
+  --bp-ink: #e8f1ff;
+  --bp-line: rgb(232 241 255 / 22%);
+
+  body {
+    background-color: var(--bg);
+    // Drawing-sheet grid: fine 8px lines, major 40px lines.
+    background-image:
+      linear-gradient(var(--bp-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bp-line) 1px, transparent 1px),
+      linear-gradient(rgb(232 241 255 / 7%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(232 241 255 / 7%) 1px, transparent 1px);
+    background-size:
+      40px 40px,
+      40px 40px,
+      8px 8px,
+      8px 8px;
+    background-attachment: fixed;
+  }
+
+  // Every section and card drawn as an outline.
+  main section,
+  main article,
+  .first-screen {
+    outline: 1px dashed var(--bp-line);
+    outline-offset: -1px;
+  }
+
+  // Canvases (hero, graph, orb) keep their own colours: turn them to white line art.
+  // `screen` drops their dark background, so only the lines land on the sheet.
+  canvas,
+  img {
+    filter: grayscale(1) brightness(1.5) contrast(1.1);
+    mix-blend-mode: screen;
+  }
+}
+
+// From the light theme, canvases draw dark lines: invert them to white.
+:root[data-blueprint][data-theme='light'] canvas {
+  filter: grayscale(1) invert(1) brightness(1.4);
+}

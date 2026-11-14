@@ -82,8 +82,11 @@ Phases match `docs/plan.md` (0–9).
 - [ ] Journal / learning log — `fe` · M
 - [ ] GitHub activity widget (server-side cached) — `be` · S
 - [ ] Guestbook (moderated) — `be` · S
-- [ ] Privacy analytics (Umami/Plausible) — `ops` · S
+- [ ] Privacy analytics: Cloudflare Web Analytics (one toggle in the Pages project, cookie-free) — `ops` · S
 - [x] OG image generation: one preview per project (`pnpm --filter @portfolio/web gen:og`) — `fe` · S
+- [x] **Blueprint mode**: the page redrawn as a CAD drawing (blue sheet, dimension lines with real px sizes, crosshair with page coordinates, title block); footer button, ⌘K, Esc to exit — `fe` · S
+- [x] DevTools console API: greeting + `chandrashekhar.help()` (ask, blueprint, theme, stack, source, hire) — `fe` · S
+- [x] Footer clock: time in Hyderabad + what I'm probably doing — `fe` · S
 
 ## Phase 9 · Security, performance, launch
 
