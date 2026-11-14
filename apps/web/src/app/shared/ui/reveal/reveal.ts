@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   TemplateRef,
   afterNextRender,
   contentChild,
@@ -11,6 +12,7 @@ import {
 } from '@angular/core';
 
 import { RevealQueue } from '../../../core/reveal/reveal-queue.service';
+import { RevealTimeline } from '../../../core/reveal/reveal-timeline.service';
 import { SectionSkeleton, SkeletonKind } from '../section-skeleton/section-skeleton';
 
 /**
@@ -47,9 +49,12 @@ export class Reveal {
 
   constructor() {
     const queue = inject(RevealQueue);
+    const timeline = inject(RevealTimeline);
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
     afterNextRender(() => {
       void queue.enqueue(() => {
         this.mounted.set(true);
+        timeline.record(host.closest('section')?.id ?? '');
         requestAnimationFrame(() => {
           this.shown.set(true);
         });

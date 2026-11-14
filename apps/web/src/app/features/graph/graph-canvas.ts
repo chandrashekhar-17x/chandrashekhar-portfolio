@@ -23,6 +23,7 @@ import { seededRandom } from '../../core/motion/seeded-random';
 import { ThemeService } from '../../core/theme/theme.service';
 import { CATEGORIES, describeNode } from './graph-categories';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
+import { GraphTrail } from '../../core/graph/graph-trail.service';
 import { Palette, drawGraph } from './graph-renderer';
 import {
   Sim,
@@ -71,6 +72,7 @@ export class GraphCanvas {
   private readonly theme = inject(ThemeService);
   private readonly prefs = inject(MediaPrefs);
   private readonly highlights = inject(GraphHighlightService);
+  private readonly trail = inject(GraphTrail);
   private readonly destroyRef = inject(DestroyRef);
 
   private sim?: Sim;
@@ -87,6 +89,17 @@ export class GraphCanvas {
     effect(() => {
       this.theme.theme();
       if (browser) this.palette = readPalette();
+    });
+    // Lingering on a node for half a second adds it to the visitor's trail.
+    effect((onCleanup) => {
+      const node = this.hovered();
+      if (!node) return;
+      const timer = setTimeout(() => {
+        this.trail.visit(node.id);
+      }, 500);
+      onCleanup(() => {
+        clearTimeout(timer);
+      });
     });
     // A filter only dims/brightens nodes; the layout stays where it is (owner request).
   }

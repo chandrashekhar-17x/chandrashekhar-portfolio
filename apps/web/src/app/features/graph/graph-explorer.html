@@ -5,6 +5,20 @@
     Not a list of projects, but the real relationships in my data: where each skill was used, on
     which project, at which company. Ask the agent a question and the nodes it cites glow.
   </p>
+  @if (trailSummary(); as t) {
+    <div class="trail">
+      <p class="trail-head">
+        <span>Your trail</span>
+        <button type="button" class="reset" (click)="trail.clear()">reset</button>
+      </p>
+      <p>
+        You explored <b>{{ t.count }}</b> nodes, mostly <b>{{ t.area }}</b> ({{ t.inArea }}).
+      </p>
+      <button type="button" class="btn btn--ghost btn--sm ask" (click)="askTrail(t.question)">
+        Ask: “{{ t.question }}” →
+      </button>
+    </div>
+  }
   <div class="bottom">
     <app-graph-filters [graph]="graph()" [active]="filter()" (activeChange)="filter.set($event)" />
     <button

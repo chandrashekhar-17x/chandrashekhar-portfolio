@@ -6,6 +6,8 @@ export interface Box {
   top: number;
   width: number;
   height: number;
+  /** Extra text after the id tag, e.g. how the section loaded. */
+  note?: string;
 }
 
 export interface DimLine {
@@ -66,7 +68,12 @@ export function dimensions(
         text: String(Math.round(b.width)),
         vertical: false,
       });
-      tags.push({ key: b.id, x: b.left + INSET * 2 + 4, y: y + 22, text: `#${b.id}` });
+      tags.push({
+        key: b.id,
+        x: b.left + INSET * 2 + 4,
+        y: y + 22,
+        text: b.note ? `#${b.id} · ${b.note}` : `#${b.id}`,
+      });
     }
 
     const x = b.left + INSET;
