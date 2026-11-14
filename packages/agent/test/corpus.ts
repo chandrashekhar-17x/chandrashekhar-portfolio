@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+import { type ContentFiles, caseStudyFile, corpusFromContent } from '../src/content';
 import type { Corpus } from '../src/types';
 
 const root = fileURLToPath(new URL('../../../content/', import.meta.url));
@@ -12,31 +13,19 @@ const text = (path: string): string => readFileSync(root + path, 'utf8');
 export const TODAY = '2026-11';
 
 export function loadCorpus(today = TODAY): Corpus {
-  const profile = json<Corpus['profile']>('data/profile.json');
-  const { skills } = json<{ skills: Corpus['skills'] }>('data/skills.json');
-  const exp = json<{ organizations: Corpus['organizations']; roles: Corpus['roles'] }>(
-    'data/experience.json',
-  );
-  const { education } = json<{ education: Corpus['education'] }>('data/education.json');
-  const { projects } = json<{ projects: (Corpus['projects'][number] & { body: string })[] }>(
-    'data/projects.json',
-  );
-  const { areas } = json<{ areas: NonNullable<Corpus['about']> }>('data/about.json');
-  const { timeline } = json<{ timeline: { topic: string }[] }>('data/lab.json');
-
-  return {
-    profile,
-    skills,
-    organizations: exp.organizations,
-    roles: exp.roles,
-    education,
-    projects,
-    about: areas,
-    learning: timeline.map((t) => t.topic),
-    caseStudies: new Map(projects.map((p) => [p.slug, text(p.body)])),
-    resumeHtml: text('resume/resume.html'),
-    today,
+  const files: ContentFiles = {
+    profile: json('data/profile.json'),
+    skills: json('data/skills.json'),
+    experience: json('data/experience.json'),
+    education: json('data/education.json'),
+    projects: json('data/projects.json'),
+    about: json('data/about.json'),
+    lab: json('data/lab.json'),
   };
+  const studies = new Map(
+    files.projects.projects.map((p) => [p.slug, text(`projects/${caseStudyFile(p.body)}.md`)]),
+  );
+  return corpusFromContent(files, studies, text('resume/resume.html'), today);
 }
 
 export interface EvalCase {

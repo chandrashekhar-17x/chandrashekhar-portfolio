@@ -76,3 +76,24 @@ export const INTENTS: readonly Intent[] = [
 export function detectIntents(question: string): Intent[] {
   return INTENTS.filter((i) => i.test.test(question));
 }
+
+/** "who is X?" → X (raw text), or null when the question isn't of that shape. */
+export const WHO = /\bwho\s+(?:is|was|'s|are)\s+([a-z][a-z .'-]{0,40}?)\s*[?.!]*$/i;
+
+/** Words that point at the person the agent is about ("who is he", "who is this guy"). */
+const SELF = new Set(['he', 'him', 'this', 'that', 'you']);
+
+/**
+ * Is a "who is …" question about the owner? "who is he" / "who is Chandrashekhar
+ * Prajapati" yes; "who is his manager" / "who is Mahesh" no.
+ */
+export function whoIsOwner(
+  text: string,
+  owner: ReadonlySet<string>,
+  toks: (s: string) => string[],
+): boolean {
+  const subject = WHO.exec(text)?.[1];
+  if (!subject) return true;
+  const words = toks(subject);
+  return !words.length || SELF.has(words[0] ?? '') || words.some((w) => owner.has(w));
+}

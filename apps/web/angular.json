@@ -55,7 +55,8 @@
               "entry": "src/server.ts"
             },
             "loader": {
-              ".md": "text"
+              ".md": "text",
+              ".html": "text"
             }
           },
           "configurations": {

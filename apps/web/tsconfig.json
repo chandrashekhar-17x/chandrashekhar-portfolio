@@ -15,7 +15,8 @@
     "module": "preserve",
     "resolveJsonModule": true,
     "paths": {
-      "@content/*": ["../../content/*"]
+      "@content/*": ["../../content/*"],
+      "@portfolio/agent": ["../../packages/agent/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

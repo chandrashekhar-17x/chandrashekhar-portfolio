@@ -8,7 +8,7 @@ import {
   linkEntities,
   toks,
 } from './entities';
-import { type Intent, detectIntents } from './intent';
+import { type Intent, detectIntents, whoIsOwner } from './intent';
 import { terms, yearsBetween } from './text';
 import type { Chunk, Corpus, Retrieved } from './types';
 
@@ -32,6 +32,8 @@ export interface AgentIndex {
   skillsByCategory: Map<string, Corpus['skills'][number][]>;
   /** Whole years of experience (from the first role to today). */
   years: number;
+  /** Words of the owner's name ("chandrashekhar"), to tell him from other people. */
+  owner: Set<string>;
 }
 
 export interface Query {
@@ -92,6 +94,7 @@ export function buildIndex(corpus: Corpus): AgentIndex {
     proficiency,
     skillsByCategory,
     years,
+    owner: new Set(toks(corpus.profile.name)),
   };
 }
 
@@ -110,7 +113,10 @@ export function analyze(text: string, index: AgentIndex): Query {
     missing,
     yesNo: /^\s*(has|have|does|do|did|is|was|can|could|would|will|are)\b/i.test(text),
     explain: /\b(why|how)\b/i.test(text),
-    intents: detectIntents(text),
+    // "who is his manager?" is not "who is Chandrashekhar?".
+    intents: detectIntents(text).filter(
+      (i) => i.id !== 'who' || whoIsOwner(text, index.owner, toks),
+    ),
   };
 }
 

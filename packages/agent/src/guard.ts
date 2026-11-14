@@ -1,3 +1,6 @@
+import { toks } from './entities';
+import { CONTACT_URL, UNKNOWN } from './answer';
+import { WHO } from './intent';
 import type { AgentIndex, Query } from './retrieve';
 import type { Answer } from './types';
 
@@ -58,6 +61,58 @@ const RULES: readonly {
   },
 ];
 
+/** Words that refer to him (or to nobody in particular), never to another person. */
+const HIM = new Set([
+  'he',
+  'him',
+  'his',
+  'this',
+  'that',
+  'the',
+  'a',
+  'an',
+  'your',
+  'you',
+  'my',
+  'our',
+  'it',
+]);
+const NOT_NAMES = new Set([
+  'it',
+  'that',
+  'what',
+  'he',
+  'who',
+  'there',
+  'let',
+  'here',
+  'where',
+  'how',
+  'today',
+  'everyone',
+]);
+const POSSESSIVE = /\b([a-z]+)['\u2019]s\b/gi;
+
+/**
+ * "Who is Mahesh?" / "Rahul's projects": a person who isn't Chandrashekhar and isn't
+ * in his data. Answering with his profile would mislead, so say so plainly.
+ */
+function otherPerson(q: Query, index: AgentIndex): string | null {
+  const known = (w: string) => index.owner.has(w) || index.vocab.has(w);
+  const who = WHO.exec(q.text)?.[1];
+  if (who) {
+    const words = toks(who);
+    const aboutHim =
+      !words.length || HIM.has(words[0] ?? '') || words.some((w) => index.owner.has(w));
+    if (!aboutHim && words.length <= 3 && !words.every(known)) return who.trim();
+  }
+  for (const [, name = ''] of q.text.matchAll(POSSESSIVE)) {
+    const w = name.toLowerCase();
+    if (!NOT_NAMES.has(w) && !known(w)) return name;
+  }
+  return null;
+}
+
 const SMALLTALK =
   /^\s*(hi|hello|hey|hola|namaste|thanks|thank you|thx|ok|okay|cool|great|bye)\b[\s!.?]*$/i;
 
@@ -77,5 +132,16 @@ export function guard(q: Query, index: AgentIndex): Answer | null {
     };
   }
   for (const rule of RULES) if (rule.test.test(q.text)) return rule.answer(q, index);
+  // "who is his manager / wife / team lead?": people in his life aren't in his data.
+  if (/^(his|her)\b/i.test(WHO.exec(q.text)?.[1] ?? '')) {
+    return { kind: 'unknown', text: UNKNOWN, citations: [], urls: [CONTACT_URL], sources: [] };
+  }
+  const person = otherPerson(q, index);
+  if (person) {
+    const name = person.replace(/\b\w/g, (c) => c.toUpperCase());
+    return policy(
+      `I don't know who ${name} is. I only answer questions about Chandrashekhar, using his portfolio and resume. If you meant him, ask "Who is Chandrashekhar?"`,
+    );
+  }
   return null;
 }

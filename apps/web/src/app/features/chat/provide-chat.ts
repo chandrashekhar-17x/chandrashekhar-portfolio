@@ -1,9 +1,10 @@
 import { Provider } from '@angular/core';
 
 import { ChatSource } from '../../core/chat/chat-source';
+import { AgentChatSource } from './agent-chat.source';
 import { ScriptedChatSource } from './scripted-chat.source';
 
-/** Swap the answer source here (Phase 4: SseChatSource → POST /api/v1/chat). */
+/** The portfolio agent answers; the scripted demo is its offline fallback. */
 export function provideChat(): Provider[] {
-  return [{ provide: ChatSource, useClass: ScriptedChatSource }];
+  return [ScriptedChatSource, { provide: ChatSource, useClass: AgentChatSource }];
 }

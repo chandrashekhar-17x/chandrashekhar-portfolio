@@ -1,11 +1,12 @@
 import { Injectable, InjectionToken, inject } from '@angular/core';
-import { Observable, concat, concatMap, delay, from, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ChatEvent } from '../../core/chat/chat-events';
 import { ChatSource } from '../../core/chat/chat-source';
 import { MediaPrefs } from '../../core/motion/media-prefs.service';
 import { MOCK_GRAPH_INPUT } from '../../core/content/mock-content.repository';
 import { pickAnswer } from './scripted-answers';
+import { streamAnswer } from './stream-answer';
 
 /** Delay between streamed words (ms). Tests set 0. */
 export const CHAT_WORD_DELAY = new InjectionToken<number>('CHAT_WORD_DELAY', {
@@ -14,7 +15,7 @@ export const CHAT_WORD_DELAY = new InjectionToken<number>('CHAT_WORD_DELAY', {
 
 /**
  * Demo answers that *behave* like the real agent: same events, streamed word by word
- * (meta → token… → citations → done). Phase 4 replaces this with the SSE client.
+ * (meta → token… → citations → done). Now the offline fallback of AgentChatSource.
  */
 @Injectable()
 export class ScriptedChatSource extends ChatSource {
@@ -23,19 +24,17 @@ export class ScriptedChatSource extends ChatSource {
   private readonly wordDelay = inject(CHAT_WORD_DELAY);
 
   ask(message: string): Observable<ChatEvent> {
-    const started = Date.now();
     const answer = pickAnswer(message, MOCK_GRAPH_INPUT.projects);
-    const words = answer.text.split(/(\s+)/); // keep whitespace so the text rebuilds exactly
     const pause = this.prefs.reducedMotion() ? 0 : this.wordDelay;
-
-    const meta: ChatEvent = { type: 'meta', messageId: crypto.randomUUID(), intent: answer.intent };
-    const tokens = from(words).pipe(
-      concatMap((t) => of<ChatEvent>({ type: 'token', t }).pipe(delay(pause))),
+    return streamAnswer(
+      {
+        text: answer.text,
+        intent: answer.intent,
+        citations: answer.citations,
+        urls: answer.urls ?? [],
+      },
+      pause,
+      Date.now(),
     );
-    const end: ChatEvent[] = [
-      { type: 'citations', nodes: answer.citations, urls: answer.urls ?? [] },
-      { type: 'done', tokensOut: words.length, latencyMs: Date.now() - started },
-    ];
-    return concat(of(meta), tokens, from(end));
   }
 }
