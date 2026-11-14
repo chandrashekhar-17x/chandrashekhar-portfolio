@@ -1,5 +1,6 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { buildInfo } from './build-info.mjs';
 import { apiOrigin, siteOrigin } from './site-origin.mjs';
 
 // Only public origins are emitted; secrets from .env never enter the browser.
@@ -38,6 +39,8 @@ const source = [
   `export const RESUME_PDF: string | null = ${JSON.stringify(resumePdf)};`,
   '/** Public Cloudflare Turnstile site key; null = no bot-check widget. */',
   `export const TURNSTILE_SITE_KEY: string | null = ${JSON.stringify(turnstileKey)};`,
+  '/** Latest commit in this build (blueprint source links); null outside git. */',
+  `export const BUILD_INFO: { sha: string; date: string | null; subject: string } | null = ${JSON.stringify(buildInfo())};`,
   '',
 ].join('\n');
 mkdirSync(new URL('.', output), { recursive: true });

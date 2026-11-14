@@ -1,6 +1,14 @@
 // robots.txt and sitemap.xml, generated from the routes + content (pure functions).
 
-export const STATIC_PATHS = ['/', '/work', '/graph', '/lab', '/resume', '/journal'] as const;
+export const STATIC_PATHS = [
+  '/',
+  '/work',
+  '/graph',
+  '/lab',
+  '/resume',
+  '/recruiter',
+  '/journal',
+] as const;
 
 export function robotsTxt(siteUrl: string): string {
   return [

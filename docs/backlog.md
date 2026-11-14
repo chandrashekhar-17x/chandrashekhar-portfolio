@@ -91,6 +91,8 @@ Phases match `docs/plan.md` (0–9).
 - [x] Visitor's trail on the graph: nodes you linger on or click are summed up ("6 nodes, mostly CAD") with a one-click follow-up question for the agent (sessionStorage only) — `fe` · S
 - [x] Blueprint X-ray: section tags show how each part loaded (`@defer #2 · +1.4 s` vs eager) — `fe` · S
 - [x] "Ask my agent about this project" on every case study; the demo chat answers named projects from their own content and cites the project + its skills — `ai` · S
+- [x] Blueprint "source ↗" links: each section opens its feature folder on GitHub, pinned to the build's commit — `fe` · S
+- [x] Recruiter view `/recruiter`: one screen with role, years, strongest stack, 3 best projects, experience, contact + JD match; nav pill, ⌘K, sitemap — `fe` · S
 - [x] Two resumes on `/resume`: "Portfolio resume" (from content) and "My resume" (PDF from `content/resume/resume.html`, `make resume-pdf`, preview image for phones, `/resume#pdf`) — `fe` · S
 - [ ] `make resume-import`: Claude reads a new resume PDF and proposes edits to `content/` (review the diff) — `ai` · M
 - [ ] Career time machine: graph slider 2020 → today (needs a `period` on every project in `content/`) — `fe` · S

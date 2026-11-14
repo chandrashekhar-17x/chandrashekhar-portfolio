@@ -142,3 +142,28 @@ marker path {
   font-size: 11px;
   color: var(--bp-ink);
 }
+
+// Source links sit on top of the drawing and are the only clickable part of it.
+.bp-links {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-overlay) + 2);
+  pointer-events: none;
+}
+
+.src {
+  position: absolute;
+  padding: 2px 6px;
+  border: 1px solid var(--bp-line);
+  background: var(--bg);
+  color: var(--bp-ink);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-decoration: none;
+  pointer-events: auto;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--bp-ink);
+  }
+}

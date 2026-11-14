@@ -13,6 +13,7 @@
   </ul>
 
   <span class="spacer"></span>
+  <a class="recruiter desktop" routerLink="/recruiter">⚡ 30-sec view</a>
   <button
     type="button"
     class="kbd desktop"
@@ -44,6 +45,9 @@
         <a routerLink="/" [fragment]="link.fragment">{{ link.label }}</a>
       </li>
     }
+    <li>
+      <a routerLink="/recruiter" (click)="menuOpen.set(false)">⚡ 30-sec view</a>
+    </li>
     <li>
       <button type="button" (click)="menuOpen.set(false); chat.open()">Ask my agent ✦</button>
     </li>
