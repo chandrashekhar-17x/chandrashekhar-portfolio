@@ -1,11 +1,12 @@
 import { extractive, unknown } from './answer';
 import { fitAnswer } from './fit';
 import { guard } from './guard';
-import { type AgentIndex, analyze, confident, retrieve } from './retrieve';
+import { type AgentIndex, analyze, confidence, retrieve } from './retrieve';
 import type { Answer, Retrieved } from './types';
 
 // The whole pipeline without a language model:
-// guard → analyse → retrieve → (not enough evidence → honest "unknown") → extractive answer.
+// guard → analyse → retrieve → confidence (low → honest "I don't know") → extractive answer
+// (medium → the answer says it may be partial and points to Chandrashekhar).
 // The Pages Function adds an LLM step between retrieve and answer, and falls back to this.
 
 export interface Trace {
@@ -23,6 +24,7 @@ export function ask(index: AgentIndex, question: string): Trace {
 
   const results = retrieve(index, q, 6);
   const onlyMissing = q.missing.length > 0 && q.nodes.length === 0;
-  const answer = onlyMissing || !confident(q, results) ? unknown(q) : extractive(index, q, results);
+  const level = confidence(q, results);
+  const answer = onlyMissing || level === 'low' ? unknown(q) : extractive(index, q, results, level);
   return { answer, results, ms: performance.now() - t0 };
 }

@@ -22,7 +22,21 @@ const POOL = 6;
 const EVIDENCE = new Set<Chunk['kind']>(['project', 'case-study', 'resume', 'role', 'career']);
 const LISTY = new Set<Chunk['kind']>(['skills', 'about']);
 const REASON = /\b(because|for|so that|instead|to avoid|which means|so it|so the)\b/i;
-const FIRST_PERSON = /\b(I|I'm|I've|me|my)\b/;
+/** "I + verb" can't be rewritten safely ("I build" → "he build"), so such sentences are skipped. */
+const FIRST_PERSON = /\bI\b(?!['\u2019])/;
+
+/** My data is partly written in first person; answers talk about him. */
+export function thirdPerson(text: string): string {
+  return text
+    .replace(/\bI['\u2019]m\b/g, "he's")
+    .replace(/\bI['\u2019]ve\b/g, "he's")
+    .replace(/\bmyself\b/gi, 'himself')
+    .replace(/\bmine\b/gi, 'his')
+    .replace(/\bme\b/g, 'him')
+    .replace(/\bmy\b/g, 'his')
+    .replace(/\bMy\b/g, 'His')
+    .replace(/^he's/, "He's");
+}
 
 export interface Picked {
   text: string;
@@ -64,7 +78,7 @@ export function compose(index: AgentIndex, q: Query, results: readonly Retrieved
   const picked: Picked[] = [];
   let words = 0;
   const take = (text: string, chunk: Chunk) => {
-    picked.push({ text, chunk });
+    picked.push({ text: thirdPerson(text), chunk });
     words += text.split(/\s+/).length;
   };
 
@@ -95,6 +109,10 @@ export function compose(index: AgentIndex, q: Query, results: readonly Retrieved
             flat: ` ${toks(text).join(' ')} `,
           })),
   );
+
+  // Never quote "I'm…" from the bio in a third-person answer, unless nothing else exists.
+  const notFirstPerson = pool.filter((c) => !FIRST_PERSON.test(c.text));
+  if (notFirstPerson.length) pool.splice(0, pool.length, ...notFirstPerson);
 
   while (picked.length < MAX_SENTENCES && pool.length) {
     let best = -1;

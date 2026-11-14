@@ -1,6 +1,6 @@
 import { idf } from './bm25';
 import { compose } from './compose';
-import type { AgentIndex, Query } from './retrieve';
+import type { AgentIndex, Confidence, Query } from './retrieve';
 import { terms } from './text';
 import type { Answer, Retrieved } from './types';
 
@@ -12,8 +12,11 @@ const MAX_CITATIONS = 6;
 /** A word this rare (BM25 idf) is specific enough to confirm a yes/no question. */
 const RARE_IDF = 3;
 
-export const UNKNOWN =
-  "That isn't in his profile, so I won't guess. You can ask him directly through the contact form, or ask about his skills, projects or experience.";
+/** Where every "can't answer" points: the contact form on the home page. */
+export const CONTACT_URL = '/#contact';
+export const REACH_OUT = 'Please reach out to Chandrashekhar directly through the contact form.';
+
+export const UNKNOWN = `I don't know: that isn't in his profile, and I won't guess. ${REACH_OUT}`;
 
 /** "a", "a and b", "a, b and c". */
 export function joinAnd(items: readonly string[]): string {
@@ -24,18 +27,19 @@ export function joinAnd(items: readonly string[]): string {
 function missingNote(q: Query): string {
   if (!q.missing.length) return '';
   const names = q.missing.map((m) => m.replace(/^\w/, (c) => c.toUpperCase()));
-  return `${joinAnd(names)} ${names.length > 1 ? "aren't" : "isn't"} in his profile, so I won't guess.`;
+  if (names.length === 1) {
+    return `${names[0] ?? ''} isn't in his profile, so I won't guess; please reach out to Chandrashekhar to ask about it.`;
+  }
+  return `that isn't in his profile: ${joinAnd(names)} aren't listed in his skills, projects or resume, so I won't guess; please reach out to Chandrashekhar to ask about them.`;
 }
 
 export function unknown(q: Query): Answer {
   const note = missingNote(q);
   return {
     kind: 'unknown',
-    text: note
-      ? `That isn't in his profile: ${note.replace(/, so I won't guess\.$/, '.')} Ask about his skills, projects or experience instead.`
-      : UNKNOWN,
+    text: note ? `I don't know of any experience with that: ${note}` : UNKNOWN,
     citations: [],
-    urls: [],
+    urls: [CONTACT_URL],
     sources: [],
   };
 }
@@ -69,7 +73,12 @@ function yesLead(
   return used.length ? `Yes, he has worked with ${label(used)}. ` : 'Yes. ';
 }
 
-export function extractive(index: AgentIndex, q: Query, results: readonly Retrieved[]): Answer {
+export function extractive(
+  index: AgentIndex,
+  q: Query,
+  results: readonly Retrieved[],
+  level: Confidence = 'high',
+): Answer {
   const picked = compose(index, q, results);
   if (!picked.length) return unknown(q);
 
@@ -87,14 +96,21 @@ export function extractive(index: AgentIndex, q: Query, results: readonly Retrie
   const origin =
     /\b(from|hometown|native|born|grew up)\b/i.test(q.text) &&
     q.intents.some((i) => i.id === 'location')
-      ? " His hometown isn't in his profile, only where he is based."
+      ? " His hometown isn't in his profile, only where he is based; please reach out to Chandrashekhar if you need it."
       : '';
   const note = `${missingNote(q)}${origin}`.trim();
+  // Only keywords matched: answer, but be clear it may not be the whole story.
+  const partial = level === 'medium';
+  const hedge = partial ? 'This may only partly answer your question. From his profile: ' : '';
+  const outro = partial
+    ? ` For details, ${REACH_OUT[0]?.toLowerCase() ?? ''}${REACH_OUT.slice(1)}`
+    : '';
+  const urls = [...new Set(used.flatMap((c) => (c.url ? [c.url] : [])))];
   return {
     kind: 'answer',
-    text: `${lead}${text}${note ? ` ${note}` : ''}`.trim(),
+    text: `${hedge}${lead}${text}${note ? ` ${note}` : ''}${outro}`.trim(),
     citations,
-    urls: [...new Set(used.flatMap((c) => (c.url ? [c.url] : [])))],
+    urls: partial || q.missing.length ? [...urls, CONTACT_URL] : urls,
     sources: used,
   };
 }
