@@ -66,7 +66,7 @@ test('blueprint links each section to its code; the footer stamps the build comm
 }) => {
   await page.goto('/');
   const stamp = page.locator('footer .stamp');
-  await expect(stamp).toHaveText(/updated .+ · [0-9a-f]{7}/);
+  await expect(stamp).toHaveText(/updated .+ ·\s+[0-9a-f]{7}\s/);
   await expect(stamp).toHaveAttribute('href', /\/commit\/[0-9a-f]{40}$/);
 
   await page.getByRole('button', { name: /view as blueprint/i }).click();
