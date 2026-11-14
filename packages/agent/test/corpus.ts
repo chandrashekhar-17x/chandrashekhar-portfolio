@@ -48,6 +48,8 @@ export interface EvalCase {
   /** Graph nodes that must be among the retrieved chunks' nodes (top 5). */
   expectNodes?: string[];
   agentOnly?: boolean;
+  /** Written before tuning; reported separately to measure generalisation. */
+  holdout?: boolean;
 }
 
 export function loadEvals(): EvalCase[] {

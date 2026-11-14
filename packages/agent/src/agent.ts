@@ -1,4 +1,5 @@
 import { extractive, unknown } from './answer';
+import { fitAnswer } from './fit';
 import { guard } from './guard';
 import { type AgentIndex, analyze, confident, retrieve } from './retrieve';
 import type { Answer, Retrieved } from './types';
@@ -17,7 +18,7 @@ export interface Trace {
 export function ask(index: AgentIndex, question: string): Trace {
   const t0 = performance.now();
   const q = analyze(question, index);
-  const policy = guard(q, index);
+  const policy = guard(q, index) ?? fitAnswer(index, q);
   if (policy) return { answer: policy, results: [], ms: performance.now() - t0 };
 
   const results = retrieve(index, q, 6);

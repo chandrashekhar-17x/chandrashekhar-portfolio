@@ -1,5 +1,5 @@
 {
-  "$comment": "Agent eval seed (profile-data §9). The scripted chat must pass these now; the Phase 4 RAG agent must pass them too. mustMention / mustNotMention are case-insensitive substrings. Never write internal product names here: the confidentiality checker scans this file. Cases with agentOnly: true run against the agent (packages/agent) only, not the scripted chat.",
+  "$comment": "Agent eval seed (profile-data §9). The scripted chat must pass these now; the Phase 4 RAG agent must pass them too. mustMention / mustNotMention are case-insensitive substrings. Never write internal product names here: the confidentiality checker scans this file. Cases with agentOnly: true run against the agent (packages/agent) only, not the scripted chat. holdout: true marks questions written before tuning; never tune answers against them, they measure generalisation.",
   "cases": [
     {
       "id": "where-work",
@@ -303,6 +303,109 @@
       "question": "Which customers has he built software for?",
       "kind": "confidential",
       "mustMention": ["don't share client"],
+      "agentOnly": true
+    },
+    {
+      "id": "h-company",
+      "question": "Which company does he currently work for?",
+      "kind": "answer",
+      "mustMention": ["VassarDigital.ai"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-degree",
+      "question": "What degree does he have?",
+      "kind": "answer",
+      "mustMention": ["MCA"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-webgl",
+      "question": "Is he good with WebGL?",
+      "kind": "answer",
+      "mustMention": ["Yes", "WebGL"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-cad",
+      "question": "Tell me about the CAD editor",
+      "kind": "answer",
+      "mustMention": ["Three.js", "DXF"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-pdf-fast",
+      "question": "How did he make PDFs load faster?",
+      "kind": "answer",
+      "mustMention": ["Range Requests"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-realtime",
+      "question": "What has he done with real-time features?",
+      "kind": "answer",
+      "mustMention": ["Server-Sent Events"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-lead",
+      "question": "Did he lead any project?",
+      "kind": "answer",
+      "mustMention": ["technical direction"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-langchain",
+      "question": "Does he know LangChain?",
+      "kind": "answer",
+      "mustMention": ["learning", "LangChain"],
+      "agentOnly": true,
+      "holdout": true,
+      "mustNotMention": ["Yes."]
+    },
+    {
+      "id": "h-city",
+      "question": "What city does he live in?",
+      "kind": "answer",
+      "mustMention": ["Hyderabad"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "h-primeng",
+      "question": "Has he used PrimeNG?",
+      "kind": "answer",
+      "mustMention": ["Yes", "PrimeNG"],
+      "agentOnly": true,
+      "holdout": true
+    },
+    {
+      "id": "u-from",
+      "question": "where he is from",
+      "kind": "answer",
+      "mustMention": ["Hyderabad", "hometown isn't in his profile"],
+      "agentOnly": true
+    },
+    {
+      "id": "u-fit-ai",
+      "question": "what do you think about him, is he good for AI engineer role",
+      "kind": "answer",
+      "mustMention": ["don't give opinions", "learning", "no production experience yet"],
+      "agentOnly": true,
+      "mustNotMention": ["great fit", "perfect"]
+    },
+    {
+      "id": "u-fit-frontend",
+      "question": "Is he a good fit for a senior Angular frontend role?",
+      "kind": "answer",
+      "mustMention": ["don't give opinions", "production experience", "Angular"],
       "agentOnly": true
     }
   ]

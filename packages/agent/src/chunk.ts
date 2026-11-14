@@ -13,15 +13,17 @@ const sentence = (t: string) => (/[.!?]$/.test(t.trim()) ? t.trim() : `${t.trim(
 const uniq = (xs: readonly string[]) => [...new Set(xs)];
 
 export function buildChunks(corpus: Corpus, entities: readonly Entity[]): Chunk[] {
+  const resume = corpus.resumeHtml ? resumeChunks(corpus.resumeHtml, entities) : [];
   const chunks: Chunk[] = [
     ...profileChunks(corpus),
+    ...orgChunks(corpus, resume),
     ...careerChunks(corpus),
     ...educationChunks(corpus),
     ...skillChunks(corpus),
     ...projectChunks(corpus),
     ...caseStudyChunks(corpus, entities),
     ...aboutChunks(corpus),
-    ...(corpus.resumeHtml ? resumeChunks(corpus.resumeHtml, entities) : []),
+    ...resume,
   ];
   return chunks.map((c) => ({ ...c, text: sentence(c.text.replace(/\s+/g, ' ')) }));
 }
@@ -100,6 +102,33 @@ function careerChunks(c: Corpus): Chunk[] {
   }
   return out;
 }
+
+/** Per company: roles with dates, then the first resume bullets for that company. */
+function orgChunks(c: Corpus, resume: readonly Chunk[]): Chunk[] {
+  return c.organizations.map((o) => {
+    const roles = c.roles
+      .filter((r) => r.org === o.id)
+      .sort((a, b) => b.start.localeCompare(a.start))
+      .map(
+        (r) =>
+          `${r.employmentType === 'internship' ? `${r.title} Intern` : r.title} (${rangeLabel(r.start, r.end)})`,
+      );
+    const work = resume
+      .filter((r) => r.nodes[0] === `org:${o.id}`)
+      .slice(0, 2)
+      .map((r) => sentence(r.text));
+    return {
+      id: `career:org:${o.id}`,
+      kind: 'career' as const,
+      title: `Work at ${o.name}`,
+      text: `At ${o.name} he worked as ${joinList(roles)}. ${work.join(' ')}`,
+      nodes: [`org:${o.id}`],
+    };
+  });
+}
+
+const joinList = (xs: readonly string[]) =>
+  xs.length <= 1 ? (xs[0] ?? '') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1) ?? ''}`;
 
 function educationChunks(c: Corpus): Chunk[] {
   return c.education.map((e) => ({

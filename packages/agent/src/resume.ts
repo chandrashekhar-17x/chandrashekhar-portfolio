@@ -51,7 +51,9 @@ export function resumeChunks(html: string, entities: readonly Entity[]): Chunk[]
         const header = htmlText((job.match(/<header>([\s\S]*?)<\/header>/) ?? [])[1] ?? '');
         const items = job.match(/<li>([\s\S]*?)<\/li>/g) ?? [];
         items.forEach((li, i) => {
-          add(`${key}-${String(j + 1)}-${String(i + 1)}`, header, htmlText(li));
+          // The job header names the company: link the bullet to it.
+          const org = linkEntities(header, entities).filter((n) => n.startsWith('org:'));
+          add(`${key}-${String(j + 1)}-${String(i + 1)}`, header, htmlText(li), org);
         });
       });
       continue;

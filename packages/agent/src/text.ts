@@ -47,6 +47,7 @@ export function stem(word: string): string {
   if (word.length <= 4 || /[0-9+#]/.test(word)) return word;
   for (const [suffix, keep] of [
     ['ies', 'y'],
+    ['ied', 'y'],
     ['ing', ''],
     ['ed', ''],
     ['es', ''],
