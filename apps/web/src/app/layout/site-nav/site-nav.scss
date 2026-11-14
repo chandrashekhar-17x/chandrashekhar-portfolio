@@ -117,3 +117,21 @@
     display: inline-grid;
   }
 }
+
+// Shortcut for people who skim: the one-screen recruiter view.
+.recruiter {
+  margin-right: var(--space-3);
+  padding: 6px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--amber);
+    color: var(--ink);
+  }
+}

@@ -13,6 +13,7 @@ describe('SEO files', () => {
     expect(xml).toContain('<loc>https://example.dev/</loc>');
     expect(xml).toContain('<loc>https://example.dev/work/cad-editor</loc>');
     expect(xml).toContain('<lastmod>2026-11-09</lastmod>');
-    expect(xml.match(/<url>/g)).toHaveLength(7);
+    expect(xml).toContain('<loc>https://example.dev/recruiter</loc>');
+    expect(xml.match(/<url>/g)).toHaveLength(8);
   });
 });

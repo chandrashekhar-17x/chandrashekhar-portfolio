@@ -62,6 +62,15 @@ export const routes: Routes = [
     loadComponent: () => import('./features/resume/resume-page').then((m) => m.ResumePage),
   },
   {
+    path: 'recruiter',
+    data: {
+      description:
+        'Chandrashekhar in 30 seconds: role, experience, strongest stack, three best projects and how to reach him.',
+    },
+    title: `Recruiter view · ${site}`,
+    loadComponent: () => import('./features/recruiter/recruiter-page').then((m) => m.RecruiterPage),
+  },
+  {
     path: '**',
     data: { description: "This page doesn't exist." },
     title: `Not found · ${site}`,
