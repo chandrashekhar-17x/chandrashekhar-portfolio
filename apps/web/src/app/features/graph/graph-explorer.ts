@@ -14,6 +14,8 @@ import { GraphNode, KnowledgeGraph } from '../../core/content/build-graph';
 import { GraphFilters } from './graph-filters';
 import { ChatStore } from '../../core/chat/chat-store.service';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
+import { GraphTrail } from '../../core/graph/graph-trail.service';
+import { summarizeTrail } from './trail-summary';
 import { GraphList } from './graph-list';
 import { GraphCanvas } from './graph-canvas';
 import { HUB_LABELS } from '../../core/content/build-graph';
@@ -41,6 +43,11 @@ export class GraphExplorer {
   );
 
   private readonly chat = inject(ChatStore);
+  protected readonly trail = inject(GraphTrail);
+  /** "You explored 7 nodes, mostly CAD": shown once the visitor has explored a bit. */
+  protected readonly trailSummary = computed(() =>
+    summarizeTrail(this.graph().nodes, this.trail.visited()),
+  );
 
   /**
    * Narrow screens (< 600 px) get a drill-down instead of the full network:
@@ -81,6 +88,10 @@ export class GraphExplorer {
     });
   }
 
+  protected askTrail(question: string): void {
+    this.chat.ask(question);
+  }
+
   /** Clicking a node lights it and its neighbours; skills/projects also ask the agent. */
   protected onActivate(node: GraphNode): void {
     // Small screens: tapping a hub opens its cluster.
@@ -88,6 +99,7 @@ export class GraphExplorer {
       this.filter.set(node.category);
       return;
     }
+    this.trail.visit(node.id);
     if (node.kind !== 'hub') this.chat.ask(`Tell me about ${node.label}`);
     const ids = new Set([node.id]);
     for (const l of this.graph().links) {

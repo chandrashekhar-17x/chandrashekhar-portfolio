@@ -87,6 +87,9 @@ Phases match `docs/plan.md` (0–9).
 - [x] **Blueprint mode**: the page redrawn as a CAD drawing (blue sheet, dimension lines with real px sizes, crosshair with page coordinates, title block); footer button, ⌘K, Esc to exit — `fe` · S
 - [x] DevTools console API: greeting + `chandrashekhar.help()` (ask, blueprint, theme, stack, source, hire) — `fe` · S
 - [x] Footer clock: time in Hyderabad + what I'm probably doing — `fe` · S
+- [x] Visitor's trail on the graph: nodes you linger on or click are summed up ("6 nodes, mostly CAD") with a one-click follow-up question for the agent (sessionStorage only) — `fe` · S
+- [x] Blueprint X-ray: section tags show how each part loaded (`@defer #2 · +1.4 s` vs eager) — `fe` · S
+- [ ] Career time machine: graph slider 2020 → today (needs a `period` on every project in `content/`) — `fe` · S
 
 ## Phase 9 · Security, performance, launch
 

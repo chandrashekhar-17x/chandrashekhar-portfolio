@@ -12,16 +12,19 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 
 import { BlueprintService } from '../../core/blueprint/blueprint.service';
+import { RevealTimeline, revealNote } from '../../core/reveal/reveal-timeline.service';
 import { Box, dimensions } from './dimensions';
 
 /** What gets dimensioned: home sections (plus the hero), or the page's <main>. */
-function measure(): Box[] {
+function measure(timeline: RevealTimeline): Box[] {
   const els = [...document.querySelectorAll<HTMLElement>('.first-screen, main section[id]')];
   const targets = els.length ? els : [...document.querySelectorAll<HTMLElement>('main')];
   return targets.map((el) => {
     const r = el.getBoundingClientRect();
+    const id = el.id || (el.classList.contains('first-screen') ? 'hero' : 'main');
     return {
-      id: el.id || (el.classList.contains('first-screen') ? 'hero' : 'main'),
+      id,
+      note: revealNote(timeline.get(id)),
       left: r.left,
       top: r.top,
       width: r.width,
@@ -48,6 +51,7 @@ function measure(): Box[] {
 })
 export class BlueprintOverlay {
   private readonly blueprint = inject(BlueprintService);
+  private readonly timeline = inject(RevealTimeline);
   private readonly boxes = signal<Box[]>([]);
   protected readonly vw = signal(0);
   protected readonly vh = signal(0);
@@ -113,7 +117,7 @@ export class BlueprintOverlay {
     this.vw.set(window.innerWidth);
     this.vh.set(window.innerHeight);
     this.dpr.set(Math.round((window.devicePixelRatio || 1) * 100) / 100);
-    this.boxes.set(measure());
+    this.boxes.set(measure(this.timeline));
     this.navBottom.set(document.querySelector('app-site-nav')?.getBoundingClientRect().bottom ?? 0);
     const p = this.pointer();
     if (p) this.pointer.set({ ...p, scrollY: window.scrollY });

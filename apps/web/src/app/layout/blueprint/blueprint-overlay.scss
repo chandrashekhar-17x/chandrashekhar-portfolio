@@ -136,3 +136,9 @@ marker path {
     }
   }
 }
+
+.bp-block code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--bp-ink);
+}

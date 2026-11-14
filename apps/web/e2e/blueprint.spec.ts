@@ -42,3 +42,21 @@ test('footer shows the time in Hyderabad', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('footer')).toContainText(/Hyderabad \d\d:\d\d IST · probably/);
 });
+
+test('blueprint tags show how lazy sections loaded', async ({ page }) => {
+  await page.goto('/');
+  const work = page.locator('#work');
+  await work.scrollIntoViewIfNeeded();
+  await expect(work.locator('.is-revealed')).toBeVisible({ timeout: 10_000 });
+  await page.keyboard.press('Control+k');
+  await page.getByRole('combobox').fill('blueprint');
+  await page.keyboard.press('Enter');
+  // Put the top edge of #work in view, below the sticky nav.
+  await page.evaluate(() => {
+    const top = document.querySelector('#work')?.getBoundingClientRect().top ?? 0;
+    scrollTo(0, top + scrollY - 300);
+  });
+  await expect(page.locator('.bp-svg .tag', { hasText: '#work' })).toHaveText(
+    /#work · @defer #\d+ · \+\d+\.\d\d s/,
+  );
+});

@@ -75,3 +75,61 @@
   text-transform: uppercase;
   color: var(--ink-2);
 }
+
+// Visitor's trail card (appears after a few explored nodes).
+.trail {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px dashed var(--line-2);
+  border-radius: 12px;
+  font-size: 13.5px;
+  animation: trail-in var(--dur-base) ease-out both;
+
+  p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  b {
+    color: var(--ink);
+  }
+}
+
+.trail-head {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.reset {
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ask {
+  justify-self: start;
+  text-align: left;
+  white-space: normal;
+}
+
+@keyframes trail-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trail {
+    animation: none;
+  }
+}
