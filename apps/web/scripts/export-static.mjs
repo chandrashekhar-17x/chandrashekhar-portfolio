@@ -1,6 +1,6 @@
 // Turns the build into a fully static site for Cloudflare Pages (no Node server needed).
 // Every content page is already prerendered; this adds what the Express server
-// normally answers itself: robots.txt, sitemap.xml and a real 404 page, plus _headers.
+// normally answers itself: robots.txt, sitemap.xml, llms.txt and a real 404 page, plus _headers.
 // Run after `ng build`: `pnpm --filter @portfolio/web build:static`.
 import { spawn } from 'node:child_process';
 import { readdirSync, renameSync, statSync, writeFileSync } from 'node:fs';
@@ -36,6 +36,8 @@ try {
   };
   await save('/robots.txt', 'robots.txt');
   await save('/sitemap.xml', 'sitemap.xml');
+  await save('/llms.txt', 'llms.txt');
+  await save('/llms-full.txt', 'llms-full.txt');
   // Cloudflare Pages serves 404.html (with status 404) for any unknown path.
   await save('/this-page-does-not-exist', '404.html', 404);
 } finally {

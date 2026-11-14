@@ -71,7 +71,7 @@ Phases match `docs/plan.md` (0–9).
 ## Phase 7 · MCP + discoverability
 
 - [ ] MCP server (FastMCP, Streamable HTTP at /mcp, read-only, rate-limited) — `ai` · M
-- [ ] /llms.txt + /llms-full.txt generated from the DB — `ai` · S
+- [x] /llms.txt + /llms-full.txt (generated from `content/` at build; switch to the DB in Phase 7) — `ai` · S
 
 ## Phase 8 · Showcase extras
 
