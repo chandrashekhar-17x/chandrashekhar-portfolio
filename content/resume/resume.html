@@ -1,0 +1,274 @@
+<!doctype html>
+<!--
+  Source of content/resume/resume.pdf ("My resume" on /resume).
+  Edit this file, then run `make resume-pdf` and commit both.
+  Facts only from content/ and the owner's confirmed resumes (2026-11-14).
+  Public file: no email or phone (contact goes through the site's form).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chandrashekhar Prajapati · Resume</title>
+    <style>
+      @font-face {
+        font-family: 'Inter Tight';
+        src: url('fonts/inter-tight.woff2') format('woff2');
+        font-weight: 100 900;
+      }
+      @font-face {
+        font-family: 'Bricolage';
+        src: url('fonts/bricolage.woff2') format('woff2');
+        font-weight: 200 800;
+      }
+      @page {
+        size: A4;
+        margin: 11mm 13mm;
+      }
+      :root {
+        --ink: #14122e;
+        --ink-2: #47456b;
+        --accent: #5b3fd6;
+        --line: #d9d6ee;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        font:
+          9.4pt/1.38 'Inter Tight',
+          Arial,
+          sans-serif;
+      }
+      h1 {
+        margin: 0;
+        font:
+          700 22pt/1.1 'Bricolage',
+          'Inter Tight',
+          Arial,
+          sans-serif;
+        letter-spacing: -0.02em;
+      }
+      .role {
+        margin: 3px 0 4px;
+        font-size: 11pt;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .contact {
+        margin: 0;
+        color: var(--ink-2);
+      }
+      .contact a {
+        color: inherit;
+        text-decoration: none;
+      }
+      h2 {
+        margin: 10px 0 4px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid var(--line);
+        font-size: 9pt;
+        font-weight: 700;
+        /* No letter-spacing: ATS parsers would read "S K I L L S". */
+        color: var(--accent);
+      }
+      p {
+        margin: 0;
+      }
+      ul {
+        margin: 3px 0 0;
+        padding-left: 14px;
+      }
+      li {
+        margin: 1.5px 0;
+      }
+      .job {
+        margin-top: 6px;
+        break-inside: avoid;
+      }
+      .job header {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .when {
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+      .skills {
+        display: grid;
+        grid-template-columns: 128px 1fr;
+        gap: 2px 10px;
+        margin: 0;
+      }
+      .skills dt {
+        font-weight: 600;
+      }
+      .skills dd {
+        margin: 0;
+      }
+      b {
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Chandrashekhar Prajapati</h1>
+      <p class="role">
+        Software Engineer · Frontend (Angular) · Three.js/WebGL CAD · Document tooling
+      </p>
+      <p class="contact">
+        Hyderabad, India ·
+        <a href="https://chandrashekhar.pages.dev">chandrashekhar.pages.dev</a> ·
+        <a href="https://www.linkedin.com/in/chandrashekhar1423/"
+          >linkedin.com/in/chandrashekhar1423</a
+        >
+        ·
+        <a href="https://github.com/chandrashekhar-17x">github.com/chandrashekhar-17x</a>
+      </p>
+    </header>
+
+    <h2>Summary</h2>
+    <p>
+      Software Engineer with <b>3+ years</b> building enterprise Angular applications (TypeScript,
+      RxJS, Signals, PrimeNG).
+      <b>Primary owner of a custom Three.js/WebGL CAD viewer and editor built from zero</b> that
+      became the foundation of a core product workflow. Also builds PDF and document tooling,
+      dynamic forms, enterprise authentication and real-time UIs. Now growing into Python backend
+      (FastAPI, Django) and AI engineering (RAG, LLM agents), building an AI-native portfolio in
+      public.
+    </p>
+
+    <h2>Experience</h2>
+    <section class="job">
+      <header>
+        <span><b>Software Engineer</b>, VassarDigital.ai · Hyderabad</span>
+        <span class="when">Jan 2024 – Present</span>
+      </header>
+      <ul>
+        <li>
+          <b>Custom CAD viewer/editor (Angular, Three.js, WebGL, Canvas):</b> evaluated 3 approaches
+          and shipped a DXF rendering engine for 8 entity types plus CAD tables, R-tree spatial
+          indexing, a full editing suite (selection, properties, layers, move/copy/delete,
+          measurement, undo/redo) and DXF/PDF export. It became the foundation of a core product
+          workflow.
+        </li>
+        <li>
+          <b>Led UI technical direction</b> for the first ~2 months of a railway signalling-plan
+          workflow: scheme drawings digitised into structured JSON, domain assets edited on the CAD
+          canvas, red/green change detection between versions.
+        </li>
+        <li>
+          <b>PDF and document tooling:</b> progressive PDF viewer streaming pages with PDF.js and
+          HTTP Range Requests (virtualized rendering); document review viewer with precise
+          text/image highlighting, bounding-box overlays and scroll synchronization.
+        </li>
+        <li>
+          <b>Knowledge-base ingestion:</b> URL, file and bulk upload, permission-based access
+          (RBAC), PDF/HTML rendering and accessibility-tree tooling; HTML bounding-box visualizer
+          built with the backend team.
+        </li>
+        <li>
+          <b>Enterprise authentication:</b> integrated Keycloak with role-based access control and
+          Azure AD sign-in with MSAL.
+        </li>
+        <li>
+          <b>Dynamic forms:</b> JSON-driven Reactive Forms with nested FormArrays and custom
+          validators, reused across modules; reusable component architecture and PrimeNG data
+          tables.
+        </li>
+        <li>
+          <b>Performance and real-time:</b> lazy loading, batching and progressive processing for
+          large DXF, PDF and JSON workloads; live progress for long-running jobs with Server-Sent
+          Events.
+        </li>
+        <li>
+          Contributed across 4 product teams; code reviews, debugging and architecture discussions.
+        </li>
+      </ul>
+    </section>
+    <section class="job">
+      <header>
+        <span><b>Software Engineer</b>, Vassar Labs · Hyderabad</span>
+        <span class="when">Aug 2023 – Dec 2023</span>
+      </header>
+      <ul>
+        <li>
+          Built Angular and TypeScript features: reusable UI components, REST API integrations, UI
+          enhancements and production fixes.
+        </li>
+      </ul>
+    </section>
+    <section class="job">
+      <header>
+        <span><b>Software Engineer Intern</b>, Vassar Labs · Hyderabad</span>
+        <span class="when">Jan 2023 – Jul 2023</span>
+      </header>
+      <ul>
+        <li>Developed Angular UI features and REST integrations within the product team.</li>
+      </ul>
+    </section>
+
+    <h2>Project</h2>
+    <section class="job">
+      <header>
+        <span
+          ><b>AI-native portfolio</b> ·
+          <a href="https://chandrashekhar.pages.dev">chandrashekhar.pages.dev</a></span
+        >
+        <span class="when">2026</span>
+      </header>
+      <ul>
+        <li>
+          Angular 22 (SSR, signals, zoneless) and FastAPI with PostgreSQL + pgvector and Redis; a
+          knowledge graph of skills, projects and roles whose nodes light up when the AI agent cites
+          them.
+        </li>
+        <li>
+          Lighthouse 100 in all four categories, 160+ Playwright end-to-end tests, screenshot tests
+          and CI on every change.
+        </li>
+      </ul>
+    </section>
+
+    <h2>Skills</h2>
+    <dl class="skills">
+      <dt>Frontend</dt>
+      <dd>
+        Angular (standalone components, Signals), TypeScript, JavaScript (ES6+), RxJS, Reactive and
+        dynamic forms, PrimeNG, HTML5, SCSS/CSS
+      </dd>
+      <dt>CAD &amp; graphics</dt>
+      <dd>Three.js, WebGL, Canvas/SVG, DXF, R-tree spatial indexing, undo/redo, DXF/PDF export</dd>
+      <dt>Documents</dt>
+      <dd>
+        PDF.js, HTTP Range Requests, virtualized rendering, text and bounding-box highlighting
+      </dd>
+      <dt>APIs &amp; auth</dt>
+      <dd>REST, Server-Sent Events, Keycloak (RBAC), Azure AD / MSAL</dd>
+      <dt>Backend &amp; AI</dt>
+      <dd>Python, FastAPI, Django, PostgreSQL, LLMs, RAG, LangChain, LangGraph, MCP (growing)</dd>
+      <dt>Fundamentals</dt>
+      <dd>Data structures &amp; algorithms, C++, Git, Linux, Playwright</dd>
+    </dl>
+
+    <h2>Education</h2>
+    <section class="job">
+      <header>
+        <span
+          ><b>Master of Computer Applications (MCA)</b>, Computer Software Engineering · National
+          Institute of Technology (NIT) Jamshedpur</span
+        >
+        <span class="when">2020 – 2023</span>
+      </header>
+    </section>
+
+    <h2>Certifications</h2>
+    <p>
+      HackerRank: Problem Solving (Intermediate), Problem Solving (Basic), SQL (Basic) · Workshops:
+      Full Stack Web Development (5 days), Python Programming (6 days)
+    </p>
+  </body>
+</html>
