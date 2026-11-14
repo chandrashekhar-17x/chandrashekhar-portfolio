@@ -6,7 +6,7 @@ type: professional
 featured: true
 role: Frontend engineer → primary owner of the CAD viewer/editor; led UI technical direction for the first ~2 months
 stack: [Angular, TypeScript, Three.js, WebGL, Canvas, R-tree, DXF, PDF export]
-period: 2025–2026
+period: Apr 2026 – present
 confidentiality: Internal names, client, screenshots and code are omitted. Visuals are recreated illustrations or come from my public CAD Playground demo.
 ---
 

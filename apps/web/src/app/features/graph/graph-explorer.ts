@@ -18,13 +18,14 @@ import { GraphTrail } from '../../core/graph/graph-trail.service';
 import { summarizeTrail } from './trail-summary';
 import { GraphList } from './graph-list';
 import { GraphCanvas } from './graph-canvas';
+import { GraphTimeMachine } from './graph-time-machine';
 import { HUB_LABELS } from '../../core/content/build-graph';
 import { clusterView, hubOverview } from './graph-view';
 
 /** Side panel (intro, filters, list toggle) + canvas or list (prototype .kg). */
 @Component({
   selector: 'app-graph-explorer',
-  imports: [GraphFilters, GraphList, GraphCanvas],
+  imports: [GraphFilters, GraphList, GraphCanvas, GraphTimeMachine],
   templateUrl: './graph-explorer.html',
   styleUrl: './graph-explorer.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,6 +37,8 @@ export class GraphExplorer {
   readonly tall = input(false);
 
   protected readonly showList = signal(false);
+  /** Node ids the time machine hides (not born yet at the chosen date). */
+  protected readonly future = signal<ReadonlySet<string>>(new Set());
   protected readonly highlights = inject(GraphHighlightService);
   protected readonly filter = this.highlights.filter;
   protected readonly stats = computed(

@@ -53,6 +53,8 @@ import { tipPosition } from './tip-position';
 export class GraphCanvas {
   readonly graph = input.required<KnowledgeGraph>();
   readonly filter = input<NodeCategory | null>(null);
+  /** Time machine: ids not born yet at the chosen date (hidden, not hoverable). */
+  readonly future = input<ReadonlySet<string>>(new Set());
   /** A node was clicked (not dragged). */
   readonly activate = output<GraphNode>();
 
@@ -76,6 +78,7 @@ export class GraphCanvas {
   private readonly destroyRef = inject(DestroyRef);
 
   private sim?: Sim;
+  private redraw?: () => void;
   private fitted: FittedCanvas | null = null;
   private palette?: Palette;
 
@@ -89,6 +92,17 @@ export class GraphCanvas {
     effect(() => {
       this.theme.theme();
       if (browser) this.palette = readPalette();
+    });
+    // Time machine: nodes that just came into existence pop in (born = now).
+    let before: ReadonlySet<string> = new Set();
+    effect(() => {
+      const future = this.future();
+      const now = performance.now();
+      for (const n of this.sim?.nodes ?? [])
+        if (before.has(n.id) && !future.has(n.id)) n.born = now;
+      before = future;
+      if (this.hovered() && future.has(this.hovered()?.id ?? '')) this.hovered.set(null);
+      this.redraw?.();
     });
     // Lingering on a node for half a second adds it to the visitor's trail.
     effect((onCleanup) => {
@@ -136,6 +150,7 @@ export class GraphCanvas {
           hovered: this.hovered(),
           filter: this.filter(),
           lit: this.highlights.ids(),
+          future: this.future(),
           now: performance.now(),
           animate,
         },
@@ -143,6 +158,12 @@ export class GraphCanvas {
       );
     };
     const loop = new AnimationLoop(canvas, frame);
+    this.redraw = frame;
+    /** Nodes hidden by the time machine can't be hovered or dragged. */
+    const pick = (x: number, y: number) => {
+      const hit = nodeAt(sim, x, y);
+      return hit && this.future().has(hit.id) ? null : hit;
+    };
 
     const local = (e: PointerEvent) => {
       const box = canvas.getBoundingClientRect();
@@ -156,14 +177,14 @@ export class GraphCanvas {
         sim.alpha = Math.max(sim.alpha, 0.3);
         return;
       }
-      const hit = nodeAt(sim, p.x, p.y);
+      const hit = pick(p.x, p.y);
       if (hit !== this.hovered()) this.hovered.set(hit); // change detection only on change
       this.moveTip(p.x, p.y);
       if (!animate) frame();
     };
     const onDown = (e: PointerEvent) => {
       const p = local(e);
-      dragged = nodeAt(sim, p.x, p.y);
+      dragged = pick(p.x, p.y);
       downAt = p;
       if (dragged) canvas.setPointerCapture(e.pointerId);
     };

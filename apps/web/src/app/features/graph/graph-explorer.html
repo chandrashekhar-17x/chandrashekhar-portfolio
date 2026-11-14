@@ -48,11 +48,17 @@
         }
       </div>
     }
+    <app-graph-time-machine
+      [graph]="graph()"
+      [class.bottom]="narrow()"
+      (futureChange)="future.set($event)"
+    />
     <!-- Narrow screens show a smaller view, so the canvas gets no extra dimming. -->
     @for (k of viewKey(); track k) {
       <app-graph-canvas
         [graph]="view()"
         [filter]="narrow() ? null : filter()"
+        [future]="future()"
         (activate)="onActivate($event)"
       />
     }

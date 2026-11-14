@@ -95,7 +95,7 @@ Phases match `docs/plan.md` (0–9).
 - [x] Recruiter view `/recruiter`: one screen with role, years, strongest stack, 3 best projects, experience, contact + JD match; nav pill, ⌘K, sitemap — `fe` · S
 - [x] Two resumes on `/resume`: "Portfolio resume" (from content) and "My resume" (PDF from `content/resume/resume.html`, `make resume-pdf`, preview image for phones, `/resume#pdf`) — `fe` · S
 - [ ] `make resume-import`: Claude reads a new resume PDF and proposes edits to `content/` (review the diff) — `ai` · M
-- [ ] Career time machine: graph slider 2020 → today (needs a `period` on every project in `content/`) — `fe` · S
+- [x] Career time machine: slider + play on the graph (Jan 2020 → today); nodes pop in as the degree, jobs and dated projects arrive, with a caption per milestone. Dates: `projects[].dates` (owner, 2026-11-14); still undated: document-review-viewer; planned: jarvis-voice, cad-playground — `fe` · S
 
 ## Phase 9 · Security, performance, launch
 
