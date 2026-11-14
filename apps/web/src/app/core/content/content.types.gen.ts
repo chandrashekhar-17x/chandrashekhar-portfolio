@@ -283,7 +283,11 @@ export interface Project {
    * professional = employer work (details anonymised, never links); personal = my own.
    */
   type: 'professional' | 'personal';
+  /**
+   * Display text, e.g. "Jul–Aug 2025" or "Apr 2026 – present".
+   */
   period?: string;
+  dates?: ProjectDates;
   /**
    * Display chips (tech / techniques).
    *
@@ -299,6 +303,13 @@ export interface ProjectLinks {
   repo?: Url;
   live?: Url;
   demo?: Url;
+}
+/**
+ * Machine-readable span for the graph time machine: "YYYY" or "YYYY-MM"; no end = ongoing.
+ */
+export interface ProjectDates {
+  start: string;
+  end?: string;
 }
 /**
  * Most nodes/edges are derived from skills, projects and experience. This file adds topics and extra edges only. Node refs look like 'skill:angular', 'project:cad-editor', 'org:company-a', 'role:...', 'topic:rag'.

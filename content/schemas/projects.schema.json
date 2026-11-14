@@ -103,8 +103,20 @@
             "enum": ["professional", "personal"]
           },
           "period": {
+            "description": "Display text, e.g. \"Jul–Aug 2025\" or \"Apr 2026 – present\".",
             "type": "string",
-            "maxLength": 20
+            "maxLength": 24
+          },
+          "dates": {
+            "title": "ProjectDates",
+            "description": "Machine-readable span for the graph time machine: \"YYYY\" or \"YYYY-MM\"; no end = ongoing.",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["start"],
+            "properties": {
+              "start": { "type": "string", "pattern": "^\\d{4}(-(0[1-9]|1[0-2]))?$" },
+              "end": { "type": "string", "pattern": "^\\d{4}(-(0[1-9]|1[0-2]))?$" }
+            }
           },
           "tags": {
             "description": "Display chips (tech / techniques).",

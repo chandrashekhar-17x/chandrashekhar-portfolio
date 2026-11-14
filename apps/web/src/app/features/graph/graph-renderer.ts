@@ -19,6 +19,8 @@ export interface RenderState {
   now: number;
   /** false for reduced motion: no pop-in, no pulsing. */
   animate: boolean;
+  /** Time machine: nodes that don't exist yet at the chosen date (not drawn). */
+  future?: ReadonlySet<string>;
 }
 
 const LABEL_FONT_HUB = '700 11px "JetBrains Mono Variable", monospace';
@@ -66,6 +68,7 @@ function drawLinks(
 ): void {
   const batches = new Map<string, { color: string; alpha: number; width: number; path: Path2D }>();
   for (const { source, target } of sim.links) {
+    if (s.future?.has(source.id) || s.future?.has(target.id)) continue;
     const grow = Math.min(growth(source, s.now, s.animate), growth(target, s.now, s.animate));
     if (!grow) continue;
     const dim = isDimmed(source, s, focus) || isDimmed(target, s, focus);
@@ -101,6 +104,7 @@ function drawNodes(
 ): void {
   const t = s.now / 1000;
   for (const n of sim.nodes) {
+    if (s.future?.has(n.id)) continue;
     const grow = growth(n, s.now, s.animate);
     if (!grow) continue;
     const dim = isDimmed(n, s, focus);

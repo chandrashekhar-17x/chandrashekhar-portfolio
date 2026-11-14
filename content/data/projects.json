@@ -6,6 +6,10 @@
       "title": "Custom CAD Viewer & Editor, built from zero",
       "summary": "Took a CAD viewer from an uncertain R&D stage to a production custom editor: DXF rendering engine, spatial indexing, full editing suite, DXF/PDF export. Became the foundation of a core product workflow.",
       "type": "professional",
+      "period": "Apr 2026 – present",
+      "dates": {
+        "start": "2026-04"
+      },
       "featured": true,
       "skills": [
         "threejs",
@@ -39,14 +43,17 @@
       "illustration": "cad",
       "body": "projects/custom-cad-editor.md",
       "org": "vassardigital",
-      "role": "Frontend engineer → primary owner of the CAD viewer/editor; led UI technical direction for the first ~2 months",
-      "period": "2025–2026"
+      "role": "Frontend engineer → primary owner of the CAD viewer/editor; led UI technical direction for the first ~2 months"
     },
     {
       "slug": "signalling-plan-editor",
       "title": "Railway Signalling-Plan Digitisation & Editing",
       "summary": "Digitise scheme drawings into structured JSON plans; render and edit domain assets (signals, track circuits, aspect control charts) directly on the CAD canvas; red/green change detection between versions.",
       "type": "professional",
+      "period": "Jun 2026 – present",
+      "dates": {
+        "start": "2026-06"
+      },
       "featured": true,
       "skills": ["threejs", "change-detection", "domain-modelling", "dxf"],
       "tags": [
@@ -66,6 +73,11 @@
       "title": "Website & Knowledge-Base Ingestion",
       "summary": "Modules to ingest websites and files into a knowledge base: URL/file and bulk upload, URL restrictions, permission-based access, PDF/HTML rendering, bounding-box visualization, accessibility-tree tooling.",
       "type": "professional",
+      "period": "2024–2025",
+      "dates": {
+        "start": "2024",
+        "end": "2025"
+      },
       "featured": false,
       "skills": ["angular", "rbac", "bulk-upload", "bounding-boxes", "accessibility-tree", "pdfjs"],
       "tags": [
@@ -86,6 +98,11 @@
       "title": "Bounding-Box Visualization for Captured Web Pages",
       "summary": "Overlay extracted element bounding boxes on downloaded HTML pages, so extraction results can be verified visually; built with the backend team.",
       "type": "professional",
+      "period": "Jan–Feb 2026",
+      "dates": {
+        "start": "2026-01",
+        "end": "2026-02"
+      },
       "featured": false,
       "skills": ["angular", "bounding-boxes"],
       "tags": ["Angular", "DOM geometry", "Overlays", "Backend collaboration"],
@@ -112,6 +129,11 @@
       "title": "Progressive PDF Viewer",
       "summary": "Opens large PDFs fast by streaming pages with HTTP Range Requests; virtualized rendering.",
       "type": "professional",
+      "period": "Jul–Aug 2025",
+      "dates": {
+        "start": "2025-07",
+        "end": "2025-08"
+      },
       "featured": false,
       "skills": ["pdfjs", "range-requests", "progressive-loading", "large-data-ui"],
       "tags": ["PDF.js", "HTTP Range Requests", "Virtualization"],
@@ -125,6 +147,11 @@
       "title": "Real-time API & SSE Integrations",
       "summary": "REST integrations and live progress via Server-Sent Events for long-running processing jobs.",
       "type": "professional",
+      "period": "Sep 2025",
+      "dates": {
+        "start": "2025-09",
+        "end": "2025-09"
+      },
       "featured": false,
       "skills": ["rest-apis", "sse", "rxjs"],
       "tags": ["REST", "SSE", "RxJS"],
@@ -138,6 +165,11 @@
       "title": "Enterprise Angular UI Architecture",
       "summary": "Reusable components, modular features, reactive forms, PrimeNG data tables, performance on large JSON.",
       "type": "professional",
+      "period": "2024–2025",
+      "dates": {
+        "start": "2024",
+        "end": "2025"
+      },
       "featured": false,
       "skills": [
         "angular",
@@ -158,6 +190,10 @@
       "title": "Portfolio RAG Agent (this site)",
       "summary": "AI agent answering questions about me with citations that light up the knowledge graph; SSE streaming.",
       "type": "personal",
+      "period": "2026",
+      "dates": {
+        "start": "2026"
+      },
       "featured": true,
       "skills": ["python", "fastapi", "postgres", "llms", "rag", "sse", "angular"],
       "tags": ["Python", "FastAPI", "pgvector", "LLMs", "SSE"],
