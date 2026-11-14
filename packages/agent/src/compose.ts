@@ -13,8 +13,9 @@ import type { Chunk, Retrieved } from './types';
 //    words or named things not covered yet, so the answer grows in facts, not in
 //    repetition. "Why/how" questions prefer sentences that give a reason.
 
-const MAX_SENTENCES = 4;
-const MAX_WORDS = 110;
+/** Short by default: answer what was asked, not everything we know. */
+const MAX_SENTENCES = 2;
+const MAX_WORDS = 60;
 /** Chunks the fill step reads (same as retrieval hands over). */
 const POOL = 6;
 
@@ -84,7 +85,23 @@ export function compose(index: AgentIndex, q: Query, results: readonly Retrieved
 
   // 1. Lead with the direct chunk (whole, it is short structured text).
   const lead = results[direct]?.chunk;
-  if (lead) for (const s of sentences(lead.text)) if (words < MAX_WORDS) take(s, lead);
+  if (lead) {
+    // A project answers "what is it" + "built with what" first.
+    const all = sentences(lead.text);
+    const built = lead.kind === 'project' ? all.findIndex((x) => x.startsWith('Built with')) : -1;
+    const ordered =
+      built > 0
+        ? [all[0] ?? '', all[built] ?? '', ...all.filter((_, i) => i !== 0 && i !== built)]
+        : all;
+    for (const s of ordered) {
+      if (
+        picked.length >= MAX_SENTENCES ||
+        (picked.length && words + s.split(/\s+/).length > MAX_WORDS)
+      )
+        break;
+      take(s, lead);
+    }
+  }
 
   // 2. MMR fill: what is still uncovered?
   const covered = new Set(picked.flatMap((p) => terms(p.text)));

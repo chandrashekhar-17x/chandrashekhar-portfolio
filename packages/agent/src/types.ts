@@ -29,6 +29,8 @@ export interface Project {
   period?: string;
   status?: string;
   featured?: boolean;
+  /** "YYYY" or "YYYY-MM"; no end = ongoing. */
+  dates?: { start: string; end?: string };
   role?: string;
   org?: string;
   tags?: readonly string[];
