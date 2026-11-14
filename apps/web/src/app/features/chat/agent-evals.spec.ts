@@ -9,10 +9,12 @@ interface EvalCase {
   question: string;
   mustMention: string[];
   mustNotMention?: string[];
+  /** Newer cases for the real agent (packages/agent) only. */
+  agentOnly?: boolean;
 }
 
 describe('agent evals (scripted chat)', () => {
-  for (const c of evals.cases as EvalCase[]) {
+  for (const c of (evals.cases as EvalCase[]).filter((x) => !x.agentOnly)) {
     it(c.id, () => {
       const text = pickAnswer(c.question).text.toLowerCase();
       for (const m of c.mustMention) expect(text, `mentions "${m}"`).toContain(m.toLowerCase());

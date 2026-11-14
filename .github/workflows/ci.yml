@@ -33,6 +33,7 @@ jobs:
             web:
               - *shared
               - 'apps/web/**'
+              - 'packages/**'
               - 'content/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
@@ -83,6 +84,8 @@ jobs:
       - run: make lint-web
       - run: pnpm --filter @portfolio/web typecheck
       - run: make test-web
+      # Portfolio agent: unit tests + eval set (retrieval recall, honesty, latency).
+      - run: make test-agent
 
   # Build once; e2e, screenshots and Lighthouse reuse this output.
   web-build:
