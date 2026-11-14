@@ -25,8 +25,11 @@ import { timeAgo } from '../../core/time/time-ago';
           curiosity</span
         >
         @if (build; as b) {
-          <a class="mono stamp" [href]="commitUrl" target="_blank" rel="noopener"
-            >updated {{ updated() }} · {{ b.sha.slice(0, 7) }}
+          <a class="mono stamp" [href]="commitUrl" target="_blank" rel="noopener">
+            @if (updated()) {
+              updated {{ updated() }} ·
+            }
+            {{ b.sha.slice(0, 7) }}
             @if (b.subject) {
               · {{ b.subject }}
             }
