@@ -60,3 +60,14 @@ test('blueprint tags show how lazy sections loaded', async ({ page }) => {
     /#work · @defer #\d+ · \+\d+\.\d\d s/,
   );
 });
+
+test('blueprint links each section to its code at the build commit', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /view as blueprint/i }).click();
+  await page.evaluate(() => {
+    scrollTo(0, 0);
+  });
+  await expect(
+    page.getByRole('link', { name: 'Source code of the hero section on GitHub' }),
+  ).toHaveAttribute('href', /\/tree\/[0-9a-f]{40}\/apps\/web\/src\/app\/features\/hero$/);
+});

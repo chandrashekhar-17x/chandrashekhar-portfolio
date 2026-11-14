@@ -49,6 +49,24 @@
   }
 </svg>
 
+<!-- Links to the code behind each section (the SVG above ignores the pointer). -->
+<div class="bp-links">
+  @for (t of dims().tags; track t.key) {
+    @if (source(t.key); as href) {
+      <a
+        class="src"
+        [href]="href"
+        target="_blank"
+        rel="noopener"
+        [style.left.px]="t.x"
+        [style.top.px]="t.y + 8"
+        [attr.aria-label]="'Source code of the ' + t.key + ' section on GitHub'"
+        >source ↗</a
+      >
+    }
+  }
+</div>
+
 <aside class="bp-block" role="status" aria-label="Blueprint mode">
   <div class="row head"><b>CHANDRASHEKHAR · PORTFOLIO</b><span>REV A</span></div>
   <div class="row">
