@@ -43,3 +43,7 @@ test-results-visual/
 .history/
 .DS_Store
 Thumbs.db
+
+# Copied from content/resume/resume.pdf by gen-site-config (served at /resume.pdf)
+apps/web/public/resume.pdf
+apps/web/public/resume.png

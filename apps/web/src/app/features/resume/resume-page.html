@@ -7,7 +7,15 @@
       <p class="muted">{{ p.location }} · {{ p.availability.note }}</p>
     </div>
     <div class="actions no-print">
-      <button type="button" class="btn btn--primary" (click)="print()">Print / save as PDF</button>
+      @if (tab() === 'pdf' && pdfUrl) {
+        <a class="btn btn--primary" [href]="pdfUrl" download="Chandrashekhar-Prajapati-Resume.pdf"
+          >Download PDF</a
+        >
+      } @else {
+        <button type="button" class="btn btn--primary" (click)="print()">
+          Print / save as PDF
+        </button>
+      }
       <a class="btn btn--ghost" routerLink="/" fragment="contact">Contact</a>
     </div>
   </header>
@@ -20,58 +28,110 @@
     }
   </ul>
 
-  <section aria-labelledby="r-summary">
-    <h2 id="r-summary">Summary</h2>
-    <p>{{ p.summary || p.shortBio }}</p>
-  </section>
-
-  @if (experience(); as xp) {
-    <section aria-labelledby="r-xp">
-      <h2 id="r-xp">Experience</h2>
-      <app-experience-timeline class="is-revealed" [experience]="xp" />
-    </section>
+  <!-- Two versions: generated from the site's content, and the one I wrote (PDF). -->
+  @if (pdfUrl) {
+    <div class="tabs no-print" role="tablist" aria-label="Resume version">
+      <button
+        type="button"
+        role="tab"
+        id="tab-site"
+        aria-controls="panel-site"
+        [attr.aria-selected]="tab() === 'site'"
+        [attr.tabindex]="tab() === 'site' ? 0 : -1"
+        (click)="show('site')"
+        (keydown)="onTabKey($event)"
+      >
+        Portfolio resume <small>generated from this site's data</small>
+      </button>
+      <button
+        type="button"
+        role="tab"
+        id="tab-pdf"
+        aria-controls="panel-pdf"
+        [attr.aria-selected]="tab() === 'pdf'"
+        [attr.tabindex]="tab() === 'pdf' ? 0 : -1"
+        (click)="show('pdf')"
+        (keydown)="onTabKey($event)"
+      >
+        My resume <small>PDF</small>
+      </button>
+    </div>
   }
 
-  @if (education().length) {
-    <section aria-labelledby="r-edu">
-      <h2 id="r-edu">Education</h2>
-      <ul class="projects" role="list">
-        @for (e of education(); track e.id) {
-          <li>
-            <strong>{{ e.institute }}</strong
-            >: {{ e.degree }}, {{ e.field }} ({{ e.start }}–{{ e.end }})
-          </li>
-        }
-      </ul>
-    </section>
-  }
+  @if (tab() === 'pdf' && pdfUrl) {
+    <div class="pdf" role="tabpanel" id="panel-pdf" aria-labelledby="tab-pdf">
+      <object [data]="safePdf" type="application/pdf" aria-label="My resume (PDF)">
+        <!-- Browsers without a PDF viewer (most phones) get a preview image. -->
+        <a class="preview" [href]="pdfUrl" target="_blank" rel="noopener">
+          <img
+            src="/resume.png"
+            alt="Preview of my resume: Chandrashekhar Prajapati, Software Engineer"
+            width="1588"
+            height="2246"
+          />
+          <span>Open the PDF ↗</span>
+        </a>
+      </object>
+      <p class="muted pdf-note">
+        Phone or tablet? <a [href]="pdfUrl" target="_blank" rel="noopener">Open the PDF ↗</a>
+      </p>
+    </div>
+  } @else {
+    <div role="tabpanel" id="panel-site" [attr.aria-labelledby]="pdfUrl ? 'tab-site' : null">
+      <section aria-labelledby="r-summary">
+        <h2 id="r-summary">Summary</h2>
+        <p>{{ p.summary || p.shortBio }}</p>
+      </section>
 
-  <section aria-labelledby="r-skills">
-    <h2 id="r-skills">Skills</h2>
-    <dl class="skills">
-      @for (g of skillGroups(); track g.label) {
-        <div>
-          <dt>{{ g.label }}</dt>
-          <dd>
-            @for (s of g.skills; track s.id; let last = $last) {
-              {{ s.name }}{{ s.proficiency === 'learning' ? ' (learning)' : ''
-              }}{{ last ? '' : ', ' }}
+      @if (experience(); as xp) {
+        <section aria-labelledby="r-xp">
+          <h2 id="r-xp">Experience</h2>
+          <app-experience-timeline class="is-revealed" [experience]="xp" />
+        </section>
+      }
+
+      @if (education().length) {
+        <section aria-labelledby="r-edu">
+          <h2 id="r-edu">Education</h2>
+          <ul class="projects" role="list">
+            @for (e of education(); track e.id) {
+              <li>
+                <strong>{{ e.institute }}</strong
+                >: {{ e.degree }}, {{ e.field }} ({{ e.start }}–{{ e.end }})
+              </li>
             }
-          </dd>
-        </div>
+          </ul>
+        </section>
       }
-    </dl>
-  </section>
 
-  <section aria-labelledby="r-projects">
-    <h2 id="r-projects">Selected projects</h2>
-    <ul class="projects" role="list">
-      @for (pr of projects(); track pr.slug) {
-        <li>
-          <a [routerLink]="['/work', pr.slug]">{{ pr.title }}</a
-          >: {{ pr.summary }}
-        </li>
-      }
-    </ul>
-  </section>
+      <section aria-labelledby="r-skills">
+        <h2 id="r-skills">Skills</h2>
+        <dl class="skills">
+          @for (g of skillGroups(); track g.label) {
+            <div>
+              <dt>{{ g.label }}</dt>
+              <dd>
+                @for (s of g.skills; track s.id; let last = $last) {
+                  {{ s.name }}{{ s.proficiency === 'learning' ? ' (learning)' : ''
+                  }}{{ last ? '' : ', ' }}
+                }
+              </dd>
+            </div>
+          }
+        </dl>
+      </section>
+
+      <section aria-labelledby="r-projects">
+        <h2 id="r-projects">Selected projects</h2>
+        <ul class="projects" role="list">
+          @for (pr of projects(); track pr.slug) {
+            <li>
+              <a [routerLink]="['/work', pr.slug]">{{ pr.title }}</a
+              >: {{ pr.summary }}
+            </li>
+          }
+        </ul>
+      </section>
+    </div>
+  }
 }

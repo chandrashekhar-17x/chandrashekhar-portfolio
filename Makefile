@@ -58,7 +58,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check resume-pdf check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -109,6 +109,9 @@ visual: ## Screenshot tests in the Playwright Docker image (after build)
 
 visual-update: ## Re-record screenshot baselines (review the diff before committing!)
 	$(PW_DOCKER) npx playwright test -c playwright.visual.config.ts --update-snapshots
+
+resume-pdf: ## content/resume/resume.html → resume.pdf + resume.png (commit all three)
+	cd apps/web && node scripts/build-resume-pdf.mjs
 
 content-check: ## Validate content/ (schemas, references, placeholders)
 	uv run python scripts/validate_content.py

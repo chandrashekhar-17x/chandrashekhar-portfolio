@@ -75,7 +75,7 @@ reference/    my 5 inspiration images (ref-1..5)
 - Design tokens are the CSS custom properties at the top of the file (dark + `[data-theme="light"]`)
 
 ## Placeholders to replace with my real data
-Run `make content-check` for the live list. Real since 2026-11-10 (from the owner's private profile notes): profile, bio, stats, skills, experience, education, 11 projects + case studies, about areas, lab timeline, agent eval set (`content/evals/`). Still dummy: photo (`content/media/avatar-placeholder.svg`), resume PDF, domain, learning-timeline progress values (not provided). Contact = form only (no public email).
+Run `make content-check` for the live list. Real since 2026-11-10 (from the owner's private profile notes): profile, bio, stats, skills, experience, education, 11 projects + case studies, about areas, lab timeline, agent eval set (`content/evals/`). Resume PDF real since 2026-11-14 (`content/resume/resume.html` → `make resume-pdf`; merged from the owner's 3 resumes: no email in it, Vassar Labs = intern Jan–Jul 2023 + SE Aug–Dec 2023, confirmed extras: Keycloak/Azure MSAL auth and a dynamic form builder; WebRTC, Docker/Jenkins/Node/Express, Sigma.js, Socket.IO, Azure Blob left out as unconfirmed). Still dummy: photo (`content/media/avatar-placeholder.svg`), domain, learning-timeline progress values (not provided). Contact = form only (no public email).
 
 ## Conventions
 - TypeScript strict; Angular `OnPush`; no `any`.

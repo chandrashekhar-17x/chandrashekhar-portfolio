@@ -89,3 +89,88 @@ section {
     color: #000;
   }
 }
+
+// Version switch: portfolio resume (from content) vs my PDF.
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-5) 0 var(--space-6);
+  border-bottom: 1px solid var(--line);
+
+  button {
+    display: grid;
+    gap: 2px;
+    margin-bottom: -1px;
+    padding: 10px 16px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--ink-2);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  small {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  [aria-selected='true'] {
+    border-bottom-color: var(--violet);
+    color: var(--ink);
+  }
+}
+
+.pdf object {
+  display: block;
+  width: 100%;
+  height: min(1100px, 85vh);
+  overflow: hidden; // the fallback preview must never spill over the page
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.pdf-note {
+  margin-top: var(--space-3);
+  font-size: 14px;
+}
+
+.preview {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+  padding: var(--space-3);
+  background: #fff;
+  color: #14122e; // on the white sheet in both themes
+  text-decoration: none;
+
+  img {
+    width: auto;
+    max-width: 100%;
+    // Whole page visible inside the box (box height minus padding and the link).
+    max-height: calc(min(1100px, 85vh) - 64px);
+    height: auto;
+  }
+
+  span {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+// Phones rarely embed PDFs: the box shows the preview image, so let it fit it.
+@media (max-width: 760px) {
+  .pdf object {
+    height: auto;
+  }
+
+  .preview img {
+    max-height: none;
+  }
+}
