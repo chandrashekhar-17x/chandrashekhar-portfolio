@@ -20,6 +20,7 @@ let index: AgentIndex;
 interface Row {
   id: string;
   kind: EvalCase['kind'];
+  holdout: boolean;
   contextRecall: number;
   answerPass: boolean;
   ms: number;
@@ -32,10 +33,26 @@ beforeAll(() => {
   for (const c of cases) ask(index, c.question); // warm up the JIT before timing
 });
 
-const has = (haystack: string, needle: string) =>
-  haystack.toLowerCase().includes(needle.toLowerCase());
+const NUMBERS: Record<string, string> = {
+  one: '1',
+  two: '2',
+  three: '3',
+  four: '4',
+  five: '5',
+  six: '6',
+  seven: '7',
+  eight: '8',
+  nine: '9',
+  ten: '10',
+};
+/** Lowercase, number words as digits ("two months" = "2 months"). */
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\b(one|two|three|four|five|six|seven|eight|nine|ten)\b/g, (w) => NUMBERS[w] ?? w);
+const has = (haystack: string, needle: string) => norm(haystack).includes(norm(needle));
 
-function run(c: EvalCase): Row & { answer: string; forbidden: string[] } {
+function run(c: EvalCase): Row & { answer: string; answerKind: string; forbidden: string[] } {
   const { answer, results, ms } = ask(index, c.question);
   const context = [answer.text, ...results.slice(0, CONTEXT_K).map((r) => r.chunk.text)].join(' ');
   const facts = c.mustMention ?? [];
@@ -45,11 +62,13 @@ function run(c: EvalCase): Row & { answer: string; forbidden: string[] } {
   return {
     id: c.id,
     kind: c.kind,
+    holdout: !!c.holdout,
     contextRecall: facts.length ? (facts.length - missing.length) / facts.length : 1,
     answerPass: facts.every((f) => has(answer.text, f)) && !forbidden.length,
     ms,
     missing,
     answer: answer.text,
+    answerKind: answer.kind,
     forbidden,
   };
 }
@@ -59,10 +78,15 @@ describe('agent evals', () => {
     it(`${c.kind}: ${c.question}`, () => {
       const r = run(c);
       rows.push(r);
-      if (process.env['SHOW']) console.log(`\n[${c.id}] ${r.answer}`);
+      if (process.env['SHOW'] && !r.answerPass) {
+        const miss = (c.mustMention ?? []).filter((f) => !has(r.answer, f));
+        console.log(`\n[${c.id}] MISSING ${miss.join(' | ')} :: ${r.answer}`);
+      }
       expect(r.forbidden, `forbidden in: ${r.answer}`).toEqual([]);
       if (c.kind === 'answer') {
         expect(r.missing, `context missed facts for: ${c.question}`).toEqual([]);
+        // A question my data can answer must get an answer, not "I don't know".
+        expect(r.answerKind, `no answer for: ${c.question}`).toBe('answer');
       } else {
         expect(r.answerPass, `exact answer required, got: ${r.answer}`).toBe(true);
       }
@@ -87,6 +111,9 @@ describe('agent evals', () => {
       cases: rows.length,
       contextRecall: avg(answers.map((r) => r.contextRecall)).toFixed(2),
       extractiveAnswerPass: pct(avg(answers.map((r) => (r.answerPass ? 1 : 0)))),
+      holdoutAnswerPass: pct(
+        avg(answers.filter((r) => r.holdout).map((r) => (r.answerPass ? 1 : 0))),
+      ),
       honestAndConfidential: pct(
         avg(rows.filter((r) => r.kind !== 'answer').map((r) => (r.answerPass ? 1 : 0))),
       ),

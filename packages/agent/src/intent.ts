@@ -12,11 +12,6 @@ export interface Intent {
   wants: (chunk: Chunk, featured: ReadonlyMap<string, number>) => number;
 }
 
-const kindIs =
-  (...kinds: Chunk['kind'][]) =>
-  (c: Chunk) =>
-    kinds.includes(c.kind) ? 1 : 0;
-
 export const INTENTS: readonly Intent[] = [
   {
     id: 'work',
@@ -31,7 +26,7 @@ export const INTENTS: readonly Intent[] = [
   {
     id: 'education',
     test: /\b(study|studied|degree|college|university|education|qualification|graduat\w*)\b/i,
-    wants: kindIs('education'),
+    wants: (c) => (c.kind === 'education' ? 3 : 0),
   },
   {
     id: 'who',
@@ -40,7 +35,7 @@ export const INTENTS: readonly Intent[] = [
   },
   {
     id: 'location',
-    test: /\bwhere\b.*\b(based|live|lives|located|from|stay)\b|\blocation\b|\bwhich city\b/i,
+    test: /\bwhere\b.*\b(based|live|lives|located|from|stay)\b|\b(hometown|native place)\b|\b(what|which) (city|town|country|place)\b|\blive in\b|\blocation\b/i,
     wants: (c) => (c.id === 'profile:summary' ? 3 : 0),
   },
   {

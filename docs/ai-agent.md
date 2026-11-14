@@ -158,18 +158,35 @@ evals run with `make eval-agent` against Workers AI when the binding exists.
 Per-IP limit 20 questions / 10 min. When Workers AI returns an error (limit reached), the
 function answers **extractively** instead: the visitor still gets a correct answer.
 
-## 8. Results so far (PR 1, no LLM)
+## 8. Results so far (no LLM yet)
 
-Measured by `make eval-agent` on 41 eval cases (14 original + 27 agent-only: paraphrases,
-typos, resume-only facts, unknown tech, off-topic, injection, personal questions):
+Measured by `make eval-agent` on 54 cases: 14 original, 27 agent-only (paraphrases, typos,
+resume-only facts, unknown tech, off-topic, injection, personal), 10 **holdout** questions
+written *before* tuning (never tuned against), 3 real visitor questions from local testing.
 
-| Metric | Result | Target |
-| --- | --- | --- |
-| Context recall (expected facts in the 6 retrieved chunks) | **1.00** | ≥ 0.95 |
-| Honest-no + confidential exact | **100 %** | 100 % |
-| Extractive answer mentions every expected fact | 70 % | reported only (LLM composes in PR 2) |
-| p95 latency (guard + retrieval + answer) | **~2.5 ms** | < 5 ms |
-| Wrong claims found by evals and fixed | 3 ("Yes" for learning skills, Keycloak as "learning", wrong flagship) | 0 open |
+| Metric | PR 1 | PR 1b (answers) | Target |
+| --- | --- | --- | --- |
+| Context recall (expected facts in the 6 retrieved chunks) | 1.00 | **1.00** | ≥ 0.95 |
+| Honest-no + confidential exact | 100 % | **100 %** | 100 % |
+| Extractive answer mentions every expected fact | 70 % | **91 %** | LLM step for the rest |
+| Holdout answers (generalisation) | 80 % | **100 %** | ≥ 90 % |
+| p95 latency (guard + retrieval + answer) | ~2.5 ms | **~1.5 ms** | < 5 ms |
+
+How PR 1b got there (general techniques, not per-question rules):
+
+- **Data-to-text lead**: when the question names a project, a company or a known topic
+  (career, education, location, flagship), the answer starts with that thing's summary
+  generated from structured content, so it is complete and correct by construction.
+- **MMR fill** (Maximal Marginal Relevance): every next sentence must add facts the answer
+  doesn't have yet; "why/how" questions prefer sentences that give a reason; evidence
+  (projects, jobs, resume bullets) beats skill lists for "has he used X?".
+- **Role fit without opinions**: "is he good for an AI role?" lists production vs learning
+  skills for that role from `skills.json`, and points to the JD match.
+- **Honesty notes**: "where is he from?" → where he is based, plus "hometown isn't in his profile".
+- **Precomputed tokens** for entity names and the tech list → p95 down ~40 %.
+
+Still weak without an LLM (4 cases): answers that must *combine reasons* across sections
+("why custom instead of a library?", "why an R-tree?"). That is exactly the LLM's job in PR 2.
 
 What the evals caught while building (why they matter):
 

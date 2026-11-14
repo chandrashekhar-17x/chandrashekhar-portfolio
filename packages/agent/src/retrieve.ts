@@ -1,8 +1,15 @@
 import { type Bm25Index, buildBm25, scoreBm25 } from './bm25';
 import { buildChunks } from './chunk';
-import { COMMON_TECH, type Entity, buildEntities, linkEntities, toks } from './entities';
+import {
+  COMMON_TECH,
+  COMMON_TECH_TOKENS,
+  type Entity,
+  buildEntities,
+  linkEntities,
+  toks,
+} from './entities';
 import { type Intent, detectIntents } from './intent';
-import { terms } from './text';
+import { terms, yearsBetween } from './text';
 import type { Chunk, Corpus, Retrieved } from './types';
 
 // Hybrid retrieval: entity links (exact) + BM25 (keywords), merged with
@@ -21,6 +28,10 @@ export interface AgentIndex {
   featured: Map<string, number>;
   /** Skill node → proficiency ("strong" | "good" | "learning"). */
   proficiency: Map<string, string>;
+  /** Skills grouped by category, in content order. */
+  skillsByCategory: Map<string, Corpus['skills'][number][]>;
+  /** Whole years of experience (from the first role to today). */
+  years: number;
 }
 
 export interface Query {
@@ -65,17 +76,33 @@ export function buildIndex(corpus: Corpus): AgentIndex {
       s.proficiency ? [[`skill:${s.id}`, s.proficiency] as const] : [],
     ),
   );
-  return { chunks, entities, bm25: buildBm25(docs), vocab, labels, featured, proficiency };
+  const skillsByCategory = new Map<string, Corpus['skills'][number][]>();
+  for (const s of corpus.skills)
+    skillsByCategory.set(s.category, [...(skillsByCategory.get(s.category) ?? []), s]);
+  const first =
+    [...corpus.roles].sort((a, b) => a.start.localeCompare(b.start))[0]?.start ?? corpus.today;
+  const years = yearsBetween(first, corpus.today);
+  return {
+    chunks,
+    entities,
+    bm25: buildBm25(docs),
+    vocab,
+    labels,
+    featured,
+    proficiency,
+    skillsByCategory,
+    years,
+  };
 }
 
 export function analyze(text: string, index: AgentIndex): Query {
   const nodes = linkEntities(text, index.entities);
   const words = toks(text);
-  const has = (phrase: string) => {
-    const p = toks(phrase);
-    return words.some((_, i) => p.every((w, j) => words[i + j] === w));
-  };
-  const missing = COMMON_TECH.filter((t) => has(t) && !toks(t).every((w) => index.vocab.has(w)));
+  const has = (p: readonly string[]) => words.some((_, i) => p.every((w, j) => words[i + j] === w));
+  const missing = COMMON_TECH.filter((_, i) => {
+    const p = COMMON_TECH_TOKENS[i] ?? [];
+    return has(p) && !p.every((w) => index.vocab.has(w));
+  });
   return {
     text,
     terms: terms(text),

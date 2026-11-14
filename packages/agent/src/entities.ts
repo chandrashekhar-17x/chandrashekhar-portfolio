@@ -9,6 +9,8 @@ export interface Entity {
   node: string;
   label: string;
   names: string[];
+  /** names, tokenised once (matching runs per question). */
+  tokens: string[][];
 }
 
 /** Extra ways visitors refer to things (owner-checked; add here, never guess in code). */
@@ -73,9 +75,10 @@ const ALIASES: Record<string, readonly string[]> = {
 
 export function buildEntities(corpus: Corpus): Entity[] {
   const out: Entity[] = [];
-  const add = (node: string, label: string, names: (string | undefined)[]) => {
-    const all = [...names, ...(ALIASES[node] ?? [])].filter((n): n is string => !!n);
-    out.push({ node, label, names: [...new Set(all.map((n) => n.toLowerCase()))] });
+  const add = (node: string, label: string, given: (string | undefined)[]) => {
+    const all = [...given, ...(ALIASES[node] ?? [])].filter((n): n is string => !!n);
+    const names = [...new Set(all.map((n) => n.toLowerCase()))];
+    out.push({ node, label, names, tokens: names.map((n) => toks(n)) });
   };
   for (const s of corpus.skills) {
     // "SCSS / CSS" → also "scss" and "css"; "R-tree / spatial indexing" → both halves.
@@ -106,8 +109,7 @@ export function linkEntities(text: string, entities: readonly Entity[]): string[
   const words = fixTypos(toks(text), entities);
   const hits: Hit[] = [];
   for (const e of entities) {
-    for (const name of e.names) {
-      const n = toks(name);
+    for (const n of e.tokens) {
       if (!n.length) continue;
       for (let i = 0; i + n.length <= words.length; i++) {
         if (n.every((w, j) => words[i + j] === w))
@@ -144,9 +146,16 @@ export function oneTypo(a: string, b: string): boolean {
 }
 
 /** Replace a misspelt word with the entity name it is one typo away from ("angualr" → "angular"). */
+const vocabCache = new WeakMap<readonly Entity[], { known: Set<string>; long: string[] }>();
+
 function fixTypos(words: string[], entities: readonly Entity[]): string[] {
-  const known = new Set(entities.flatMap((e) => e.names.flatMap((n) => toks(n))));
-  const long = [...known].filter((w) => w.length >= 5 && /^[a-z]+$/.test(w));
+  let cached = vocabCache.get(entities);
+  if (!cached) {
+    const known = new Set(entities.flatMap((e) => e.tokens.flat()));
+    cached = { known, long: [...known].filter((w) => w.length >= 5 && /^[a-z]+$/.test(w)) };
+    vocabCache.set(entities, cached);
+  }
+  const { known, long } = cached;
   return words.map((w) => {
     if (w.length < 5 || known.has(w)) return w;
     return long.find((k) => oneTypo(w, k)) ?? w;
@@ -226,3 +235,6 @@ export const COMMON_TECH = [
   'android',
   'ios',
 ];
+
+/** COMMON_TECH, tokenised once. */
+export const COMMON_TECH_TOKENS: readonly (readonly string[])[] = COMMON_TECH.map((t) => toks(t));
