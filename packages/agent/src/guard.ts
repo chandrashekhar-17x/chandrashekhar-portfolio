@@ -30,7 +30,7 @@ const RULES: readonly {
       ),
   },
   {
-    test: /\b(clients?|customers?)\b/i,
+    test: /\b(clients?|customers?)\b|\b(compan(y|ies)|organi[sz]ations?)\b.*\bprojects?\b.*\bfor\b/i,
     answer: () =>
       policy(
         "I don't share client or customer names. In general terms: he builds CAD and railway signalling-plan tooling, document-processing and PDF viewers, and data-extraction interfaces for enterprise products.",
@@ -113,6 +113,14 @@ function otherPerson(q: Query, index: AgentIndex): string | null {
   return null;
 }
 
+/** "who is his manager / wife / friend": people in his life (not facts like his employer). */
+const RELATION =
+  /^(his|her)\s+(manager|boss|wife|husband|girlfriend|boyfriend|partner|father|mother|dad|mom|parents?|brother|sister|siblings?|friends?|best friend|team ?lead|lead|colleagues?|mentor|family|son|daughter|kids?|children|referen(ce|ces)|referees?|hr|recruiter|teacher|professor|guide)\b/i;
+
+/** Requests to do a task (write code, a poem, a recipe) rather than ask about him. */
+const TASK =
+  /^\s*(please\s+)?(write|create|generate|build me|make me|code|solve|translate|calculate|compute|compose|draft|recommend|suggest|book|summari[sz]e the news|give me a recipe|help me with my)\b/i;
+
 const SMALLTALK =
   /^\s*(hi|hello|hey|hola|namaste|thanks|thank you|thx|ok|okay|cool|great|bye)\b[\s!.?]*$/i;
 
@@ -132,16 +140,24 @@ export function guard(q: Query, index: AgentIndex): Answer | null {
     };
   }
   for (const rule of RULES) if (rule.test.test(q.text)) return rule.answer(q, index);
+  if (TASK.test(q.text)) {
+    return policy(
+      "I only answer questions about Chandrashekhar's work, using his portfolio and resume, so I can't do that task. Ask me about his skills, projects or experience.",
+    );
+  }
   // "who is his manager / wife / team lead?": people in his life aren't in his data.
-  if (/^(his|her)\b/i.test(WHO.exec(q.text)?.[1] ?? '')) {
+  if (RELATION.test(WHO.exec(q.text)?.[1] ?? '')) {
     return { kind: 'unknown', text: UNKNOWN, citations: [], urls: [CONTACT_URL], sources: [] };
   }
   const person = otherPerson(q, index);
   if (person) {
     const name = person.replace(/\b\w/g, (c) => c.toUpperCase());
-    return policy(
-      `I don't know who ${name} is. I only answer questions about Chandrashekhar, using his portfolio and resume. If you meant him, ask "Who is Chandrashekhar?"`,
-    );
+    return {
+      ...policy(
+        `I don't know who ${name} is. I only answer questions about Chandrashekhar, using his portfolio and resume. Did you mean him? Say "yes" and I'll tell you who he is.`,
+      ),
+      suggest: 'Who is Chandrashekhar?',
+    };
   }
   return null;
 }

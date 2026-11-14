@@ -2,6 +2,7 @@ import {
   type AgentIndex,
   type Answer,
   type ContentFiles,
+  type Context,
   ask,
   buildIndex,
   caseStudyFile,
@@ -43,6 +44,6 @@ export function agentIndex(): Promise<AgentIndex> {
   return index;
 }
 
-export async function answer(question: string): Promise<Answer> {
-  return ask(await agentIndex(), question).answer;
+export async function answer(question: string, context: Context = {}): Promise<Answer> {
+  return ask(await agentIndex(), question, context).answer;
 }

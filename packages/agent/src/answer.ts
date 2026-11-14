@@ -1,5 +1,6 @@
 import { idf } from './bm25';
 import { compose } from './compose';
+import { linkEntities } from './entities';
 import type { AgentIndex, Confidence, Query } from './retrieve';
 import { terms } from './text';
 import type { Answer, Retrieved } from './types';
@@ -83,8 +84,9 @@ export function extractive(
   if (!picked.length) return unknown(q);
 
   const used = [...new Set(picked.map((p) => p.chunk))];
-  const answerNodes = used.flatMap((c) => c.nodes);
   const text = picked.map((p) => p.text).join(' ');
+  // What the answer is about: its chunks' nodes plus anything it names in the text.
+  const answerNodes = [...used.flatMap((c) => c.nodes), ...linkEntities(text, index.entities)];
   const citations = [
     ...new Set([
       ...q.nodes.filter((n) => answerNodes.includes(n)),

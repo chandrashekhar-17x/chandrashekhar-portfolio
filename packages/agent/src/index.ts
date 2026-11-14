@@ -1,5 +1,5 @@
 // Public API of the portfolio agent (pure TypeScript: browser, Worker, Node).
-export { ask, type Trace } from './agent';
+export { ask, type Context, type Trace } from './agent';
 export { extractive, joinAnd, unknown, UNKNOWN } from './answer';
 export { buildChunks } from './chunk';
 export { caseStudyFile, corpusFromContent, type ContentFiles } from './content';
