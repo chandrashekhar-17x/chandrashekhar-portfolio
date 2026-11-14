@@ -1,0 +1,76 @@
+@if (profile(); as p) {
+  <article class="sheet" aria-labelledby="r-name">
+    <header class="top">
+      <div class="who">
+        <p class="eyebrow">30-second view</p>
+        <h1 id="r-name">{{ p.name }}</h1>
+        <p class="title">{{ p.title }}</p>
+        <p class="meta">
+          <span>{{ years() }} experience</span><span>{{ p.locationShort }}</span>
+          @for (e of education(); track e.id) {
+            <span>{{ e.degree }}, {{ e.shortName }}</span>
+          }
+        </p>
+      </div>
+      <nav class="actions" aria-label="Contact and links">
+        <a class="btn btn--primary btn--sm" routerLink="/" fragment="contact">Contact me</a>
+        <a class="btn btn--ghost btn--sm" routerLink="/resume">Resume</a>
+        @for (l of p.links; track l.url) {
+          <a class="btn btn--ghost btn--sm" [href]="l.url" target="_blank" rel="noopener"
+            >{{ l.label }} ↗</a
+          >
+        }
+      </nav>
+    </header>
+
+    <p class="pitch">{{ p.headline }}</p>
+
+    <div class="grid">
+      <section aria-labelledby="r-projects" class="projects">
+        <h2 id="r-projects">Best work</h2>
+        <ol role="list">
+          @for (pr of best(); track pr.slug) {
+            <li>
+              <a [routerLink]="['/work', pr.slug]">
+                <b>{{ pr.title }}</b>
+                <span>{{ pr.summary }}</span>
+              </a>
+            </li>
+          }
+        </ol>
+      </section>
+
+      <div class="side">
+        <section aria-labelledby="r-stack">
+          <h2 id="r-stack">Strongest stack</h2>
+          <ul class="chips" role="list">
+            @for (s of stack(); track s.id) {
+              <li>{{ s.name }}</li>
+            }
+          </ul>
+        </section>
+
+        <section aria-labelledby="r-xp">
+          <h2 id="r-xp">Experience</h2>
+          <ul class="xp" role="list">
+            @for (r of roles(); track r.id) {
+              <li>
+                <b>{{ r.org }}</b>
+                <span>{{ r.title }}{{ r.type === 'internship' ? ' (intern)' : '' }}</span>
+                <span class="mono">{{ r.span }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <footer class="next">
+      <span>Hiring for a specific role?</span>
+      <button type="button" class="btn btn--ghost btn--sm" (click)="matchJd()">
+        ✦ <span class="shimmer-text">Ask my agent if I fit your JD</span>
+      </button>
+      <a routerLink="/">See the full site →</a>
+    </footer>
+  </article>
+}

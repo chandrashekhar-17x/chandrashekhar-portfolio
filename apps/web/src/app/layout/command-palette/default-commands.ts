@@ -32,6 +32,7 @@ export function defaultCommands(router: Router, theme: ThemeService, chat: ChatS
     page('/graph', 'Full-screen knowledge graph'),
     page('/lab', 'AI Lab page', 'agents voice jarvis'),
     page('/resume', 'Resume', 'cv pdf print'),
+    page('/recruiter', 'Recruiter view (30 seconds)', 'hire summary skim tldr'),
     page('/journal', 'Journal', 'blog learning'),
     {
       id: 'action:chat',

@@ -7,7 +7,7 @@ import { ContentRepository } from './core/content/content-repository';
 // How each route renders on the server.
 // Prerender = static HTML at build time (fast, cacheable). Phase 2 switches
 // content pages to RenderMode.Server once data comes from the live API.
-const staticPages = ['', 'work', 'lab', 'graph', 'journal', 'resume'];
+const staticPages = ['', 'work', 'lab', 'graph', 'journal', 'resume', 'recruiter'];
 
 export const serverRoutes: ServerRoute[] = [
   ...staticPages.map((path): ServerRoute => ({ path, renderMode: RenderMode.Prerender })),
