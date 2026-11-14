@@ -1,12 +1,56 @@
 # Chandrashekhar: AI-native portfolio
 
+**Live: [chandrashekhar.pages.dev](https://chandrashekhar.pages.dev)**
+
 Angular 22 · FastAPI · PostgreSQL + pgvector · Redis · RAG agent · Knowledge graph · MCP
 
 > Frontend engineer who builds complex UIs (CAD/DXF viewers, PDF engines, data-extraction tools), now building
 > the AI systems behind them.
 
-A portfolio being built into a working AI system: ask a question, the answer streams in, and the
-knowledge-graph nodes it cites light up. Status: **Phase 1 frontend implemented; maintenance verification in progress.** Chat is scripted; the backend currently exposes `/health`. Database APIs and real RAG are planned. See [docs/plan.md](docs/plan.md).
+Not a template. My skills, projects and jobs live in one knowledge graph; an agent answers questions
+about me from it, and the nodes each answer cites light up.
+
+## Things to try on the site
+
+- **Ask the agent** (`Ctrl/⌘ K` → "Ask my agent"), then watch the graph glow on the nodes it cited.
+- **Explore the graph**: hover a few nodes and the side panel sums up your trail ("6 nodes, mostly CAD")
+  with a follow-up question.
+- **Blueprint mode** (footer button): the page redrawn as a CAD drawing, with dimension lines showing
+  real section sizes, a crosshair with page coordinates, and labels showing which section loaded when (`@defer #2 · +1.4 s`).
+- **Open DevTools** and type `chandrashekhar.help()`.
+- **Any case study** → "Ask my agent about this project".
+
+## How it works
+
+```mermaid
+flowchart LR
+  C[content/ JSON + Markdown] -->|make seed| DB[(Postgres + pgvector)]
+  DB --> API[FastAPI read API<br/>Redis cache + ETag]
+  C -->|bundled fallback| WEB
+  API --> WEB[Angular SSR site<br/>prerendered, @defer per section]
+  DB -. embeddings, Phase 4 .-> RAG[RAG agent]
+  RAG -. SSE tokens + cited node ids .-> WEB
+  WEB --> G[Knowledge graph<br/>cited nodes light up]
+```
+
+The graph is derived from the content (skills, projects, roles, education), by the same rules in
+TypeScript and Python, checked against one shared fixture. The chat speaks one event contract
+(`meta → token… → citations → done`): today a scripted source answers from the content, and in Phase 4 the real
+SSE agent replaces it without touching the UI.
+
+## Status
+
+| Phase                                                              |                                        |
+| ------------------------------------------------------------------ | -------------------------------------- |
+| 0 · Foundation (monorepo, CI, schemas, confidentiality check)      | ✅                                     |
+| 1 · Frontend (every section, graph, ⌘K, SEO, a11y, Lighthouse 100) | ✅ live                                |
+| 2 · Backend core (Postgres, seed, cached read API, contact API)    | ✅ built, API not hosted yet           |
+| 3–4 · Admin panel, RAG agent with citations                        | next                                   |
+| 5–9 · Recruiter JD match, voice lab, MCP server, demos, hardening  | planned ([docs/plan.md](docs/plan.md)) |
+
+Quality gates on every PR: ESLint + Prettier, ruff + mypy strict, ~160 unit tests (web) + Python tests on
+real Postgres/Redis, ~165 Playwright e2e on desktop and mobile, 48 screenshot baselines, axe (0 serious),
+Lighthouse ≥ 95, gitleaks.
 
 ## Repository layout
 

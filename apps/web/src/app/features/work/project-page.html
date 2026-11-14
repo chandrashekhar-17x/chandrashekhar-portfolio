@@ -38,6 +38,9 @@
         }
       </ul>
     }
+    <button type="button" class="btn btn--ghost btn--sm ask" (click)="ask(p.title)">
+      ✦ <span class="shimmer-text">Ask my agent about this project</span>
+    </button>
   </div>
   <app-case-study-body [markdown]="body()" [path]="'/work/' + p.slug" />
 

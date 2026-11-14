@@ -4,6 +4,7 @@ import { Observable, concat, concatMap, delay, from, of } from 'rxjs';
 import { ChatEvent } from '../../core/chat/chat-events';
 import { ChatSource } from '../../core/chat/chat-source';
 import { MediaPrefs } from '../../core/motion/media-prefs.service';
+import { MOCK_GRAPH_INPUT } from '../../core/content/mock-content.repository';
 import { pickAnswer } from './scripted-answers';
 
 /** Delay between streamed words (ms). Tests set 0. */
@@ -23,7 +24,7 @@ export class ScriptedChatSource extends ChatSource {
 
   ask(message: string): Observable<ChatEvent> {
     const started = Date.now();
-    const answer = pickAnswer(message);
+    const answer = pickAnswer(message, MOCK_GRAPH_INPUT.projects);
     const words = answer.text.split(/(\s+)/); // keep whitespace so the text rebuilds exactly
     const pause = this.prefs.reducedMotion() ? 0 : this.wordDelay;
 

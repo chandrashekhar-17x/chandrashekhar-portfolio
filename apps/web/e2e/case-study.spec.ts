@@ -60,3 +60,14 @@ test('case study has its own preview image and Article data', async ({ page, req
   expect(ld['@type']).toBe('Article');
   expect(ld['headline']).toBe('Custom CAD Viewer & Editor, built from zero');
 });
+
+test('"Ask my agent about this project" answers from that project and cites it', async ({
+  page,
+}) => {
+  await page.goto('/work/progressive-pdf-viewer');
+  await page.getByRole('button', { name: /ask my agent about this project/i }).click();
+  const chat = page.getByRole('dialog', { name: /agent/i });
+  await expect(chat).toContainText('Tell me about Progressive PDF Viewer');
+  await expect(chat).toContainText('Built with PDF.js, HTTP Range Requests, Virtualization.');
+  await expect(chat.getByText('Progressive PDF Viewer', { exact: true })).toBeVisible();
+});
