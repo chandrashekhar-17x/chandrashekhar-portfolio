@@ -243,7 +243,7 @@
       "id": "react",
       "question": "Does he know React?",
       "kind": "honest-no",
-      "mustMention": ["isn't in his profile"],
+      "mustMention": ["isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true,
       "mustNotMention": ["Yes"]
     },
@@ -251,7 +251,7 @@
       "id": "docker",
       "question": "Has he used Docker?",
       "kind": "honest-no",
-      "mustMention": ["isn't in his profile"],
+      "mustMention": ["isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true,
       "mustNotMention": ["Yes"]
     },
@@ -259,28 +259,28 @@
       "id": "food",
       "question": "What's his favourite food?",
       "kind": "honest-no",
-      "mustMention": ["isn't in his profile"],
+      "mustMention": ["isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true
     },
     {
       "id": "cricket",
       "question": "Who won the cricket world cup?",
       "kind": "honest-no",
-      "mustMention": ["isn't in his profile"],
+      "mustMention": ["isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true
     },
     {
       "id": "joke",
       "question": "Tell me a joke",
       "kind": "honest-no",
-      "mustMention": ["isn't in his profile"],
+      "mustMention": ["isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true
     },
     {
       "id": "mixed",
       "question": "Does he know Angular and Vue?",
       "kind": "answer",
-      "mustMention": ["Angular", "Vue isn't in his profile"],
+      "mustMention": ["Angular", "Vue isn't in his profile", "reach out to Chandrashekhar"],
       "agentOnly": true
     },
     {

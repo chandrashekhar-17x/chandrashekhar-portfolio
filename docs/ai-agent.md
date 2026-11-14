@@ -126,6 +126,20 @@ Cheap deterministic checks on the generated answer before it is shown:
 The verify step runs while tokens are buffered per sentence, so a sentence is only
 streamed once it passed. That keeps first-word latency low and output safe.
 
+## 4.6 Answer style: how a careful assistant (ChatGPT / Claude) behaves
+
+Each rule is a test in `packages/agent/test/units.spec.ts`:
+
+| Rule | Behaviour |
+| --- | --- |
+| Answer first | Yes/no questions start with the verdict ("Yes, he has worked with PrimeNG.") |
+| Never invent | Only sentences from my data; first-person data is rewritten to "he/his" or skipped |
+| Calibrated | high → answer; medium (keywords only) → "This may only partly answer your question…"; low → "I don't know" |
+| Honest unknown | "I don't know: that isn't in his profile, and I won't guess." |
+| Next step | Every unknown / partial / personal answer says "Please reach out to Chandrashekhar" and links `/#contact` |
+| Learning ≠ yes | Skills marked *learning* get "He is learning X now", never "Yes" |
+| No opinions | Role-fit questions get evidence (production vs learning), not praise |
+
 ## 5. Consistency and speed
 
 - `temperature: 0` and a fixed prompt; the prompt version is part of the cache key.

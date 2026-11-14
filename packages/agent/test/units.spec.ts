@@ -14,7 +14,7 @@ import {
   terms,
   tokenize,
 } from '../src/text';
-import { loadCorpus } from './corpus';
+import { loadCorpus, loadEvals } from './corpus';
 
 let index: AgentIndex;
 beforeAll(() => {
@@ -138,5 +138,56 @@ describe('guard and honesty', () => {
     const { answer } = ask(index, 'Has he built a PDF viewer?');
     expect(answer.citations.length).toBeGreaterThan(0);
     expect(answer.urls).toContain('/work/progressive-pdf-viewer');
+  });
+});
+
+describe('answers like a careful assistant', () => {
+  const all = () => [
+    ...loadEvals().map((c) => c.question),
+    'What is his favourite movie?',
+    'Does he know Kotlin?',
+    'Is he married?',
+    'What is the weather in Hyderabad?',
+  ];
+
+  it('every "cannot answer" says so plainly and points to Chandrashekhar', () => {
+    for (const q of all()) {
+      const { answer } = ask(index, q);
+      if (answer.kind !== 'unknown') continue;
+      expect(answer.text, q).toMatch(/I don't know/);
+      expect(answer.text, q).toMatch(/reach out to Chandrashekhar/);
+      expect(answer.urls, q).toContain('/#contact');
+    }
+  });
+
+  it('never speaks as Chandrashekhar ("I\'m", "my") in an answer about him', () => {
+    for (const q of all()) {
+      const { answer } = ask(index, q);
+      expect(answer.text, q).not.toMatch(/\b(I'm|I've|my|me)\b/);
+    }
+  });
+
+  it('answers first: yes/no questions lead with the verdict', () => {
+    const { answer } = ask(index, 'Has he used PrimeNG?');
+    expect(answer.text).toMatch(/^Yes, he has worked with PrimeNG\./);
+  });
+
+  it('hedges a weak keyword-only match instead of sounding sure', () => {
+    // No entity or question type; only a few words match the data.
+    const { answer } = ask(index, 'anything about pagination improvements?');
+    if (answer.kind === 'answer') {
+      expect(answer.text).toMatch(/may only partly answer|reach out to Chandrashekhar/);
+    } else {
+      expect(answer.kind).toBe('unknown');
+    }
+  });
+});
+
+describe('third person', () => {
+  it('rewrites object and possessive pronouns, keeps the rest', async () => {
+    const { thirdPerson } = await import('../src/compose');
+    expect(thirdPerson("questions about me and my work; I'm learning")).toBe(
+      "questions about him and his work; he's learning",
+    );
   });
 });

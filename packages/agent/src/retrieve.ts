@@ -154,11 +154,26 @@ export function retrieve(index: AgentIndex, query: Query, k = 5): Retrieved[] {
  * Enough evidence to answer? Yes when the question names something in my data,
  * or the best keyword match is strong. Calibrated on the eval set.
  */
+export type Confidence = 'high' | 'medium' | 'low';
+
+/**
+ * How sure are we that the retrieved chunks answer the question?
+ * - high: the question names something in my data (entity) or a known question type;
+ * - medium: only keywords match, moderately → answer, but say it may be partial;
+ * - low: nothing solid → "I don't know", never a guess.
+ */
+export function confidence(query: Query, results: readonly Retrieved[]): Confidence {
+  if (!results.length) return 'low';
+  if (query.nodes.length || query.intents.length) return 'high';
+  const top = results[0]?.bm25 ?? 0;
+  return top >= STRONG_BM25 ? 'high' : top >= MIN_BM25 ? 'medium' : 'low';
+}
+
 export function confident(query: Query, results: readonly Retrieved[]): boolean {
-  if (!results.length) return false;
-  if (query.nodes.length || query.intents.length) return true;
-  return (results[0]?.bm25 ?? 0) >= MIN_BM25;
+  return confidence(query, results) !== 'low';
 }
 
 /** Minimum BM25 score of the top chunk when no entity is named. */
 export const MIN_BM25 = 4;
+/** A keyword match this strong counts as a confident answer. */
+export const STRONG_BM25 = 8;

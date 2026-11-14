@@ -51,7 +51,9 @@ const RULES: readonly {
     test: /\b(salary|ctc|compensation|pay|age|religion|caste|married|marital|phone|mobile number|home address|email)\b/i,
     answer: () =>
       policy(
-        "That's personal, so it isn't something I share. You can ask him directly through the contact form.",
+        "That's personal, so it isn't something I share. Please reach out to Chandrashekhar directly through the contact form.",
+        [],
+        ['/#contact'],
       ),
   },
 ];
