@@ -36,8 +36,9 @@ Phases match `docs/plan.md` (0–9).
 - [x] Layered FastAPI (routers/services/repositories/schemas), JSON logs + request ids, error shape, readiness — `be` · M
 - [x] Postgres tables + Alembic + seed from content/ — `be` · M
 - [x] Public content & graph endpoints (cache + ETag) — `be` · S
-- [ ] Contact + Turnstile + rate limit + Resend — `be` · S
+- [x] Contact + Turnstile + rate limit + Resend — `be` · S
 - [x] Web switches from mocks to the API — `fe` · S
+- [x] API Docker image + Render Blueprint (`render.yaml`), hosted-Postgres URL conversion, CI starts the image — `ops` · S
 
 ## Phase 3 · Admin panel
 

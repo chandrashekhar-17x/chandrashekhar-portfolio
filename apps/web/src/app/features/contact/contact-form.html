@@ -45,6 +45,15 @@
     <small id="err-message" class="err">{{ error('message') }}</small>
   </label>
 
-  <button type="submit" class="btn btn--primary" appMagnetic>Send message →</button>
+  <!-- Honeypot: hidden from people (and assistive tech), filled by naive bots. -->
+  <input class="hp" formControlName="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  @if (siteKey) {
+    <app-turnstile [siteKey]="siteKey" (token)="onToken($event)" />
+  }
+
+  <button type="submit" class="btn btn--primary" appMagnetic [disabled]="sending()">
+    {{ sending() ? 'Sending…' : 'Send message →' }}
+  </button>
   <p class="status" role="status">{{ status() }}</p>
 </form>
