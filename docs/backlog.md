@@ -50,6 +50,7 @@ Phases match `docs/plan.md` (0–9).
 ## Phase 4 · RAG agent
 
 - [ ] Ingest: parse → chunk → embed → upsert (idempotent) — `ai` · L
+- [x] ₹0 agent core (`packages/agent`): chunking, entity linking + BM25 + intents (RRF), guard, extractive answers, 41-case eval in CI (design: `docs/ai-agent.md`) — `ai` · L
 - [ ] Hybrid retrieval + rerank; provider abstraction (Claude, fallback, Ollama) — `ai` · M
 - [ ] /chat SSE streaming + citations → graph highlight — `ai` · M
 - [ ] Guardrails, rate limit, Turnstile, daily token budget, answer cache — `be` · M

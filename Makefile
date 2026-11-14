@@ -58,7 +58,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check resume-pdf check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-agent eval-agent test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check resume-pdf check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -79,10 +79,17 @@ typecheck: ## Type-check web (tsc) and Python (mypy strict)
 	pnpm --filter @portfolio/web typecheck
 	uv run mypy $(PY_DIRS)
 
-test: test-web test-py ## Run all unit tests
+test: test-web test-agent test-py ## Run all unit tests
 
 test-web:
 	pnpm --filter @portfolio/web test
+
+test-agent: ## Portfolio agent: unit tests + eval set (packages/agent)
+	pnpm --filter @portfolio/agent typecheck
+	pnpm --filter @portfolio/agent test
+
+eval-agent: ## Agent eval report: per-case answers + metrics table
+	cd packages/agent && SHOW=1 npx vitest run test/evals.spec.ts --silent=false
 
 test-py: ## Python tests with coverage
 	uv run pytest --cov --cov-report=term --cov-report=xml
