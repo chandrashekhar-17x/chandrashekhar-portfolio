@@ -1,0 +1,19 @@
+# Keep the API image small and secret-free.
+.git
+.env
+.env.*
+!.env.example
+**/node_modules
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+apps/web
+prototype
+reference
+docs
+infra
+.wrangler
+**/test-results
+**/dist

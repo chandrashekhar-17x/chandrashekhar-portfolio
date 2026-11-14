@@ -1,0 +1,37 @@
+# Render Blueprint for the API: Dashboard → New → Blueprint → pick this repo.
+# Free plan: sleeps after ~15 min idle, first request then takes ~30-60 s.
+# Database: Neon (free Postgres), cache/rate limit: Upstash (free Redis); see docs/deploy-api.md.
+services:
+  - type: web
+    name: chandrashekhar-api
+    runtime: docker
+    plan: free
+    region: singapore # closest Render region to India; pick Neon/Upstash in Singapore too
+    branch: main
+    dockerfilePath: ./apps/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health/ready
+    autoDeploy: true
+    # Only redeploy when the API or its content changes (not for website-only commits).
+    buildFilter:
+      paths:
+        - apps/api/**
+        - apps/worker/**
+        - apps/mcp/**
+        - content/**
+        - pyproject.toml
+        - uv.lock
+        - .dockerignore
+    envVars:
+      # Asked for when you create the Blueprint (secrets never live in the repo).
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: CORS_ORIGINS
+        value: '["https://chandrashekhar.pages.dev"]'
+      # content/ is the source of truth until the admin panel (Phase 3); see docker-entrypoint.sh.
+      - key: SEED_ON_START
+        value: 'true'
+      - key: IP_HASH_SALT
+        generateValue: true

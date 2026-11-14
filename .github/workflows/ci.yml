@@ -50,6 +50,8 @@ jobs:
               - 'pyproject.toml'
               - 'uv.lock'
               - '.python-version'
+              - '.dockerignore'
+              - 'render.yaml'
 
   secrets:
     name: Secret scan (gitleaks)
@@ -220,6 +222,20 @@ jobs:
       - run: uv run mypy apps/api apps/worker apps/mcp scripts
       - run: make content-check
       - run: make test-py
+      # The exact image Render runs: it must build, migrate, seed and report ready.
+      - name: API Docker image starts and is ready
+        run: |
+          docker build -f apps/api/Dockerfile -t portfolio-api .
+          docker run -d --name api --network host -e PORT=8077 -e SEED_ON_START=true \
+            -e IP_HASH_SALT=ci-only-salt-not-secret \
+            -e DATABASE_URL='postgres://portfolio:portfolio@localhost:5433/portfolio?sslmode=disable' \
+            -e REDIS_URL=redis://localhost:6380/0 portfolio-api
+          for i in $(seq 1 30); do
+            curl -sf localhost:8077/health/ready && exit 0
+            sleep 2
+          done
+          docker logs api
+          exit 1
 
   ci-ok:
     name: CI OK
