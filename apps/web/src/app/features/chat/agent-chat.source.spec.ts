@@ -48,6 +48,12 @@ describe('AgentChatSource (the real agent in the browser)', () => {
     expect(textOf(await askAll('yes'))).toContain('Software Engineer');
   });
 
+  it('after "who is Himanshu?", "what is his role" is confirmed before answering', async () => {
+    await askAll('who is himanshu');
+    expect(textOf(await askAll('what is his role'))).toMatch(/^Do you mean Chandrashekhar\?/);
+    expect(textOf(await askAll('yes'))).toContain('Software Engineer at VassarDigital.ai');
+  });
+
   it('maps answers to chat intents', () => {
     const base = { text: '', sources: [] };
     expect(intentOf({ ...base, kind: 'unknown', citations: [], urls: [] })).toBe('off-topic');

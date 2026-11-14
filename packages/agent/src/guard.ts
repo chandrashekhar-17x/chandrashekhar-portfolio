@@ -157,6 +157,7 @@ export function guard(q: Query, index: AgentIndex): Answer | null {
         `I don't know who ${name} is. I only answer questions about Chandrashekhar, using his portfolio and resume. Did you mean him? Say "yes" and I'll tell you who he is.`,
       ),
       suggest: 'Who is Chandrashekhar?',
+      aboutOther: name,
     };
   }
   return null;

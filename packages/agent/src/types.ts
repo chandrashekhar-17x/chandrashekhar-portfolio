@@ -116,4 +116,7 @@ export interface Answer {
   sources: Chunk[];
   /** A follow-up question this answer offers; "yes" next turn asks it. */
   suggest?: string;
+  /** The answer was about someone else ("who is Himanshu?"): their name, so a
+   *  following "his role" is confirmed before answering about Chandrashekhar. */
+  aboutOther?: string;
 }

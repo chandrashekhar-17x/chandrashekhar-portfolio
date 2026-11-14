@@ -10,7 +10,7 @@ test.describe('chat', () => {
 
     await panel.getByRole('button', { name: "What's his biggest project?" }).click();
     const answer = panel.locator('.msg.agent').last();
-    await expect(answer).toContainText('CAD viewer/editor', { timeout: 5000 });
+    await expect(answer).toContainText('Custom CAD Viewer & Editor', { timeout: 5000 });
     await expect(
       answer.getByRole('button', { name: 'Custom CAD Viewer & Editor, built from zero' }),
     ).toBeVisible();

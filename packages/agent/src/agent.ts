@@ -25,7 +25,12 @@ const AFFIRM =
 export interface Context {
   /** The follow-up the previous answer offered (Answer.suggest). */
   suggest?: string;
+  /** The previous question was about someone else (Answer.aboutOther). */
+  lastOther?: string;
 }
+
+/** he / his / him: who they point at depends on the previous turn. */
+const PRONOUN = /\b(he|his|him|he's|himself)\b/i;
 
 export function ask(index: AgentIndex, question: string, context: Context = {}): Trace {
   if (AFFIRM.test(question)) {
@@ -44,6 +49,25 @@ export function ask(index: AgentIndex, question: string, context: Context = {}):
     };
   }
   const t0 = performance.now();
+  // After "who is Himanshu?", "what is his role?" may mean Himanshu: confirm, don't guess.
+  if (
+    context.lastOther &&
+    PRONOUN.test(question) &&
+    !toks(question).some((w) => index.owner.has(w))
+  ) {
+    return {
+      answer: {
+        kind: 'policy',
+        text: `Do you mean Chandrashekhar? I don't have any information about ${context.lastOther}. Say "yes" and I'll answer about Chandrashekhar.`,
+        citations: [],
+        urls: [],
+        sources: [],
+        suggest: question,
+      },
+      results: [],
+      ms: performance.now() - t0,
+    };
+  }
   const q = analyze(question, index);
   const policy = guard(q, index) ?? fitAnswer(index, q);
   if (policy) return { answer: policy, results: [], ms: performance.now() - t0 };
@@ -74,7 +98,7 @@ export function ask(index: AgentIndex, question: string, context: Context = {}):
   // programming language?") is off-topic, not a partial answer.
   const aboutHim =
     /\b(he|him|his|he's)\b/i.test(question) || toks(question).some((w) => index.owner.has(w));
-  const raw = confidence(q, results);
+  const raw = confidence(q, results, index);
   const level = raw === 'medium' && !aboutHim ? 'low' : raw;
   const answer = onlyMissing || level === 'low' ? unknown(q) : extractive(index, q, results, level);
   return { answer, results, ms: performance.now() - t0 };

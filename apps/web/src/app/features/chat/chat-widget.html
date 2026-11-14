@@ -23,6 +23,19 @@
     @if (store.scripted) {
       <span class="chip">demo · scripted</span>
     }
+    @if (ai.state() !== 'unsupported' && ai.state() !== 'checking') {
+      <button
+        type="button"
+        class="chip ai-toggle"
+        [class.on]="ai.state() === 'ready'"
+        [attr.aria-pressed]="ai.state() === 'ready'"
+        [disabled]="ai.state() === 'loading'"
+        title="Runs a small AI model on your GPU for more natural answers. Downloads about 1 GB once, then it is cached. Nothing leaves your browser."
+        (click)="ai.toggle()"
+      >
+        {{ aiLabel() }}
+      </button>
+    }
     <button type="button" class="x" aria-label="Close chat" (click)="close()">×</button>
   </header>
 

@@ -217,3 +217,24 @@ describe('short answers', () => {
     }
   });
 });
+
+describe('pronouns after a question about someone else', () => {
+  it('confirms "his role" means Chandrashekhar after "who is Himanshu?", then "yes" answers', () => {
+    const first = ask(index, 'who is himanshu').answer;
+    expect(first.aboutOther).toBe('Himanshu');
+
+    const second = ask(index, 'what is his role', { lastOther: first.aboutOther }).answer;
+    expect(second.text).toMatch(
+      /^Do you mean Chandrashekhar\? I don't have any information about Himanshu/,
+    );
+    expect(second.suggest).toBe('what is his role');
+
+    const third = ask(index, 'yes', { suggest: second.suggest }).answer;
+    expect(third.text).toMatch(/Software Engineer at VassarDigital\.ai/);
+  });
+
+  it('answers directly when the question names him', () => {
+    const { answer } = ask(index, "what is Chandrashekhar's role", { lastOther: 'Himanshu' });
+    expect(answer.text).toMatch(/Software Engineer/);
+  });
+});

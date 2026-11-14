@@ -15,6 +15,7 @@ import { map } from 'rxjs';
 import { ChatStore, MAX_QUESTION_LENGTH } from '../../core/chat/chat-store.service';
 import { ContentRepository } from '../../core/content/content-repository';
 import { GraphHighlightService } from '../../core/graph/graph-highlight.service';
+import { OnDeviceAi } from './on-device-ai.service';
 import { SUGGESTED_QUESTIONS } from './scripted-answers';
 
 /** Floating orb + chat panel (prototype .fab / .chat). Loaded lazily by the app shell. */
@@ -33,6 +34,20 @@ export class ChatWidget {
   protected readonly suggestions = SUGGESTED_QUESTIONS;
   protected readonly maxLength = MAX_QUESTION_LENGTH;
   protected readonly draft = signal('');
+  /** Opt-in on-device LLM (WebLLM): toggle + progress in the header. */
+  protected readonly ai = inject(OnDeviceAi);
+  protected readonly aiLabel = computed(() => {
+    switch (this.ai.state()) {
+      case 'ready':
+        return 'On-device AI: on';
+      case 'loading':
+        return this.ai.progress() || 'Loading model…';
+      case 'error':
+        return 'On-device AI failed: retry';
+      default:
+        return 'On-device AI: off';
+    }
+  });
 
   /** Node id → label, for citation chips. */
   protected readonly labels = toSignal(
@@ -63,6 +78,10 @@ export class ChatWidget {
     // Opening moves focus into the input (keyboard and screen-reader friendly).
     effect(() => {
       if (this.store.isOpen()) queueMicrotask(() => this.input()?.nativeElement.focus());
+    });
+    // Check for WebGPU the first time the chat opens (never during SSR or page load).
+    effect(() => {
+      if (this.store.isOpen()) void this.ai.init();
     });
   }
 

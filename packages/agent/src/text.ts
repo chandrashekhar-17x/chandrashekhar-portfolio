@@ -62,9 +62,13 @@ export function stem(word: string): string {
 
 /** Search terms: tokens without stopwords, stemmed. */
 export function terms(text: string): string[] {
-  return tokenize(text)
-    .filter((t) => !STOPWORDS.has(t))
-    .map(stem);
+  return (
+    tokenize(text)
+      // Single letters ("s" from "what's", "r" from "r-tree") mean nothing alone;
+      // compounds like "r-tree" / "rtree" are kept whole by tokenize().
+      .filter((t) => t.length > 1 && !STOPWORDS.has(t))
+      .map(stem)
+  );
 }
 
 /** A single-space, punctuation-free form used for phrase matching. */
