@@ -142,6 +142,29 @@ Each rule is a test in `packages/agent/test/units.spec.ts`:
 | No opinions | Role-fit questions get evidence (production vs learning), not praise |
 | Only about him | "Who is Mahesh?" / "Rahul's projects" → "I don't know who Mahesh is. I only answer questions about Chandrashekhar…"; "Who is his manager?" → "I don't know" (never his profile instead) |
 
+## 4.7 Final architecture (Nov 2026): tools + RAG + on-device LLM + verifier
+
+```
+question
+  → guard (injection, personal, other people, tasks)                deterministic
+  → planner → tools over exact facts (career dates, roles, projects
+    by year/skill, skill yes/no, location) → ONE sentence           instant, exact
+  → otherwise hybrid retrieval (entities + BM25 + intents, RRF)
+      → if on-device AI is on: Qwen2.5-1.5B (WebLLM, WebGPU) rewrites
+        the top 4 chunks in 1-2 sentences → verify() → shown
+      → else / rejected / error: extractive answer (2 sentences)
+```
+
+- **Why tools before the LLM:** small models are weak at dates and lists; tools are exact.
+- **Why a verifier:** 1-2B models invent more; every number, skill, project and technology
+  in the model's answer must appear in its sources, otherwise the safe answer is shown.
+- **Why opt-in:** ~1 GB model download and WebGPU (desktop Chrome/Edge, recent Safari);
+  phones and older laptops keep the instant answers. Nothing leaves the browser, ₹0.
+- **Provider-agnostic:** `LlmClient` in `packages/agent/src/llm.ts`; Workers AI or Claude
+  can replace WebLLM without touching retrieval, tools or the verifier.
+- **Eval:** `make eval-ondevice` runs every answer case with the model off and on in real
+  Chrome and compares pass rate, length and latency.
+
 ## 5. Consistency and speed
 
 - `temperature: 0` and a fixed prompt; the prompt version is part of the cache key.

@@ -3,6 +3,9 @@ import {
   type Answer,
   type ContentFiles,
   type Context,
+  type LlmClient,
+  type LlmTrace,
+  askWithLlm,
   ask,
   buildIndex,
   caseStudyFile,
@@ -46,4 +49,13 @@ export function agentIndex(): Promise<AgentIndex> {
 
 export async function answer(question: string, context: Context = {}): Promise<Answer> {
   return ask(await agentIndex(), question, context).answer;
+}
+
+/** With the on-device model: open questions are rewritten by it, then verified. */
+export async function answerWithLlm(
+  question: string,
+  llm: LlmClient,
+  context: Context = {},
+): Promise<LlmTrace> {
+  return askWithLlm(await agentIndex(), question, llm, context);
 }

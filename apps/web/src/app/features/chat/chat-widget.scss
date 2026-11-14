@@ -248,3 +248,20 @@
     animation: none;
   }
 }
+
+// On-device AI toggle (WebLLM): quiet when off, accent when on.
+.ai-toggle {
+  border: 1px solid var(--line-2);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+
+  &.on {
+    border-color: var(--lime);
+    color: var(--ink);
+  }
+
+  &:disabled {
+    cursor: progress;
+  }
+}

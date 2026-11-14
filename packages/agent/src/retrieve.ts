@@ -1,4 +1,4 @@
-import { type Bm25Index, buildBm25, scoreBm25 } from './bm25';
+import { type Bm25Index, buildBm25, idf, scoreBm25 } from './bm25';
 import { type Facts, buildFacts } from './facts';
 import { buildChunks } from './chunk';
 import {
@@ -181,18 +181,33 @@ export type Confidence = 'high' | 'medium' | 'low';
  * - medium: only keywords match, moderately → answer, but say it may be partial;
  * - low: nothing solid → "I don't know", never a guess.
  */
-export function confidence(query: Query, results: readonly Retrieved[]): Confidence {
+export function confidence(
+  query: Query,
+  results: readonly Retrieved[],
+  index: AgentIndex,
+): Confidence {
   if (!results.length) return 'low';
   if (query.nodes.length || query.intents.length) return 'high';
+  // A rare, specific word of the question ("Keycloak") found in the top chunk is
+  // strong evidence, however the sentence around it is worded.
+  const first = results[0]?.chunk;
+  const aboutHim =
+    /\b(he|him|his|he's)\b/i.test(query.text) || toks(query.text).some((w) => index.owner.has(w));
+  if (first && aboutHim) {
+    const words = new Set(terms(`${first.title} ${first.text}`));
+    if (query.terms.some((t) => words.has(t) && idf(index.bm25, t) >= RARE_TERM_IDF)) return 'high';
+  }
   const top = results[0]?.bm25 ?? 0;
   return top >= STRONG_BM25 ? 'high' : top >= MIN_BM25 ? 'medium' : 'low';
 }
 
-export function confident(query: Query, results: readonly Retrieved[]): boolean {
-  return confidence(query, results) !== 'low';
+export function confident(query: Query, results: readonly Retrieved[], index: AgentIndex): boolean {
+  return confidence(query, results, index) !== 'low';
 }
 
 /** Minimum BM25 score of the top chunk when no entity is named. */
 export const MIN_BM25 = 4;
+/** A word in at most 2 of the ~100 chunks (BM25 idf ≥ 3.5) is specific enough to trust. */
+export const RARE_TERM_IDF = 3.5;
 /** A keyword match this strong counts as a confident answer. */
 export const STRONG_BM25 = 8;

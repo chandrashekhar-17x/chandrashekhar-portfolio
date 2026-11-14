@@ -58,7 +58,7 @@ dev-api: ## FastAPI with reload → http://localhost:8000/docs
 	uv run uvicorn portfolio_api.main:create_app --factory --reload --port 8000
 
 ##@ Quality
-.PHONY: lint lint-web lint-py format typecheck test test-web test-agent eval-agent test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check resume-pdf check
+.PHONY: lint lint-web lint-py format typecheck test test-web test-agent eval-agent eval-ondevice test-py build smoke-web e2e-web lighthouse visual visual-update content-check confidential-check resume-pdf check
 lint: lint-web lint-py ## Lint everything
 
 lint-web:
@@ -90,6 +90,9 @@ test-agent: ## Portfolio agent: unit tests + eval set (packages/agent)
 
 eval-agent: ## Agent eval report: per-case answers + metrics table
 	cd packages/agent && SHOW=1 npx vitest run test/evals.spec.ts --silent=false
+
+eval-ondevice: ## A/B eval of the on-device LLM in real Chrome (after build; needs a GPU)
+	cd apps/web && node scripts/eval-ondevice.mjs
 
 test-py: ## Python tests with coverage
 	uv run pytest --cov --cov-report=term --cov-report=xml
