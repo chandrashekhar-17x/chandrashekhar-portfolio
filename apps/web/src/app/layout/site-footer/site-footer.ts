@@ -10,33 +10,16 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 import { BlueprintService } from '../../core/blueprint/blueprint.service';
 import { ContentRepository } from '../../core/content/content-repository';
-import { REPO_URL } from '../../core/devtools/console-api';
-import { BUILD_INFO } from '../../core/seo/site-origin.gen';
 import { hyderabadNow } from '../../core/time/local-status';
-import { timeAgo } from '../../core/time/time-ago';
 
 @Component({
   selector: 'app-site-footer',
   template: `
     <footer class="foot">
-      <div class="made">
-        <span
-          >© {{ year }} {{ profile()?.name }} · Built with Angular, FastAPI &amp; a lot of
-          curiosity</span
-        >
-        @if (build; as b) {
-          <a class="mono stamp" [href]="commitUrl" target="_blank" rel="noopener">
-            @if (updated()) {
-              updated {{ updated() }} ·
-            }
-            {{ b.sha.slice(0, 7) }}
-            @if (b.subject) {
-              · {{ b.subject }}
-            }
-            ↗</a
-          >
-        }
-      </div>
+      <span
+        >© {{ year }} {{ profile()?.name }} · Built with Angular, FastAPI &amp; a lot of
+        curiosity</span
+      >
       @if (now(); as n) {
         <span class="mono now"
           ><span class="dot" aria-hidden="true"></span>Hyderabad {{ n.time }} IST · probably
@@ -60,24 +43,6 @@ import { timeAgo } from '../../core/time/time-ago';
       border-top: 1px solid var(--line);
       color: var(--ink-3);
       font-size: 12.5px;
-    }
-    .made {
-      display: grid;
-      gap: 4px;
-      min-width: 0;
-    }
-    .stamp {
-      overflow: hidden;
-      color: var(--ink-3);
-      font-size: 11.5px;
-      text-decoration: none;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .stamp:hover,
-    .stamp:focus-visible {
-      color: var(--ink);
-      text-decoration: underline;
     }
     .mono {
       font-family: var(--font-mono);
@@ -117,11 +82,6 @@ export class SiteFooter {
   protected readonly year = new Date().getFullYear();
   protected readonly profile = toSignal(inject(ContentRepository).profile());
   protected readonly blueprint = inject(BlueprintService);
-  /** The commit this build came from: the site is built in public. */
-  protected readonly build = BUILD_INFO;
-  protected readonly commitUrl = `${REPO_URL}/commit/${BUILD_INFO?.sha ?? ''}`;
-  /** Server HTML shows the date; the browser swaps in "3 h ago" after hydration. */
-  protected readonly updated = signal(BUILD_INFO?.date?.slice(0, 10) ?? '');
   /** Browser only (set after hydration), so the server HTML never has a stale time. */
   protected readonly now = signal<ReturnType<typeof hyderabadNow> | null>(null);
 
@@ -129,9 +89,7 @@ export class SiteFooter {
     const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
       const tick = () => {
-        const now = new Date();
-        this.now.set(hyderabadNow(now));
-        if (BUILD_INFO?.date) this.updated.set(timeAgo(new Date(BUILD_INFO.date), now));
+        this.now.set(hyderabadNow(new Date()));
       };
       tick();
       const id = setInterval(tick, 30_000);

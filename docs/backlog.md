@@ -92,7 +92,6 @@ Phases match `docs/plan.md` (0–9).
 - [x] Blueprint X-ray: section tags show how each part loaded (`@defer #2 · +1.4 s` vs eager) — `fe` · S
 - [x] "Ask my agent about this project" on every case study; the demo chat answers named projects from their own content and cites the project + its skills — `ai` · S
 - [x] Blueprint "source ↗" links: each section opens its feature folder on GitHub, pinned to the build's commit — `fe` · S
-- [x] Footer build stamp: "updated 7 min ago · sha · PR #20 · branch", linking to the commit — `fe` · S
 - [ ] Career time machine: graph slider 2020 → today (needs a `period` on every project in `content/`) — `fe` · S
 
 ## Phase 9 · Security, performance, launch

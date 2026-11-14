@@ -25,7 +25,7 @@ const source = [
   `export const CONTENT_FROM_API: boolean = ${JSON.stringify(contentFromApi)};`,
   '/** Public Cloudflare Turnstile site key; null = no bot-check widget. */',
   `export const TURNSTILE_SITE_KEY: string | null = ${JSON.stringify(turnstileKey)};`,
-  '/** Latest commit in this build (footer stamp, source links); null outside git. */',
+  '/** Latest commit in this build (blueprint source links); null outside git. */',
   `export const BUILD_INFO: { sha: string; date: string | null; subject: string } | null = ${JSON.stringify(buildInfo())};`,
   '',
 ].join('\n');

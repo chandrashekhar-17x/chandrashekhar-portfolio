@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 
-// What the footer's build stamp shows: the latest change that went into this build.
+// The commit this build came from (blueprint "source" links pin to it).
 // From git (Cloudflare Pages clones the repo), else Pages' env var, else nothing.
 
 /** "Merge pull request #20 from user/feat/x" → "PR #20 · feat/x"; other subjects unchanged. */

@@ -61,14 +61,8 @@ test('blueprint tags show how lazy sections loaded', async ({ page }) => {
   );
 });
 
-test('blueprint links each section to its code; the footer stamps the build commit', async ({
-  page,
-}) => {
+test('blueprint links each section to its code at the build commit', async ({ page }) => {
   await page.goto('/');
-  const stamp = page.locator('footer .stamp');
-  await expect(stamp).toHaveText(/updated .+ ·\s+[0-9a-f]{7}\s/);
-  await expect(stamp).toHaveAttribute('href', /\/commit\/[0-9a-f]{40}$/);
-
   await page.getByRole('button', { name: /view as blueprint/i }).click();
   await page.evaluate(() => {
     scrollTo(0, 0);
