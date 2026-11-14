@@ -407,6 +407,46 @@
       "kind": "answer",
       "mustMention": ["don't give opinions", "production experience", "Angular"],
       "agentOnly": true
+    },
+    {
+      "id": "u-other-person",
+      "question": "who is mahesh",
+      "kind": "confidential",
+      "mustMention": ["I don't know who Mahesh is", "only answer questions about Chandrashekhar"],
+      "agentOnly": true,
+      "mustNotMention": ["Software Engineer"]
+    },
+    {
+      "id": "other-possessive",
+      "question": "tell me about Rahul's projects",
+      "kind": "confidential",
+      "mustMention": ["I don't know who Rahul is"],
+      "agentOnly": true,
+      "mustNotMention": ["CAD"]
+    },
+    {
+      "id": "who-full-name",
+      "question": "Who is Chandrashekhar Prajapati?",
+      "kind": "answer",
+      "mustMention": ["Software Engineer", "Hyderabad"],
+      "agentOnly": true,
+      "mustNotMention": ["I don't know who"]
+    },
+    {
+      "id": "who-he",
+      "question": "who is he",
+      "kind": "answer",
+      "mustMention": ["Software Engineer"],
+      "agentOnly": true,
+      "mustNotMention": ["I don't know who"]
+    },
+    {
+      "id": "his-manager",
+      "question": "Who is his manager?",
+      "kind": "honest-no",
+      "mustMention": ["isn't in his profile"],
+      "agentOnly": true,
+      "mustNotMention": ["Software Engineer at"]
     }
   ]
 }

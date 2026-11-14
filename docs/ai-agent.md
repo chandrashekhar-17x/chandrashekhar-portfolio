@@ -1,6 +1,7 @@
 # AI agent: design and build plan (₹0 budget)
 
-> Status: **PR 1 done** (agent core + evals, 2026-11-14); next PR 2 (Pages Function + free LLM). Owner decisions: no paid APIs; answers must
+> Status: agent core, answers and honesty rules done; **the website chat now runs this agent in the
+> browser** (lazy 13 KB chunk, scripted demo only as offline fallback). Next: free LLM (Pages Function). Owner decisions: no paid APIs; answers must
 > come only from my resume + portfolio; correct, consistent and fast. Replaces the
 > "Claude + pgvector RAG" plan in `agents.md` for the public chat (that plan stays the
 > long-term path once there is a lot more content, e.g. a journal).
@@ -139,6 +140,7 @@ Each rule is a test in `packages/agent/test/units.spec.ts`:
 | Next step | Every unknown / partial / personal answer says "Please reach out to Chandrashekhar" and links `/#contact` |
 | Learning ≠ yes | Skills marked *learning* get "He is learning X now", never "Yes" |
 | No opinions | Role-fit questions get evidence (production vs learning), not praise |
+| Only about him | "Who is Mahesh?" / "Rahul's projects" → "I don't know who Mahesh is. I only answer questions about Chandrashekhar…"; "Who is his manager?" → "I don't know" (never his profile instead) |
 
 ## 5. Consistency and speed
 
