@@ -7,7 +7,7 @@
     "start": "node scripts/gen-site-config.mjs && ng serve",
     "build": "node scripts/gen-site-config.mjs && ng build",
     "watch": "node scripts/gen-site-config.mjs && ng build --watch --configuration development",
-    "test": "node --test scripts/site-origin.test.mjs && node scripts/gen-site-config.mjs && ng test --watch=false",
+    "test": "node --test scripts/site-origin.test.mjs scripts/build-info.test.mjs && node scripts/gen-site-config.mjs && ng test --watch=false",
     "test:watch": "node scripts/gen-site-config.mjs && ng test",
     "lint": "node scripts/gen-site-config.mjs && eslint .",
     "typecheck": "node scripts/gen-site-config.mjs && tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.spec.json --noEmit && tsc -p tsconfig.e2e.json --noEmit",
