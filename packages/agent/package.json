@@ -13,7 +13,7 @@
     "eval": "vitest run test/evals.spec.ts --reporter=verbose"
   },
   "devDependencies": {
-    "@types/node": "^22.12.0",
+    "@types/node": "^26.6.6",
     "typescript": "~6.0.2",
     "vitest": "^5.0.0"
   }
