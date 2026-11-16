@@ -41,7 +41,7 @@ services:
 
   ollama:
     # Optional local LLM for zero-cost dev (Phase 4). Start with `make up-ai`.
-    image: ollama/ollama:0.40.15
+    image: ollama/ollama:0.40.16
     profiles: ['ai']
     restart: unless-stopped
     ports:
