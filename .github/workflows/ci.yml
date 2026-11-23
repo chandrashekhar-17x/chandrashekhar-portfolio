@@ -217,7 +217,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       # setup-uv publishes exact tags only (no moving "v10"); Dependabot keeps it current.
-      - uses: astral-sh/setup-uv@v10.3.3
+      - uses: astral-sh/setup-uv@v10.4.0
         with:
           enable-cache: true
       - run: uv sync --frozen
